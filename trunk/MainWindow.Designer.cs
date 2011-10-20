@@ -34,8 +34,8 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.RenderPreviewActive = new System.Windows.Forms.PictureBox();
             this.RenderPreviewFull = new System.Windows.Forms.PictureBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.GraphRender = new System.Windows.Forms.PictureBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -122,14 +122,6 @@
             this.RenderPreviewFull.TabIndex = 0;
             this.RenderPreviewFull.TabStop = false;
             // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(397, 25);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
             // GraphRender
             // 
             this.GraphRender.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -139,6 +131,16 @@
             this.GraphRender.TabIndex = 1;
             this.GraphRender.TabStop = false;
             this.GraphRender.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphRender_Paint);
+            this.GraphRender.MouseEnter += new System.EventHandler(this.GraphRender_MouseEnter);
+            this.GraphRender.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseMove);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(397, 25);
+            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Text = "toolStrip1";
             // 
             // MainWindow
             // 
