@@ -11,21 +11,52 @@ namespace texforge
 {
     public partial class MainWindow : Form
     {
-        protected Graph graph;
+        protected VisualGraph graph;
+        Point mouseLastPosition = new Point();
 
         public MainWindow()
         {
             InitializeComponent();
+            GraphRender.MouseWheel += new MouseEventHandler(GraphRender_MouseWheel);
+
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            graph = new Graph();
+            graph = new VisualGraph();
         }
 
         private void GraphRender_Paint(object sender, PaintEventArgs e)
         {
             graph.Render(e.Graphics, e.ClipRectangle);
         }
+
+        private void GraphRender_MouseEnter(object sender, EventArgs e)
+        {
+            Rectangle origin = GraphRender.RectangleToScreen(new Rectangle());
+            mouseLastPosition = new Point(Control.MousePosition.X - origin.X, Control.MousePosition.Y - origin.Y);
+            GraphRender.Focus();
+        }
+
+        private void GraphRender_MouseWheel(object sender, MouseEventArgs e)
+        {
+            graph.Zoom((float)e.Delta / 10.0f);
+            GraphRender.Invalidate();
+        }
+
+        private void GraphRender_MouseMove(object sender, MouseEventArgs e)
+        {
+            bool left = (Control.MouseButtons & MouseButtons.Left) > 0;
+            bool right = (Control.MouseButtons & MouseButtons.Right) > 0;
+            bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0;
+            if ( (left && right) || middle)
+            {
+                Point delta = new Point(e.Location.X - mouseLastPosition.X, e.Location.Y - mouseLastPosition.Y);
+                graph.Pan(delta);
+                GraphRender.Invalidate();
+            }
+            mouseLastPosition = e.Location;
+        }
+
     }
 }
