@@ -14,6 +14,8 @@ namespace texforge
         const int gridSize = 100;
         const int subGridDivisions = 10;
 
+        List<Node> nodes = new List<Node>();
+
         public VisualGraph()
         {
             offset = new Point();
@@ -95,7 +97,70 @@ namespace texforge
             zenith.Intersect(clip);
             graphics.FillRectangle(Brushes.Black, horizon);
             graphics.FillRectangle(Brushes.Black, zenith);
+            // Render nodes
+            foreach (Node node in nodes)
+            {
+                node.Render(graphics, clip);
+            }
         }
 
+        // Coordinates are broken as they are relative to the top corner of the graph instead of the origin cross
+        // TODO: Fix the screen transforms
+        Point TransformFromScreen(Point position)
+        {
+            position.X = (int)((float)position.X * (float)zoom / 100.0f);
+            position.X -= offset.X;
+            position.Y = (int)((float)position.Y * (float)zoom / 100.0f);
+            position.Y -= offset.Y;
+            return position;
+        }
+
+        // Coordinates are broken as they are relative to the top corner of the graph instead of the origin cross
+        // TODO: Fix the screen transforms
+        Point TransformToScreen(Point position)
+        {
+            position.X += offset.X;
+            position.X = (int)((float)position.X / 100.0f * (float)zoom);
+            position.Y += offset.Y;
+            position.Y = (int)((float)position.Y / 100.0f * (float)zoom);
+            return position;
+        }
+
+        public void AddRenderNode(Point position)
+        {
+            nodes.Add(new RenderNode(this, TransformFromScreen(position)));
+        }
+
+        abstract private class Node
+        {
+            protected VisualGraph owner;
+            protected Point position;
+
+            public Node(VisualGraph owner, Point position)
+            {
+                this.owner = owner;
+                this.position = position;
+            }
+
+            abstract public void Render(Graphics graphics, Rectangle clip);
+        }
+
+        private class RenderNode : Node
+        {
+            public RenderNode(VisualGraph owner, Point position)
+                : base(owner, position)
+            {
+            }
+
+            public override void Render(Graphics graphics, Rectangle clip)
+            {
+                Point origin = owner.TransformToScreen(position);
+                Point end = owner.TransformToScreen(new Point(position.X + 150, position.Y + 40));
+                Size size = new Size(end.X - origin.X, end.Y - origin.Y);
+                Rectangle node = new Rectangle(origin, size);
+                graphics.FillRectangle(Brushes.LimeGreen, node);
+                graphics.DrawRectangle(new Pen(Brushes.Black), node); 
+            }
+        }
 	}
 }

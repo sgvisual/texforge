@@ -58,5 +58,21 @@ namespace texforge
             mouseLastPosition = e.Location;
         }
 
+        private void GraphRender_MouseClick(object sender, MouseEventArgs e)
+        {
+            bool left = (Control.MouseButtons & MouseButtons.Left) > 0;
+            bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0; 
+            if (e.Button == MouseButtons.Right && !left && !middle)
+            {
+                graphContextMenu.Show(Control.MousePosition);
+            }
+        }
+
+        private void addRenderNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.AddRenderNode(mouseLastPosition);
+            GraphRender.Invalidate();
+        }
+
     }
 }
