@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -36,6 +37,8 @@
             this.RenderPreviewFull = new System.Windows.Forms.PictureBox();
             this.GraphRender = new System.Windows.Forms.PictureBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.graphContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addRenderNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -47,6 +50,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewActive)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewFull)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).BeginInit();
+            this.graphContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -131,6 +135,7 @@
             this.GraphRender.TabIndex = 1;
             this.GraphRender.TabStop = false;
             this.GraphRender.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphRender_Paint);
+            this.GraphRender.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseClick);
             this.GraphRender.MouseEnter += new System.EventHandler(this.GraphRender_MouseEnter);
             this.GraphRender.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseMove);
             // 
@@ -141,6 +146,20 @@
             this.toolStrip1.Size = new System.Drawing.Size(397, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // graphContextMenu
+            // 
+            this.graphContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addRenderNodeToolStripMenuItem});
+            this.graphContextMenu.Name = "graphContextMenu";
+            this.graphContextMenu.Size = new System.Drawing.Size(160, 48);
+            // 
+            // addRenderNodeToolStripMenuItem
+            // 
+            this.addRenderNodeToolStripMenuItem.Name = "addRenderNodeToolStripMenuItem";
+            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addRenderNodeToolStripMenuItem.Text = "Add Render Node";
+            this.addRenderNodeToolStripMenuItem.Click += new System.EventHandler(this.addRenderNodeToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -166,6 +185,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewActive)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewFull)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).EndInit();
+            this.graphContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,6 +201,8 @@
         private System.Windows.Forms.PictureBox RenderPreviewFull;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.PictureBox GraphRender;
+        private System.Windows.Forms.ContextMenuStrip graphContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem addRenderNodeToolStripMenuItem;
 
     }
 }
