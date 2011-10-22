@@ -36,21 +36,30 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Functions\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Atom.cs" />
     <Compile Include="Base\Generator.cs" />
+    <Compile Include="Operations\Addition.cs" />
+    <Compile Include="Operations\Operation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="texforge-definitions\texforge-definitions.csproj">
       <Project>{C7A1E26F-866F-475A-A533-98084E8D0693}</Project>
       <Name>texforge-definitions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
