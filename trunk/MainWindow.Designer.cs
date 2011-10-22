@@ -116,6 +116,7 @@
             this.RenderPreviewActive.Size = new System.Drawing.Size(221, 143);
             this.RenderPreviewActive.TabIndex = 0;
             this.RenderPreviewActive.TabStop = false;
+            this.RenderPreviewActive.Paint += new System.Windows.Forms.PaintEventHandler(this.RenderPreviewActive_Paint);
             // 
             // RenderPreviewFull
             // 

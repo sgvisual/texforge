@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using texforge;
+using texforge.Operations;
 
 namespace texforge_generator.Base
 {
@@ -12,32 +14,28 @@ namespace texforge_generator.Base
 
         protected Bitmap bitmap = null;
         protected Image image = null;
-        public Image ResultImage
+        public Bitmap ResultBitmap
         {
-            get { return image; }
+            get { return atom.Result; }
         }
+
+        Atom atom;
+
+        protected Random random;
 
         public void Generate(texforge_definitions.settings settings)
         {
-            bitmap = new Bitmap(settings.width, settings.height);
+            random = new Random(); // TODO: seed from settings
 
-            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            
-            IntPtr raw = data.Scan0;
+            Atom a = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);           
+            a.Clear( Color.Red );
 
-            int bytes = Math.Abs(data.Stride) * bitmap.Height;
-            byte[] rgb = new byte[bytes];
+            Atom b = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);
+            b.Clear(Color.Yellow);
 
-            System.Runtime.InteropServices.Marshal.Copy(raw, rgb, 0, bytes);
-
-            // Set every third value to 255. A 24bpp bitmap will look red.  
-            for (int counter = 2; counter < rgb.Length; counter += 3)
-                rgb[counter] = 255;
-
-            // Copy the RGB values back to the bitmap
-            System.Runtime.InteropServices.Marshal.Copy(rgb, 0, raw, bytes);
-
-            bitmap.UnlockBits(data);
+            Addition add = new Addition(a, b);
+            atom = add.Execute();
+           
         }
     }
 }

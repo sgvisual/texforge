@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using texforge_generator.Base;
 
 namespace texforge
 {
@@ -13,6 +14,7 @@ namespace texforge
     {
         protected VisualGraph graph;
         Point mouseLastPosition = new Point();
+        protected Generator generator;
 
         public MainWindow()
         {
@@ -24,11 +26,27 @@ namespace texforge
         private void MainWindow_Load(object sender, EventArgs e)
         {
             graph = new VisualGraph();
+            generator = new Generator();
+
+            texforge_definitions.settings settings = new texforge_definitions.settings();
+            settings.width = 512;
+            settings.height = 512;
+            generator.Generate(settings);
         }
 
         private void GraphRender_Paint(object sender, PaintEventArgs e)
         {
             graph.Render(e.Graphics, e.ClipRectangle);
+
+           
+        }
+
+        private void RenderPreviewActive_Paint(object sender, PaintEventArgs e)
+        {
+            Bitmap bmp = generator.ResultBitmap;
+            //e.Graphics.DrawImageUnscaled(image, new Point());
+            e.Graphics.FillRectangle(Brushes.Green, e.ClipRectangle);
+            e.Graphics.DrawImageUnscaled(bmp, e.ClipRectangle);
         }
 
         private void GraphRender_MouseEnter(object sender, EventArgs e)
