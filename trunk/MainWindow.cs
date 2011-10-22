@@ -88,7 +88,7 @@ namespace texforge
 
         private void addRenderNodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            graph.AddRenderNode(mouseLastPosition);
+            graph.AddRenderNode(mouseLastPosition, GraphRender.ClientRectangle);
             GraphRender.Invalidate();
         }
 

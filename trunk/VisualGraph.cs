@@ -40,7 +40,7 @@ namespace texforge
         public void Render(Graphics graphics, Rectangle clip)
         {
             graphics.FillRectangle(Brushes.CornflowerBlue, clip);
-            Point center = new Point((clip.Width - clip.X) / 2 + (int)((float)offset.X / 100.0f * zoom), (clip.Height - clip.Y) / 2 + (int)((float)offset.Y / 100.0f * zoom));
+            Point center = GetCenter(clip);
             // Horizon and Zenith;
             Rectangle horizon = new Rectangle(clip.X, center.Y - originWidth / 2, clip.X + clip.Width, originWidth);
             Rectangle zenith = new Rectangle(center.X - originWidth / 2, clip.Y, originWidth, clip.Y + clip.Height);
@@ -101,34 +101,37 @@ namespace texforge
             foreach (Node node in nodes)
             {
                 node.Render(graphics, clip);
-            }
+            } 
         }
 
-        // Coordinates are broken as they are relative to the top corner of the graph instead of the origin cross
-        // TODO: Fix the screen transforms
-        Point TransformFromScreen(Point position)
+        Point GetCenter(Rectangle clip)
         {
-            position.X = (int)((float)position.X * (float)zoom / 100.0f);
-            position.X -= offset.X;
-            position.Y = (int)((float)position.Y * (float)zoom / 100.0f);
-            position.Y -= offset.Y;
+            return new Point((clip.Width - clip.X) / 2 + (int)((float)offset.X / 100.0f * zoom), (clip.Height - clip.Y) / 2 + (int)((float)offset.Y / 100.0f * zoom));
+        }
+
+        Point TransformFromScreen(Point position, Rectangle clip)
+        {
+            Point center = GetCenter(clip);
+            position.X -= center.X;
+            position.X = (int)((float)position.X / (float)zoom * 100.0f);
+            position.Y -= center.Y;
+            position.Y = (int)((float)position.Y / (float)zoom * 100.0f);
             return position;
         }
 
-        // Coordinates are broken as they are relative to the top corner of the graph instead of the origin cross
-        // TODO: Fix the screen transforms
-        Point TransformToScreen(Point position)
+        Point TransformToScreen(Point position, Rectangle clip)
         {
-            position.X += offset.X;
+            Point center = GetCenter(clip);
             position.X = (int)((float)position.X / 100.0f * (float)zoom);
-            position.Y += offset.Y;
+            position.X += center.X;
             position.Y = (int)((float)position.Y / 100.0f * (float)zoom);
+            position.Y += center.Y;
             return position;
         }
 
-        public void AddRenderNode(Point position)
+        public void AddRenderNode(Point position, Rectangle currentClip)
         {
-            nodes.Add(new RenderNode(this, TransformFromScreen(position)));
+            nodes.Add(new RenderNode(this, TransformFromScreen(position, currentClip)));
         }
 
         abstract private class Node
@@ -154,8 +157,8 @@ namespace texforge
 
             public override void Render(Graphics graphics, Rectangle clip)
             {
-                Point origin = owner.TransformToScreen(position);
-                Point end = owner.TransformToScreen(new Point(position.X + 150, position.Y + 40));
+                Point origin = owner.TransformToScreen(position, clip);
+                Point end = owner.TransformToScreen(new Point(position.X + 120, position.Y + 80), clip);
                 Size size = new Size(end.X - origin.X, end.Y - origin.Y);
                 Rectangle node = new Rectangle(origin, size);
                 graphics.FillRectangle(Brushes.LimeGreen, node);
