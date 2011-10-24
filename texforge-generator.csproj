@@ -40,8 +40,13 @@
   <ItemGroup>
     <Compile Include="Atom.cs" />
     <Compile Include="Base\Generator.cs" />
+    <Compile Include="Generators\Generator.cs" />
     <Compile Include="Operations\Addition.cs" />
+    <Compile Include="Operations\Blur.cs" />
+    <Compile Include="Operations\Multiply.cs" />
     <Compile Include="Operations\Operation.cs" />
+    <Compile Include="Operations\Screen.cs" />
+    <Compile Include="Operations\Subtraction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
