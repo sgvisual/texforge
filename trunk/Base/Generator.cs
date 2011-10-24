@@ -29,13 +29,30 @@ namespace texforge_generator.Base
 
             Atom a = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);           
             a.Clear( Color.Red );
+            a.FromFile("f:\\toplayer.jpg");
 
             Atom b = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);
             b.Clear(Color.Yellow);
+            b.FromFile("f:\\bottomlayer.jpg");
 
-            Addition add = new Addition(a, b);
-            atom = add.Execute();
-           
+            //Addition add = new Addition(a, b);
+            //add.Mode = Addition.eMode.Add;
+            //atom = add.Execute();
+
+            //Multiply mul = new Multiply(a, b);
+            //atom = mul.Execute();
+
+            //Screen screen = new Screen(a, b);
+            //atom = screen.Execute();
+
+            //Subtraction subtraction = new Subtraction(a, b);
+            //subtraction.Mode = Subtraction.eMode.Average;
+            //atom = subtraction.Execute();
+
+            Blur blur = new Blur(a);
+            atom = blur.Execute();
+            
+
         }
     }
 }

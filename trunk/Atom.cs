@@ -45,6 +45,11 @@ namespace texforge
             Unlock();
         }
 
+        public void FromFile(String filename)
+        {
+            bitmap = new Bitmap(filename);            
+        }
+
         public Bitmap Result
         {
             get { return bitmap; }
