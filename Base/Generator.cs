@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using texforge;
 using texforge.Operations;
+using texforge.Generators;
 
 namespace texforge_generator.Base
 {
@@ -49,8 +50,11 @@ namespace texforge_generator.Base
             //subtraction.Mode = Subtraction.eMode.Average;
             //atom = subtraction.Execute();
 
-            Blur blur = new Blur(a);
-            atom = blur.Execute();
+            //Blur blur = new Blur(a);
+            //atom = blur.Execute();
+
+            Heightmap h = new Heightmap(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);
+            atom = h.Generate();
             
 
         }
