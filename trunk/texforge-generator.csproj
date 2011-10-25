@@ -41,6 +41,8 @@
     <Compile Include="Atom.cs" />
     <Compile Include="Base\Generator.cs" />
     <Compile Include="Generators\Generator.cs" />
+    <Compile Include="Generators\Heightmap.cs" />
+    <Compile Include="Noise.cs" />
     <Compile Include="Operations\Addition.cs" />
     <Compile Include="Operations\Blur.cs" />
     <Compile Include="Operations\Multiply.cs" />
