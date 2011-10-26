@@ -35,6 +35,9 @@ namespace texforge.Operations
             byte[] bytesA = operandA.ToBytes();
             byte[] bytesB = operandB.ToBytes();
 
+            if (bytesA.Length != bytesB.Length)
+                throw new Exception("Atom sizes must be the same for Addition operation");
+
             byte[] result = new byte[bytesB.Length];
 
             int bytes = bytesB.Length;
