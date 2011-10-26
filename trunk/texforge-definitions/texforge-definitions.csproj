@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FloatSetting.cs" />
+    <Compile Include="IntSetting.cs" />
+    <Compile Include="Setting.cs" />
+    <Compile Include="SettingAttributes.cs" />
     <Compile Include="settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
