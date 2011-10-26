@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using texforge_definitions;
 
 namespace texforge.Operations
 {
@@ -11,6 +12,9 @@ namespace texforge.Operations
 
         protected Atom operandA;
         protected Atom operandB;
+
+        protected FloatSetting m_scalar = new FloatSetting("Coefficient", 1f, 1f, 0f, 1f);
+
 
         public Multiply(Atom a, Atom b)
         {
@@ -28,7 +32,8 @@ namespace texforge.Operations
             int bytes = bytesA.Length;
             Parallel.For(0, bytes, index =>
             {
-                    result[index] = (byte)(Math.Min(((bytesA[index] * bytesB[index])/255f), 255f));
+                byte r = (byte)(((bytesA[index] * bytesB[index]) / 255f) * m_scalar.Value);
+                result[index] = (byte)(Math.Min(r, 255f));
             });
 
             return new Atom(result, operandA.Result.Size, operandA.Result.PixelFormat);

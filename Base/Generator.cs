@@ -30,11 +30,11 @@ namespace texforge_generator.Base
 
             Atom a = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);           
             a.Clear( Color.Red );
-            a.FromFile("f:\\toplayer.jpg");
+            a.FromFile(@"C:\Projects\texforge\data\tests\toplayer.jpg");
 
             Atom b = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);
             b.Clear(Color.Yellow);
-            b.FromFile("f:\\bottomlayer.jpg");
+            b.FromFile(@"C:\Projects\texforge\data\tests\bottomlayer.jpg");
 
             //Addition add = new Addition(a, b);
             //add.Mode = Addition.eMode.Add;
@@ -54,7 +54,10 @@ namespace texforge_generator.Base
             //atom = blur.Execute();
 
             Heightmap h = new Heightmap(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);
-            atom = h.Generate();
+            Atom t = h.Generate();
+
+            Addition screen = new Addition(a, t);
+            atom = screen.Execute();
             
 
         }
