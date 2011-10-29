@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using texforge.Graph;
 
 namespace texforge
 {
@@ -16,10 +17,21 @@ namespace texforge
 
         List<Node> nodes = new List<Node>();
 
+        public void ImportFromGraph(Graph.Graph graph)
+        {
+            foreach (Graph.Node node in graph.Nodes)
+            {
+                nodes.Add(new RenderNode(this, node.Data.header.point));
+            }
+        }
+
         public VisualGraph()
         {
             offset = new Point();
             zoom = 100.0f;
+         
+            UnitTest_Graph unitTest = new UnitTest_Graph();
+            ImportFromGraph(unitTest.graph);
         }
 
         public void Zoom(float amount)

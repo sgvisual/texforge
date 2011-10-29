@@ -47,7 +47,10 @@ namespace texforge
 
         public void FromFile(String filename)
         {
-            bitmap = new Bitmap(filename);            
+            Image i = Image.FromFile(filename);
+            
+            bitmap = new Bitmap(i, size);
+            
         }
 
         public Bitmap Result
