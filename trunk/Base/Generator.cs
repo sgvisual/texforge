@@ -28,11 +28,11 @@ namespace texforge_generator.Base
         {
             random = new Random(); // TODO: seed from settings
 
-            Atom a = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);           
+            Atom a = new Atom(new Size(settings.width, settings.height), PixelFormat.Format32bppArgb);           
             a.Clear( Color.Red );
             a.FromFile(@"C:\Projects\texforge\data\tests\toplayer.jpg");
 
-            Atom b = new Atom(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);
+            Atom b = new Atom(new Size(settings.width, settings.height), PixelFormat.Format32bppArgb);
             b.Clear(Color.Yellow);
             b.FromFile(@"C:\Projects\texforge\data\tests\bottomlayer.jpg");
 
@@ -53,7 +53,7 @@ namespace texforge_generator.Base
             //Blur blur = new Blur(a);
             //atom = blur.Execute();
 
-            Heightmap h = new Heightmap(new Size(settings.width, settings.height), PixelFormat.Format24bppRgb);
+            Heightmap h = new Heightmap(new Size(settings.width, settings.height), PixelFormat.Format32bppRgb);
             Atom t = h.Generate();
 
             Addition screen = new Addition(a, t);

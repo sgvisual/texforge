@@ -42,6 +42,10 @@
     <Compile Include="Base\Generator.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\Heightmap.cs" />
+    <Compile Include="Graph\Graph.cs" />
+    <Compile Include="Graph\Node.cs" />
+    <Compile Include="Graph\NodeData.cs" />
+    <Compile Include="Graph\UnitTest_Graph.cs" />
     <Compile Include="Noise.cs" />
     <Compile Include="Operations\Addition.cs" />
     <Compile Include="Operations\Blur.cs" />
