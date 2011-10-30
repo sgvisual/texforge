@@ -20,6 +20,7 @@ namespace texforge
         {
             InitializeComponent();
             GraphRender.MouseWheel += new MouseEventHandler(GraphRender_MouseWheel);
+            GraphRender.AllowDrop = true;
 
         }
 
@@ -89,6 +90,40 @@ namespace texforge
         private void addRenderNodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graph.AddRenderNode(mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
+        }
+
+        private void addBlendNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.AddBlendNode(mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
+        }
+
+        private void GraphRender_DragDrop(object sender, DragEventArgs e)
+        {
+            graph.DropDraggedObject(e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
+        }
+
+        private void GraphRender_MouseDown(object sender, MouseEventArgs e)
+        {
+            bool right = (Control.MouseButtons & MouseButtons.Right) > 0;
+            bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0;
+            if ( e.Button == MouseButtons.Left && !right && !middle)
+            {
+                object draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
+                if( draggable != null )
+                {
+                    splitContainer1.Panel2.DoDragDrop(draggable, DragDropEffects.Move);
+                }
+            }
+        }
+
+        private void GraphRender_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+            mouseLastPosition = GraphRender.PointToClient(new Point(e.X, e.Y));
+            graph.DraggingObject(e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
             GraphRender.Invalidate();
         }
 
