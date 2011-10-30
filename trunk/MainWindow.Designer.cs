@@ -33,12 +33,13 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.graphContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addRenderNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenderPreviewActive = new System.Windows.Forms.PictureBox();
             this.RenderPreviewFull = new System.Windows.Forms.PictureBox();
             this.GraphRender = new System.Windows.Forms.PictureBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.graphContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addRenderNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addBlendNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -47,10 +48,10 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.graphContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewActive)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewFull)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).BeginInit();
+            this.graphContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -108,32 +109,9 @@
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(397, 25);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // graphContextMenu
-            // 
-            this.graphContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addRenderNodeToolStripMenuItem});
-            this.graphContextMenu.Name = "graphContextMenu";
-            this.graphContextMenu.Size = new System.Drawing.Size(160, 26);
-            // 
-            // addRenderNodeToolStripMenuItem
-            // 
-            this.addRenderNodeToolStripMenuItem.Name = "addRenderNodeToolStripMenuItem";
-            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.addRenderNodeToolStripMenuItem.Text = "Add Render Node";
-            this.addRenderNodeToolStripMenuItem.Click += new System.EventHandler(this.addRenderNodeToolStripMenuItem_Click);
-            // 
             // RenderPreviewActive
             // 
             this.RenderPreviewActive.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RenderPreviewActive.InitialImage = global::texforge.Properties.Resources.blank1;
             this.RenderPreviewActive.Location = new System.Drawing.Point(0, 0);
             this.RenderPreviewActive.Name = "RenderPreviewActive";
             this.RenderPreviewActive.Size = new System.Drawing.Size(221, 143);
@@ -158,10 +136,43 @@
             this.GraphRender.Size = new System.Drawing.Size(397, 264);
             this.GraphRender.TabIndex = 1;
             this.GraphRender.TabStop = false;
+            this.GraphRender.DragDrop += new System.Windows.Forms.DragEventHandler(this.GraphRender_DragDrop);
+            this.GraphRender.DragOver += new System.Windows.Forms.DragEventHandler(this.GraphRender_DragOver);
             this.GraphRender.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphRender_Paint);
             this.GraphRender.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseClick);
+            this.GraphRender.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseDown);
             this.GraphRender.MouseEnter += new System.EventHandler(this.GraphRender_MouseEnter);
             this.GraphRender.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseMove);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(397, 25);
+            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // graphContextMenu
+            // 
+            this.graphContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addRenderNodeToolStripMenuItem,
+            this.addBlendNodeToolStripMenuItem});
+            this.graphContextMenu.Name = "graphContextMenu";
+            this.graphContextMenu.Size = new System.Drawing.Size(160, 48);
+            // 
+            // addRenderNodeToolStripMenuItem
+            // 
+            this.addRenderNodeToolStripMenuItem.Name = "addRenderNodeToolStripMenuItem";
+            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addRenderNodeToolStripMenuItem.Text = "Add Render Node";
+            this.addRenderNodeToolStripMenuItem.Click += new System.EventHandler(this.addRenderNodeToolStripMenuItem_Click);
+            // 
+            // addBlendNodeToolStripMenuItem
+            // 
+            this.addBlendNodeToolStripMenuItem.Name = "addBlendNodeToolStripMenuItem";
+            this.addBlendNodeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addBlendNodeToolStripMenuItem.Text = "Add Blend Node";
+            this.addBlendNodeToolStripMenuItem.Click += new System.EventHandler(this.addBlendNodeToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -184,10 +195,10 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.graphContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewActive)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewFull)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).EndInit();
+            this.graphContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -205,6 +216,7 @@
         private System.Windows.Forms.PictureBox GraphRender;
         private System.Windows.Forms.ContextMenuStrip graphContextMenu;
         private System.Windows.Forms.ToolStripMenuItem addRenderNodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addBlendNodeToolStripMenuItem;
 
     }
 }

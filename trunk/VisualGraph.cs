@@ -9,11 +9,15 @@ namespace texforge
 {
 	public class VisualGraph
 	{
-        Point offset;
-        float zoom;
+        Point offset = new Point();
+        float zoom = 100.0f;
         const int originWidth = 3;
         const int gridSize = 100;
         const int subGridDivisions = 10;
+
+        object dragging = null;
+        Point dragPosition;
+        Point dragOffset;
 
         List<Node> nodes = new List<Node>();
 
@@ -27,8 +31,6 @@ namespace texforge
 
         public VisualGraph()
         {
-            offset = new Point();
-            zoom = 100.0f;
          
             UnitTest_Graph unitTest = new UnitTest_Graph();
             ImportFromGraph(unitTest.graph);
@@ -37,10 +39,10 @@ namespace texforge
         public void Zoom(float amount)
         {
             zoom += amount;
-            if (zoom < 10.0f)
-                zoom = 10.0f;
-            if (zoom > 1000.0f)
-                zoom = 1000.0f;
+            if (zoom < 30.0f)
+                zoom = 30.0f;
+            if (zoom > 300.0f)
+                zoom = 300.0f;
         }
 
         public void Pan(Point delta)
@@ -146,18 +148,126 @@ namespace texforge
             nodes.Add(new RenderNode(this, TransformFromScreen(position, currentClip)));
         }
 
+        public void AddBlendNode(Point position, Rectangle currentClip)
+        {
+            nodes.Add(new BlendNode(this, TransformFromScreen(position, currentClip)));
+        }
+
+        public object GetDraggableObject(Point position, Rectangle currentClip)
+        {
+            Point world = TransformFromScreen(position, currentClip);
+            foreach (Node node in nodes)
+            {
+                object drag = node.GetDraggableObject(world, out dragOffset);
+                if (drag != null)
+                    return drag;
+            }
+            return null;
+        }
+
+        public void DropDraggedObject(object what, Point position, Rectangle currentClip)
+        {
+            Point world = TransformFromScreen(position, currentClip);
+            Node node = (Node)what;
+            world.X -= dragOffset.X;
+            world.Y -= dragOffset.Y;
+            node.MoveTo(world);
+            dragging = null;
+        }
+
+        public void DraggingObject(object what, Point position, Rectangle currentClip)
+        {
+            dragging = what;
+            dragPosition = TransformFromScreen(position, currentClip);
+        }
+
+        public bool IsDragged(object what)
+        {
+            return dragging == what;
+        }
+
+        public Point GetDraggingPosition()
+        {
+            return new Point(dragPosition.X - dragOffset.X, dragPosition.Y - dragOffset.Y);
+        }
+
         abstract private class Node
         {
+            const int connectorSize = 8;
+            const int connectorOffset = 3;
+
+            protected List<Node> inputs = new List<Node>();
+            protected List<Node> outputs = new List<Node>();
+
             protected VisualGraph owner;
             protected Point position;
+            protected Size size;
+
+            protected Brush color = Brushes.White;
 
             public Node(VisualGraph owner, Point position)
             {
                 this.owner = owner;
                 this.position = position;
+                size = new Size(120, 80);
             }
 
-            abstract public void Render(Graphics graphics, Rectangle clip);
+            public void MoveTo(Point target)
+            {
+                position = target;
+            }
+
+            public virtual void Render(Graphics graphics, Rectangle clip)
+            {
+                Point origin = position;
+
+                // Actual node
+                Brush outline = Brushes.Black;
+                if (owner.IsDragged(this))
+                {
+                    outline = Brushes.White;
+                    origin = owner.GetDraggingPosition();
+                }
+                Point end = owner.TransformToScreen(new Point(origin.X + size.Width, origin.Y + size.Height), clip);
+                origin = owner.TransformToScreen(origin, clip);
+                Rectangle node = new Rectangle(origin, new Size(end.X - origin.X, end.Y - origin.Y));
+                graphics.FillRectangle(color, node);
+                graphics.DrawRectangle(new Pen(outline), node);
+
+                // Connector sockets
+                Pen black = new Pen(Brushes.Black);
+                int delta = (end.Y - origin.Y + connectorSize / 2) / (inputs.Count + 1);
+                int height = origin.Y;
+                foreach (Node connector in inputs)
+                {
+                    height += delta;
+                    Rectangle connectorShape = new Rectangle(origin.X + connectorOffset, height - connectorSize / 2, connectorSize, connectorSize);
+                    graphics.FillEllipse(Brushes.White, connectorShape);
+                    graphics.DrawEllipse(black, connectorShape);
+                }
+                delta = (end.Y - origin.Y + connectorSize / 2) / (outputs.Count + 1);
+                height = origin.Y;
+                foreach (Node connector in outputs)
+                {
+                    height += delta;
+                    Rectangle connectorShape = new Rectangle(end.X - connectorSize - connectorOffset, height - connectorSize / 2, connectorSize, connectorSize);
+                    graphics.FillEllipse(Brushes.White, connectorShape);
+                    graphics.DrawEllipse(black, connectorShape);
+                }
+            }
+
+            public object GetDraggableObject(Point atPosition, out Point offset)
+            {
+                if (atPosition.X >= position.X && atPosition.Y >= position.Y &&
+                    atPosition.X < position.X + size.Width && atPosition.Y < position.Y + size.Height)
+                {
+                    offset = new Point(atPosition.X - position.X, atPosition.Y - position.Y);
+                    return this;
+                }
+                offset = new Point();
+                return null;
+            }
+
         }
 
         private class RenderNode : Node
@@ -165,16 +275,20 @@ namespace texforge
             public RenderNode(VisualGraph owner, Point position)
                 : base(owner, position)
             {
+                color = Brushes.LimeGreen;
+                outputs.Add(null);
             }
+        }
 
-            public override void Render(Graphics graphics, Rectangle clip)
+        private class BlendNode : Node
+        {
+            public BlendNode(VisualGraph owner, Point position)
+                : base(owner, position)
             {
-                Point origin = owner.TransformToScreen(position, clip);
-                Point end = owner.TransformToScreen(new Point(position.X + 120, position.Y + 80), clip);
-                Size size = new Size(end.X - origin.X, end.Y - origin.Y);
-                Rectangle node = new Rectangle(origin, size);
-                graphics.FillRectangle(Brushes.LimeGreen, node);
-                graphics.DrawRectangle(new Pen(Brushes.Black), node); 
+                color = Brushes.Orange;
+                inputs.Add(null);
+                inputs.Add(null);
+                outputs.Add(null);
             }
         }
 	}
