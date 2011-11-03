@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using texforge.Graph;
 
 namespace texforge
 {
@@ -32,7 +31,7 @@ namespace texforge
         public VisualGraph()
         {
          
-            UnitTest_Graph unitTest = new UnitTest_Graph();
+            Graph.UnitTest_Graph unitTest = new Graph.UnitTest_Graph();
             ImportFromGraph(unitTest.graph);
         }
 

@@ -64,7 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="texforge-definitions\texforge-definitions.csproj">
+    <ProjectReference Include="..\texforge-definitions\texforge-definitions.csproj">
       <Project>{C7A1E26F-866F-475A-A533-98084E8D0693}</Project>
       <Name>texforge-definitions</Name>
     </ProjectReference>

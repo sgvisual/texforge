@@ -84,7 +84,7 @@
       <Project>{C7A1E26F-866F-475A-A533-98084E8D0693}</Project>
       <Name>texforge-definitions</Name>
     </ProjectReference>
-    <ProjectReference Include="texforge-generator.csproj">
+    <ProjectReference Include="texforge-generator\texforge-generator.csproj">
       <Project>{CE991EFC-6ED1-4D3A-821D-98A9E1A849FB}</Project>
       <Name>texforge-generator</Name>
     </ProjectReference>
