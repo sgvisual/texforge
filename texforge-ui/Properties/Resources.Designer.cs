@@ -59,19 +59,5 @@ namespace texforge.Properties {
                 resourceCulture = value;
             }
         }
-        
-        internal static System.Drawing.Bitmap blank {
-            get {
-                object obj = ResourceManager.GetObject("blank", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap blank1 {
-            get {
-                object obj = ResourceManager.GetObject("blank1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }
