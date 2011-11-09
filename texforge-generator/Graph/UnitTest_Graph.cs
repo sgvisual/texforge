@@ -32,9 +32,11 @@ namespace texforge.Graph
             c.Data = cData;
             c.Data.header.point = new Point(25, 60);
 
-            graph.ConnectNodes(a, b);
-            graph.ConnectNodes(b, c);
-            graph.ConnectNodes(a, c);
+            graph.ConnectNodes(a.GetSocket("outA"), b.GetSocket("inTestA"));
+            graph.ConnectNodes(b.GetSocket("outA"), c.GetSocket("inTestB"));
+            graph.ConnectNodes(c.GetSocket("outA"), a.GetSocket("inTestA"));
+            //graph.ConnectNodes(b, c);
+            //graph.ConnectNodes(a, c);
         }
 
         public void Run()
