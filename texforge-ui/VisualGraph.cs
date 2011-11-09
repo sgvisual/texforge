@@ -21,6 +21,9 @@ namespace texforge
 
         Graph.Graph graph;
 
+        // Cached data
+        Dictionary<Graph.Node.Socket, Rectangle> cachedSocketRender = new Dictionary<Node.Socket, Rectangle>();
+
         public VisualGraph()
         {
             graph = new UnitTest_Graph().graph;
@@ -102,16 +105,26 @@ namespace texforge
             graphics.FillRectangle(Brushes.Black, horizon);
             graphics.FillRectangle(Brushes.Black, zenith);
             // Render nodes
+            cachedSocketRender.Clear();
             foreach (Graph.Node node in graph.Nodes)
             {
                 RenderNode(node, graphics, clip);
-            } 
+            }
+            // Render transitions
+            foreach (Graph.Graph.Transition transition in graph.Transitions)
+            {
+                Rectangle fromConnector = cachedSocketRender[transition.from];
+                Rectangle toConnector = cachedSocketRender[transition.to];
+                graphics.DrawLine(new Pen(Brushes.Yellow, 8), new Point(fromConnector.X + fromConnector.Width / 2, fromConnector.Y + fromConnector.Height / 2), new Point(toConnector.X + toConnector.Width / 2, toConnector.Y + toConnector.Height / 2));
+            }
         }
 
         void RenderNode(Graph.Node node, Graphics graphics, Rectangle clip)
         {
-            //const int connectorSize = 8;
-            //const int connectorOffset = 3;
+            const int connectorSize = 8;
+            const int connectorOffset = 3;
+            const int labelDefaultHeight = 15;
+            int labelHeight = (int)((float)labelDefaultHeight / 100.0f * zoom);
 
             Point origin = node.Data.header.point;
 
@@ -129,29 +142,37 @@ namespace texforge
             graphics.FillRectangle(Brushes.LimeGreen, nodeRect);
             graphics.DrawRectangle(new Pen(outline), nodeRect);
 
+            // Label
+            Rectangle label = new Rectangle(nodeRect.X + 2, nodeRect.Y + 2, nodeRect.Width - 3, labelHeight);
+            graphics.FillRectangle(Brushes.ForestGreen, label);
+            graphics.DrawString(node.Data.header.title, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 120.0f * zoom), Brushes.Black, new PointF((float)(label.X), (float)(label.Y - 3)));
+
             // Connector sockets
-            /*
             Pen black = new Pen(Brushes.Black);
-            int delta = (end.Y - origin.Y + connectorSize / 2) / (inputs.Count + 1);
-            int height = origin.Y;
-            foreach (Node connector in inputs)
+            List<Graph.Node.Socket> inputs = node.InputSockets;
+            int height = origin.Y + labelHeight;
+            int delta = (end.Y - height + connectorSize / 2) / (inputs.Count + 1);
+            foreach (Graph.Node.Socket connector in inputs)
             {
                 height += delta;
                 Rectangle connectorShape = new Rectangle(origin.X + connectorOffset, height - connectorSize / 2, connectorSize, connectorSize);
                 graphics.FillEllipse(Brushes.White, connectorShape);
                 graphics.DrawEllipse(black, connectorShape);
+                graphics.DrawString(connector.name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Black, new PointF((float)(connectorShape.X + connectorShape.Width + 1), (float)(connectorShape.Y + 1)));
+                cachedSocketRender[connector] = connectorShape;
             }
-            delta = (end.Y - origin.Y + connectorSize / 2) / (outputs.Count + 1);
-            height = origin.Y;
-            foreach (Node connector in outputs)
+            List<Graph.Node.Socket> outputs = node.OutputSockets;
+            height = origin.Y + labelHeight;
+            delta = (end.Y - height + connectorSize / 2) / (outputs.Count + 1);
+            foreach (Graph.Node.Socket connector in outputs)
             {
                 height += delta;
                 Rectangle connectorShape = new Rectangle(end.X - connectorSize - connectorOffset, height - connectorSize / 2, connectorSize, connectorSize);
                 graphics.FillEllipse(Brushes.White, connectorShape);
                 graphics.DrawEllipse(black, connectorShape);
+                graphics.DrawString(connector.name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Black, new PointF((float)(connectorShape.X - label.Width / 4), (float)(connectorShape.Y + 1)));
+                cachedSocketRender[connector] = connectorShape;
             }
-             */
-
         }
 
         Point GetCenter(Rectangle clip)

@@ -34,7 +34,7 @@ namespace texforge.Graph
 
             graph.ConnectNodes(a.GetSocket("outA"), b.GetSocket("inTestA"));
             graph.ConnectNodes(b.GetSocket("outA"), c.GetSocket("inTestB"));
-            graph.ConnectNodes(c.GetSocket("outA"), a.GetSocket("inTestA"));
+            graph.ConnectNodes(a.GetSocket("outA"), c.GetSocket("inTestA"));
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
         }
