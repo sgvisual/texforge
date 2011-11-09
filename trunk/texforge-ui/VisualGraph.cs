@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using texforge.Graph;
 
 namespace texforge
 {
@@ -22,13 +23,7 @@ namespace texforge
 
         public VisualGraph()
         {
-<<<<<<< .mine
             graph = new UnitTest_Graph().graph;
-=======
-         
-            Graph.UnitTest_Graph unitTest = new Graph.UnitTest_Graph();
-            ImportFromGraph(unitTest.graph);
->>>>>>> .r19
         }
 
         public void Zoom(float amount)

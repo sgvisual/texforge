@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "texforge-ui", "texforge-ui.csproj", "{86BB8D93-1536-479C-9C56-17754E65976E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "texforge-ui", "texforge-ui\texforge-ui.csproj", "{86BB8D93-1536-479C-9C56-17754E65976E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "texforge-definitions", "texforge-definitions\texforge-definitions.csproj", "{C7A1E26F-866F-475A-A533-98084E8D0693}"
 EndProject

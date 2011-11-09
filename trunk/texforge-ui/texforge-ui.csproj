@@ -80,17 +80,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="texforge-definitions\texforge-definitions.csproj">
+    <ProjectReference Include="..\texforge-definitions\texforge-definitions.csproj">
       <Project>{C7A1E26F-866F-475A-A533-98084E8D0693}</Project>
       <Name>texforge-definitions</Name>
     </ProjectReference>
-    <ProjectReference Include="texforge-generator\texforge-generator.csproj">
+    <ProjectReference Include="..\texforge-generator\texforge-generator.csproj">
       <Project>{CE991EFC-6ED1-4D3A-821D-98A9E1A849FB}</Project>
       <Name>texforge-generator</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="data\blank.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
