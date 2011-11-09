@@ -29,7 +29,15 @@ namespace texforge.Graph
         }
 
         protected List<Socket> inputSockets = new List<Socket>();
+        public List<Socket> InputSockets
+        {
+            get { return inputSockets; }
+        }
         protected List<Socket> outputSockets = new List<Socket>();
+        public List<Socket> OutputSockets
+        {
+            get { return outputSockets; }
+        }
 
         public Socket GetSocket(string name)
         {
