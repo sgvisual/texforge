@@ -31,9 +31,9 @@ namespace texforge.Graph
             get { return transitions; }
         }
 
-        public Node CreateNode()
+        public Node CreateNode(string name)
         {
-            Node node = new Node();
+            Node node = NodeFactory.Get().Create(name);
             nodes.Add(node);
             return node;
         }
