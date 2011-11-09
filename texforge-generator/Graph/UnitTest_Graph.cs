@@ -14,7 +14,7 @@ namespace texforge.Graph
         {
             graph = new Graph();
 
-            Node a = graph.CreateNode();
+            Node a = NodeFactory.Get().Create("ExampleNode");//graph.CreateNode();
             NodeData aData = new NodeData();
             aData.header.title = "A";
             a.Data = aData;
