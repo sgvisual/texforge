@@ -14,19 +14,19 @@ namespace texforge.Graph
         {
             graph = new Graph();
 
-            Node a = NodeFactory.Get().Create("ExampleNode");//graph.CreateNode();
+            Node a = graph.CreateNode("ExampleNode");//graph.CreateNode();
             NodeData aData = new NodeData();
             aData.header.title = "A";
             a.Data = aData;
             a.Data.header.point = new Point(5, -60);
 
-            Node b = graph.CreateNode();
+            Node b = graph.CreateNode("ExampleNode");
             NodeData bData = new NodeData();
             bData.header.title = "B";
             b.Data = bData;
             b.Data.header.point = new Point(45, 0);
 
-            Node c = graph.CreateNode();
+            Node c = graph.CreateNode("ExampleNode");
             NodeData cData = new NodeData();
             cData.header.title = "C";
             c.Data = cData;
