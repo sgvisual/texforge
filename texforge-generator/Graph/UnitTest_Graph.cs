@@ -38,8 +38,8 @@ namespace texforge.Graph
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
 
-            graph.Save(@"c:\projects\texforge\test.xml");
-            graph.Load(@"c:\projects\texforge\test.xml");
+            graph.Save(@"test.xml");
+            graph.Load(@"test.xml");
         }
 
         public void Run()
