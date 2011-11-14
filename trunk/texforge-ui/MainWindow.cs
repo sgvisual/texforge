@@ -127,5 +127,22 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.Clear();
+            GraphRender.Invalidate();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void debugInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.Debug = debugInfoToolStripMenuItem.Checked;
+            GraphRender.Invalidate();
+        }
+
     }
 }

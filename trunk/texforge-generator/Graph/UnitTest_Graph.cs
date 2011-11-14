@@ -18,19 +18,19 @@ namespace texforge.Graph
             NodeData aData = new NodeData();
             aData.header.title = "A";
             a.Data = aData;
-            a.Data.header.point = new Point(5, -60);
+            a.Data.header.point = new Point(-175, -60);
 
             Node b = graph.CreateNode("ExampleNode");
             NodeData bData = new NodeData();
             bData.header.title = "B";
             b.Data = bData;
-            b.Data.header.point = new Point(45, 0);
+            b.Data.header.point = new Point(-45, 25);
 
             Node c = graph.CreateNode("ExampleNode");
             NodeData cData = new NodeData();
             cData.header.title = "C";
             c.Data = cData;
-            c.Data.header.point = new Point(25, 60);
+            c.Data.header.point = new Point(100, -100);
 
             graph.ConnectNodes(a.GetSocket("outA"), b.GetSocket("inTestA"));
             graph.ConnectNodes(b.GetSocket("outA"), c.GetSocket("inTestB"));
