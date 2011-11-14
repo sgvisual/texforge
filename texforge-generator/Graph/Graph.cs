@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Xml.Linq;
 
 namespace texforge.Graph
 {
@@ -80,5 +81,56 @@ namespace texforge.Graph
             //info.A
         }
 
+        public void Load(string filename)
+        {
+            XDocument document = XDocument.Load(filename);
+
+            XElement root = document.Root;
+
+            XNode nodes = root.Descendants("Nodes").First();
+            //foreach (XElement nodeElement in nodes)
+            {
+
+            }
+
+        }
+
+        public void Save(string filename)
+        {
+            try
+            {
+                XDocument document = new XDocument();
+                XElement root = new XElement("Graph");
+                document.Add(root);
+                XElement nodeElement = new XElement("Nodes");
+                
+                foreach (Node n in nodes)
+                {
+                    nodeElement.Add(new XElement("Item", n.GetType().ToString()));
+                }
+
+                root.Add(nodeElement);
+
+
+
+                XElement transitionElement = new XElement("Transitions");
+                foreach (Transition t in transitions)
+                {
+                    XElement transition = new XElement("Item");
+                    transition.Add(new XElement("source", t.from.name));
+                    transition.Add(new XElement("destination", t.to.name));
+                    transitionElement.Add(transition);
+
+                }
+
+                root.Add(transitionElement);
+
+                document.Save(filename);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

@@ -37,6 +37,8 @@ namespace texforge.Graph
             graph.ConnectNodes(a.GetSocket("outA"), c.GetSocket("inTestA"));
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
+
+            graph.Save(@"c:\projects\texforge\test.xml");
         }
 
         public void Run()
