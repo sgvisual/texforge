@@ -21,12 +21,25 @@ namespace texforge
 
         Graph.Graph graph;
 
+        bool debug = false;
+
         // Cached data
         Dictionary<Graph.Node.Socket, Rectangle> cachedSocketRender = new Dictionary<Node.Socket, Rectangle>();
 
         public VisualGraph()
         {
             graph = new UnitTest_Graph().graph;
+        }
+
+        public bool Debug
+        {
+            get { return debug; }
+            set { debug = value; }
+        }
+
+        public void Clear()
+        {
+            graph = new Graph.Graph();
         }
 
         public void Zoom(float amount)
@@ -142,6 +155,13 @@ namespace texforge
             graphics.FillRectangle(Brushes.LimeGreen, nodeRect);
             graphics.DrawRectangle(new Pen(outline), nodeRect);
 
+            // Debug info
+            if (debug)
+            {
+                graphics.DrawString("(" + node.Data.header.point.X + ", " + node.Data.header.point.Y + ")", new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Red, new PointF((float)(origin.X), (float)(origin.Y - 10)));
+
+            }
+
             // Label
             Rectangle label = new Rectangle(nodeRect.X + 2, nodeRect.Y + 2, nodeRect.Width - 3, labelHeight);
             graphics.FillRectangle(Brushes.ForestGreen, label);
@@ -204,7 +224,7 @@ namespace texforge
         {
             Graph.Node a = graph.CreateNode("ExampleNode");
             NodeData aData = new NodeData();
-            aData.header.title = "RenderNode" + graph.Nodes.Count;
+            aData.header.title = "Render" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
         }
@@ -213,7 +233,7 @@ namespace texforge
         {
             Graph.Node a = graph.CreateNode("ExampleNode");
             NodeData aData = new NodeData();
-            aData.header.title = "BlendNode" + graph.Nodes.Count;
+            aData.header.title = "Blend" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
         }
