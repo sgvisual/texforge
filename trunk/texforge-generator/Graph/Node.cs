@@ -23,9 +23,9 @@ namespace texforge.Graph
         public void RegisterSocket(Socket.Type type, string name)
         {
             if ( type == Socket.Type.Input )
-                inputSockets.Add(new Socket(name));
+                inputSockets.Add(new Socket(this, name));
             else
-                outputSockets.Add(new Socket(name));
+                outputSockets.Add(new Socket(this, name));
         }
 
         protected List<Socket> inputSockets = new List<Socket>();
@@ -63,12 +63,14 @@ namespace texforge.Graph
                 Input,
                 Output
             }
-            public Socket(string name)
+            public Socket(Node owner, string name)
             {
                 this.name = name;
+                this.owner = owner;
             }
 
             public string name;
+            public readonly Node owner;
         }
 
     }
