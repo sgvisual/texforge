@@ -87,10 +87,29 @@ namespace texforge.Graph
 
             XElement root = document.Root;
 
-            XNode nodes = root.Descendants("Nodes").First();
-            //foreach (XElement nodeElement in nodes)
-            {
+            XNode nodeList = root.Descendants("Nodes").First();
 
+            IEnumerable<XElement> de = from el in root.Descendants("Nodes") select el;
+            foreach (XElement el in de)
+            {
+                IEnumerable<XElement> de2 = from el2 in el.Descendants("Item") select el2;
+                foreach (XElement el2 in de2) 
+                    Console.WriteLine(el2.Value);
+            }
+
+
+            IEnumerable<XElement> det = from el in root.Descendants("Transitions") select el;
+            foreach (XElement el in det)
+            {
+                IEnumerable<XElement> de2 = from el2 in el.Descendants("Item") select el2;
+                foreach (XElement el2 in de2)
+                {
+                    XElement source = el2.Descendants("source").First();
+                    XElement dest  = el2.Descendants("destination").First();
+
+                    Console.WriteLine(source.Value);
+                    Console.WriteLine(dest.Value);
+                }
             }
 
         }
