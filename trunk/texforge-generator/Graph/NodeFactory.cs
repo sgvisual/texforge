@@ -22,9 +22,10 @@ namespace texforge.Graph
             nodes["ExampleNode"] = typeof(ExampleNode);
         }
 
-        public Node Create(string name)
+        public Node Create(string name, string id)
         {
-            return (Node)System.Activator.CreateInstance(nodes[name]);
+            Node node = (Node)System.Activator.CreateInstance(nodes[name], new object[] { name, id });            
+            return node;
         }
 
         protected Dictionary<string, Type> nodes = new Dictionary<string,Type>();

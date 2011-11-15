@@ -7,8 +7,8 @@ namespace texforge.Graph
 {
     public class ExampleNode : Node
     {
-        public ExampleNode()
-            : base()
+        public ExampleNode(string name, string id)
+            : base(name, id)
         {
             RegisterSocket(Socket.Type.Input, "inTestA");
             RegisterSocket(Socket.Type.Input, "inTestB");

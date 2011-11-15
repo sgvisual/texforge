@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Atom.cs" />
     <Compile Include="Base\Generator.cs" />
+    <Compile Include="Base\UniqueName.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\Heightmap.cs" />
     <Compile Include="Graph\ExampleNode.cs" />

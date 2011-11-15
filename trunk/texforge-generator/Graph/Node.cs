@@ -3,14 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using texforge.Base;
 
 namespace texforge.Graph
 {
-    //[Serializable()]
-    public class Node //: ISerializable
+    public class Node 
     {
-        public Node()
+        protected string name;
+        protected UniqueName uniqueName;
+
+        public string Name
         {
+            get { return name; }
+        }
+
+        public string ID
+        {
+            get { return uniqueName.Value; }
+        }
+
+        public Node(string name, string id)
+        {
+            this.name = name;
+            uniqueName = new UniqueName(id);
         }
 
         protected NodeData nodeData;

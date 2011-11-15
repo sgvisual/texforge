@@ -222,7 +222,7 @@ namespace texforge
 
         public void AddRenderNode(Point position, Rectangle currentClip)
         {
-            Graph.Node a = graph.CreateNode("ExampleNode");
+            Graph.Node a = graph.CreateNode("ExampleNode", "");
             NodeData aData = new NodeData();
             aData.header.title = "Render" + graph.Nodes.Count;
             a.Data = aData;
@@ -231,7 +231,7 @@ namespace texforge
 
         public void AddBlendNode(Point position, Rectangle currentClip)
         {
-            Graph.Node a = graph.CreateNode("ExampleNode");
+            Graph.Node a = graph.CreateNode("ExampleNode", "");
             NodeData aData = new NodeData();
             aData.header.title = "Blend" + graph.Nodes.Count;
             a.Data = aData;

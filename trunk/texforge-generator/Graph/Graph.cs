@@ -34,9 +34,9 @@ namespace texforge.Graph
             get { return transitions; }
         }
 
-        public Node CreateNode(string name)
+        public Node CreateNode(string name, string id)
         {
-            Node node = NodeFactory.Get().Create(name);
+            Node node = NodeFactory.Get().Create(name, id);
             nodes.Add(node);
             return node;
         }
@@ -83,6 +83,9 @@ namespace texforge.Graph
 
         public void Load(string filename)
         {
+            nodes.Clear();
+            transitions.Clear();
+
             XDocument document = XDocument.Load(filename);
 
             XElement root = document.Root;
@@ -93,8 +96,13 @@ namespace texforge.Graph
             foreach (XElement el in de)
             {
                 IEnumerable<XElement> de2 = from el2 in el.Descendants("Item") select el2;
-                foreach (XElement el2 in de2) 
-                    Console.WriteLine(el2.Value);
+                foreach (XElement el2 in de2)
+                {
+                    string nodeName = el2.Descendants("Name").First().Value;
+                    string nodeID = el2.Descendants("ID").First().Value;
+                    Node node = CreateNode(nodeName, nodeID);
+                    node.Data.header.title = el2.Value;
+                }
             }
 
 
@@ -107,8 +115,9 @@ namespace texforge.Graph
                     XElement source = el2.Descendants("source").First();
                     XElement dest  = el2.Descendants("destination").First();
 
-                    Console.WriteLine(source.Value);
-                    Console.WriteLine(dest.Value);
+                    
+                    //Console.WriteLine(source.Value);
+                    //Console.WriteLine(dest.Value);
                 }
             }
 
@@ -125,11 +134,14 @@ namespace texforge.Graph
                 
                 foreach (Node n in nodes)
                 {
-                    nodeElement.Add(new XElement("Item", n.GetType().ToString()));
+                    XElement item = new XElement("Item");
+                    XElement name = new XElement("Name", n.Name);
+                    XElement id  = new XElement("ID", n.ID);
+                    item.Add(name);
+                    item.Add(id);                    
+                    nodeElement.Add(item);
                 }
-
                 root.Add(nodeElement);
-
 
 
                 XElement transitionElement = new XElement("Transitions");
