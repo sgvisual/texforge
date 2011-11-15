@@ -14,19 +14,19 @@ namespace texforge.Graph
         {
             graph = new Graph();
 
-            Node a = graph.CreateNode("ExampleNode");//graph.CreateNode();
+            Node a = graph.CreateNode("ExampleNode", "");//graph.CreateNode();
             NodeData aData = new NodeData();
             aData.header.title = "A";
             a.Data = aData;
             a.Data.header.point = new Point(-175, -60);
 
-            Node b = graph.CreateNode("ExampleNode");
+            Node b = graph.CreateNode("ExampleNode", "");
             NodeData bData = new NodeData();
             bData.header.title = "B";
             b.Data = bData;
             b.Data.header.point = new Point(-45, 25);
 
-            Node c = graph.CreateNode("ExampleNode");
+            Node c = graph.CreateNode("ExampleNode", "");
             NodeData cData = new NodeData();
             cData.header.title = "C";
             c.Data = cData;
@@ -38,8 +38,8 @@ namespace texforge.Graph
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
 
-            graph.Save(@"test.xml");
-            graph.Load(@"test.xml");
+            //graph.Save(@"c:\projects\texforge\test.xml");
+            //graph.Load(@"c:\projects\texforge\test.xml");
         }
 
         public void Run()
