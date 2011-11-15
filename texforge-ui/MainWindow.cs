@@ -101,7 +101,7 @@ namespace texforge
 
         private void GraphRender_DragDrop(object sender, DragEventArgs e)
         {
-            graph.DropDraggedObject(e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
+            graph.DropDraggedObject((VisualGraph.DraggableObject)e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
             GraphRender.Invalidate();
         }
 
@@ -123,7 +123,7 @@ namespace texforge
         {
             e.Effect = DragDropEffects.Move;
             mouseLastPosition = GraphRender.PointToClient(new Point(e.X, e.Y));
-            graph.DraggingObject(e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
+            graph.DraggingObject((VisualGraph.DraggableObject)e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
             GraphRender.Invalidate();
         }
 

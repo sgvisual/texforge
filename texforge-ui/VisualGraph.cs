@@ -15,9 +15,7 @@ namespace texforge
         const int gridSize = 100;
         const int subGridDivisions = 10;
 
-        object dragging = null;
-        Point dragPosition;
-        Point dragOffset;
+        DraggableObject dragging = null;
 
         Graph.Graph graph;
 
@@ -25,6 +23,156 @@ namespace texforge
 
         // Cached data
         Dictionary<Graph.Node.Socket, Rectangle> cachedSocketRender = new Dictionary<Node.Socket, Rectangle>();
+        public Dictionary<Graph.Node.Socket, Rectangle> CachedSocketRender
+        {
+            get { return cachedSocketRender; }
+        }
+
+        // Draggable objects interface from within the visual graph view
+        public abstract class DraggableObject
+        {
+            Point position = new Point();
+            public virtual Point Position
+            {
+                set { position = value; }
+                get { return position; }
+            }   
+            public abstract bool Is(object compare);
+            public abstract void Drop(VisualGraph graph, Point position, Rectangle clip);
+        }
+
+        class DraggableNode : DraggableObject
+        {
+            Graph.Node node;
+            Point offset;
+            public DraggableNode(Graph.Node node, Point offset)
+            {
+                this.node = node;
+                this.offset = offset;
+            }
+            public override bool Is(object compare)
+            {
+                return node == compare;
+            }
+            public override void Drop(VisualGraph graph, Point position, Rectangle clip)
+            {
+                Point world = graph.TransformFromScreen(position, clip);
+                world.X -= offset.X;
+                world.Y -= offset.Y;
+                node.Data.header.point = world;
+            }
+            public override Point Position
+            {
+                get
+                {
+                    Point position = base.Position;
+                    return new Point(position.X - offset.X, position.Y - offset.Y);
+                }
+            }  
+        }
+
+        class DraggableSocket : DraggableObject
+        {
+            Graph.Node.Socket socket;
+            public DraggableSocket(Graph.Node.Socket socket)
+            {
+                this.socket = socket;
+            }
+            public override bool Is(object compare)
+            {
+                return socket == compare;
+            }
+            public override void Drop(VisualGraph graph, Point position, Rectangle clip)
+            {
+                Graph.Node.Socket target = null;
+                Graph.Graph.Transition? transition = null;
+                bool fromOutput = false;
+                bool toOutput = false;
+                // Find the target socket
+                foreach (KeyValuePair<Graph.Node.Socket, Rectangle> socket in graph.CachedSocketRender)
+                {
+                    if (position.X >= socket.Value.X && position.X < socket.Value.X + socket.Value.Width &&
+                        position.Y >= socket.Value.Y && position.Y < socket.Value.Y + socket.Value.Height)
+                    {
+                        target = socket.Key;
+                        break;
+                    }
+                }
+                // Find if its in any transitions
+                foreach (Graph.Graph.Transition connector in graph.graph.Transitions)
+                {
+                    if (connector.from == socket)
+                    {
+                        transition = connector;
+                        break;
+                    }
+                    if (connector.to == socket)
+                    {
+                        transition = connector;
+                        break;
+                    }
+                }
+                // No target node
+                if (target == null )
+                {
+                    // Delete transition
+                    if( transition != null )
+                    {
+                        graph.graph.Transitions.Remove(transition.Value);
+                    }
+                    return;
+                }
+                // Find the socket types
+                foreach (Graph.Node.Socket nodeSocket in socket.owner.OutputSockets)
+                {
+                    if (nodeSocket == socket)
+                    {
+                        fromOutput = true;
+                        break;
+                    }
+                }
+                foreach (Graph.Node.Socket nodeSocket in target.owner.OutputSockets)
+                {
+                    if (nodeSocket == target)
+                    {
+                        toOutput = true;
+                        break;
+                    }
+                }
+                // Move existing transition
+                if (transition != null)
+                {
+                    // Validate same type to same type
+                    if ((fromOutput && !toOutput) || (!fromOutput && toOutput))
+                    {
+                        return;
+                    }
+                    graph.graph.Transitions.Remove(transition.Value);
+                    if (fromOutput)
+                    {
+                        graph.graph.ConnectNodes(target, transition.Value.to);
+                    }
+                    else
+                    {
+                        graph.graph.ConnectNodes(transition.Value.from, target);
+                    }
+                    return;
+                }
+                // Validate output to input to add a new transition
+                if ((fromOutput && toOutput) || (!fromOutput && !toOutput))
+                {
+                    return;
+                }
+                if (fromOutput)
+                {
+                    graph.graph.ConnectNodes(socket, target);
+                }
+                else
+                {
+                    graph.graph.ConnectNodes(target, socket);
+                }
+            }
+        }
 
         public VisualGraph()
         {
@@ -143,10 +291,10 @@ namespace texforge
 
             // Actual node
             Brush outline = Brushes.Black;
-            if (dragging == node)
+            if (dragging != null && dragging.Is(node))
             {
                 outline = Brushes.White;
-                origin = GetDraggingPosition();
+                origin = dragging.Position;
             }
             Size size = NodeGetSize(node);
             Point end = TransformToScreen(new Point(origin.X + size.Width, origin.Y + size.Height), clip);
@@ -238,29 +386,37 @@ namespace texforge
             a.Data.header.point = TransformFromScreen(position, currentClip);
         }
 
-        public object GetDraggableObject(Point position, Rectangle currentClip)
+        public DraggableObject GetDraggableObject(Point position, Rectangle currentClip)
         {
+            // Check for sockets
+            foreach (KeyValuePair<Node.Socket, Rectangle> socket in cachedSocketRender)
+            {
+                if (position.X >= socket.Value.X && position.X < socket.Value.X + socket.Value.Width &&
+                    position.Y >= socket.Value.Y && position.Y < socket.Value.Y + socket.Value.Height)
+                {
+                    return new DraggableSocket(socket.Key);
+                }
+            }
+            // Check for nodes
             Point world = TransformFromScreen(position, currentClip);
             foreach (Graph.Node node in graph.Nodes)
             {
-                object drag = NodeGetDraggableObject(node, world, out dragOffset);
+                DraggableObject drag = NodeGetDraggableObject(node, world);
                 if (drag != null)
                     return drag;
             }
             return null;
         }
 
-        object NodeGetDraggableObject(Graph.Node node, Point atPosition, out Point offset)
+        DraggableObject NodeGetDraggableObject(Graph.Node node, Point atPosition)
         {
             Point position = node.Data.header.point;
             Size size = NodeGetSize(node);
             if (atPosition.X >= position.X && atPosition.Y >= position.Y &&
                 atPosition.X < position.X + size.Width && atPosition.Y < position.Y + size.Height)
             {
-                offset = new Point(atPosition.X - position.X, atPosition.Y - position.Y);
-                return node;
+                return new DraggableNode(node, new Point(atPosition.X - position.X, atPosition.Y - position.Y));
             }
-            offset = new Point();
             return null;
         }
 
@@ -271,25 +427,17 @@ namespace texforge
             return new Size(minimumNodeWidth, minimumNodeHeight);
         }
 
-        public void DropDraggedObject(object what, Point position, Rectangle currentClip)
+        public void DropDraggedObject(DraggableObject what, Point position, Rectangle currentClip)
         {
-            Point world = TransformFromScreen(position, currentClip);
-            Graph.Node node = (Graph.Node)what;
-            world.X -= dragOffset.X;
-            world.Y -= dragOffset.Y;
-            node.Data.header.point = world;
+            dragging.Drop(this, position, currentClip);
             dragging = null;
         }
 
-        public void DraggingObject(object what, Point position, Rectangle currentClip)
+        public void DraggingObject(DraggableObject what, Point position, Rectangle currentClip)
         {
             dragging = what;
-            dragPosition = TransformFromScreen(position, currentClip);
+            dragging.Position = TransformFromScreen(position, currentClip);
         }
 
-        public Point GetDraggingPosition()
-        {
-            return new Point(dragPosition.X - dragOffset.X, dragPosition.Y - dragOffset.Y);
-        }
 	}
 }
