@@ -13,7 +13,7 @@ namespace texforge.Graph
         public UnitTest_Graph()
         {
             graph = new Graph();
-
+            
             Node a = graph.CreateNode("ExampleNode", "");//graph.CreateNode();
             NodeData aData = new NodeData();
             aData.header.title = "A";
@@ -37,6 +37,7 @@ namespace texforge.Graph
             graph.ConnectNodes(a.GetSocket("outA"), c.GetSocket("inTestA"));
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
+            
 
             //graph.Save(@"c:\projects\texforge\test.xml");
             //graph.Load(@"c:\projects\texforge\test.xml");

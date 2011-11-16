@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
+using System.Drawing;
+using System.ComponentModel;
 
 namespace texforge.Graph
 {
@@ -39,6 +41,17 @@ namespace texforge.Graph
             Node node = NodeFactory.Get().Create(name, id);
             nodes.Add(node);
             return node;
+        }
+
+        public Node GetNodeFromID(string id)
+        {
+            foreach (Node n in nodes)
+            {
+                if (n.ID.CompareTo(id) == 0)
+                    return n;
+            }
+
+            return null;
         }
 
         public void ConnectNodes(Node.Socket a, Node.Socket b)
@@ -81,6 +94,19 @@ namespace texforge.Graph
             //info.A
         }
 
+        static T ParsePoint<T>(string str)
+        {
+            try
+            {
+                return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(str.ToUpper().Replace(@"{X=", "").Replace(@"Y=", "").Replace(@"}", ""));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return default(T);
+        }
+
         public void Load(string filename)
         {
             nodes.Clear();
@@ -100,8 +126,15 @@ namespace texforge.Graph
                 {
                     string nodeName = el2.Descendants("Name").First().Value;
                     string nodeID = el2.Descendants("ID").First().Value;
+                    string point = el2.Descendants("Position").First().Value;
+                    Point p  = ParsePoint<Point>(point);
+                    
+                    // TODO: some cleanup required
                     Node node = CreateNode(nodeName, nodeID);
-                    node.Data.header.title = el2.Value;
+                    node.Data = new NodeData();
+                    node.Data.header = new NodeData.Header();
+                    node.Data.header.point = p;
+              //      node.Data.header.title = el2.Value;
                 }
             }
 
@@ -112,12 +145,16 @@ namespace texforge.Graph
                 IEnumerable<XElement> de2 = from el2 in el.Descendants("Item") select el2;
                 foreach (XElement el2 in de2)
                 {
-                    XElement source = el2.Descendants("source").First();
-                    XElement dest  = el2.Descendants("destination").First();
+                    string fromNodeID = el2.Descendants("FromNodeID").First().Value;
+                    string fromSocketName = el2.Descendants("FromSocket").First().Value;
+                    string toNodeID = el2.Descendants("ToNodeID").First().Value;
+                    string toSocketName = el2.Descendants("ToSocket").First().Value;
+                
+                    Node A = GetNodeFromID(fromNodeID);
+                    Node B = GetNodeFromID(toNodeID);
 
-                    
-                    //Console.WriteLine(source.Value);
-                    //Console.WriteLine(dest.Value);
+                    ConnectNodes(A.GetSocket(fromSocketName), B.GetSocket(toSocketName));
+    
                 }
             }
 
@@ -137,8 +174,11 @@ namespace texforge.Graph
                     XElement item = new XElement("Item");
                     XElement name = new XElement("Name", n.Name);
                     XElement id  = new XElement("ID", n.ID);
+                    XElement position = new XElement("Position", n.Data.header.point);
+
                     item.Add(name);
-                    item.Add(id);                    
+                    item.Add(id);
+                    item.Add(position);
                     nodeElement.Add(item);
                 }
                 root.Add(nodeElement);
@@ -148,8 +188,18 @@ namespace texforge.Graph
                 foreach (Transition t in transitions)
                 {
                     XElement transition = new XElement("Item");
-                    transition.Add(new XElement("source", t.from.name));
-                    transition.Add(new XElement("destination", t.to.name));
+                    XElement fromNodeID = new XElement("FromNodeID", t.from.owner.ID);
+                    XElement fromSocketName = new XElement("FromSocket", t.from.name);
+
+                    transition.Add(fromNodeID);
+                    transition.Add(fromSocketName);
+                    
+                    XElement toNodeID = new XElement("ToNodeID", t.to.owner.ID);
+                    XElement toSocketName = new XElement("ToSocket", t.to.name);
+
+                    transition.Add(toNodeID);
+                    transition.Add(toSocketName);
+
                     transitionElement.Add(transition);
 
                 }
