@@ -15,13 +15,13 @@ namespace texforge
         protected VisualGraph graph;
         Point mouseLastPosition = new Point();
         protected Generator generator;
+        bool abortedSave = false;
 
         public MainWindow()
         {
             InitializeComponent();
             GraphRender.MouseWheel += new MouseEventHandler(GraphRender_MouseWheel);
             GraphRender.AllowDrop = true;
-
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -38,8 +38,22 @@ namespace texforge
         private void GraphRender_Paint(object sender, PaintEventArgs e)
         {
             graph.Render(e.Graphics, e.ClipRectangle);
-
-           
+            Text = "texforge";
+            if (graph.AssociatedFile == "")
+            {
+                if (graph.Modified)
+                {
+                    Text += " - Unsaved graph";
+                }
+            }
+            else
+            {
+                Text += " - " + graph.AssociatedFile;
+                if (graph.Modified)
+                {
+                    Text += "*";
+                }
+            }
         }
 
         private void RenderPreviewActive_Paint(object sender, PaintEventArgs e)
@@ -127,10 +141,36 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+        private bool CheckAbortModifiedGraph()
+        {
+            if (graph.Modified)
+            {
+                switch (MessageBox.Show("Graph has unmodified changes, do you wish to save the changes before proceeding?",
+                                    "texforge Message",
+                                    MessageBoxButtons.YesNoCancel,
+                                    MessageBoxIcon.Question))
+                {
+                    case DialogResult.Yes:
+                        SaveGraph();
+                        return abortedSave;
+
+                    case DialogResult.No:
+                        return false;
+
+                    case DialogResult.Cancel:
+                        return true;
+                }
+            }
+            return false;
+        }
+
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            graph.Clear();
-            GraphRender.Invalidate();
+            if (!CheckAbortModifiedGraph())
+            {
+                graph.Clear();
+                GraphRender.Invalidate();
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -146,6 +186,7 @@ namespace texforge
 
         private void SaveGraphAs()
         {
+            abortedSave = true;
             SaveFileDialog saveAsDialog = new SaveFileDialog();
             saveAsDialog.Filter = "texforge Graph|*.texforge";
             saveAsDialog.Title = "Save a texforge Graph";
@@ -153,16 +194,13 @@ namespace texforge
             if (saveAsDialog.FileName != "")
             {
                 graph.Save(saveAsDialog.FileName);
+                abortedSave = false;
             }
         }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveGraph()
         {
-            SaveGraphAs();
-        }
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+            abortedSave = false;
             if (graph.AssociatedFile == "")
             {
                 SaveGraphAs();
@@ -171,19 +209,39 @@ namespace texforge
             {
                 graph.Save();
             }
+            GraphRender.Invalidate();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveGraphAs();
+            GraphRender.Invalidate();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveGraph();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.Filter = "texforge Graph|*.texforge";
-            openDialog.Title = "Load a texforge Graph";
-            openDialog.ShowDialog();
-            if (openDialog.FileName != "")
+            if (!CheckAbortModifiedGraph())
             {
-                graph.Load(openDialog.FileName);
-                GraphRender.Invalidate();
+                OpenFileDialog openDialog = new OpenFileDialog();
+                openDialog.Filter = "texforge Graph|*.texforge";
+                openDialog.Title = "Load a texforge Graph";
+                openDialog.ShowDialog();
+                if (openDialog.FileName != "")
+                {
+                    graph.Load(openDialog.FileName);
+                    GraphRender.Invalidate();
+                }
             }
+        }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = CheckAbortModifiedGraph();
         }
 
     }
