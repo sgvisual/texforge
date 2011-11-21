@@ -20,7 +20,7 @@ namespace texforge.Graph
             aData.header.title = "A";
             a.Data = aData;
             a.Data.header.point = new Point(-175, -60);
-            ((ImageNode)a).LoadImage(@"C:\Projects\texforge\data\tests\toplayer.jpg");
+            //((ImageNode)a).LoadImage(@"C:\Projects\texforge\data\tests\toplayer.jpg");
 
             Node b = graph.CreateNode("ExampleNode", "");
             NodeData bData = new NodeData();
