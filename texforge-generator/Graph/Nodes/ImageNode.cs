@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace texforge.Graph.Nodes
 {
@@ -18,7 +19,8 @@ namespace texforge.Graph.Nodes
         public void LoadImage(string filename)
         {
             this.filename = filename;
-            nodeData.atom = new Atom(System.Drawing.Image.FromFile(filename));
+            if ( File.Exists(filename) )
+                nodeData.atom = new Atom(System.Drawing.Image.FromFile(filename));
         }
 
         public override object Process()
