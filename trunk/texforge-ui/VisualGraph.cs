@@ -27,6 +27,13 @@ namespace texforge
             get { return associatedFile; }
         }
 
+        bool modified = false;
+        public bool Modified
+        {
+            get { return modified; }
+            set { modified = value; }
+        }
+
         // Cached data
         Dictionary<Graph.Node.Socket, Rectangle> cachedSocketRender = new Dictionary<Node.Socket, Rectangle>();
         public Dictionary<Graph.Node.Socket, Rectangle> CachedSocketRender
@@ -44,7 +51,7 @@ namespace texforge
                 get { return position; }
             }   
             public abstract bool Is(object compare);
-            public abstract void Drop(VisualGraph graph, Point position, Rectangle clip);
+            public virtual void Drop(VisualGraph graph, Point position, Rectangle clip) { graph.Modified = true; }
         }
 
         class DraggableNode : DraggableObject
@@ -62,6 +69,7 @@ namespace texforge
             }
             public override void Drop(VisualGraph graph, Point position, Rectangle clip)
             {
+                base.Drop(graph, position, clip);
                 Point world = graph.TransformFromScreen(position, clip);
                 world.X -= offset.X;
                 world.Y -= offset.Y;
@@ -90,6 +98,7 @@ namespace texforge
             }
             public override void Drop(VisualGraph graph, Point position, Rectangle clip)
             {
+                base.Drop(graph, position, clip);
                 Graph.Node.Socket target = null;
                 Graph.Graph.Transition? transition = null;
                 bool fromOutput = false;
@@ -194,6 +203,8 @@ namespace texforge
         public void Clear()
         {
             graph = new Graph.Graph();
+            associatedFile = "";
+            modified = false;
         }
 
         public void Zoom(float amount)
@@ -380,6 +391,7 @@ namespace texforge
             aData.header.title = "Render" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
+            modified = true;
         }
 
         public void AddBlendNode(Point position, Rectangle currentClip)
@@ -389,6 +401,7 @@ namespace texforge
             aData.header.title = "Blend" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
+            modified = true;
         }
 
         public DraggableObject GetDraggableObject(Point position, Rectangle currentClip)
@@ -453,12 +466,14 @@ namespace texforge
         {
             associatedFile = filename;
             graph.Save(filename);
+            modified = false;
         }
 
         public void Load(string filename)
         {
             associatedFile = filename;
             graph.Load(filename);
+            modified = false;
         }
 
 	}
