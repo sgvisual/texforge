@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using texforge.Base;
+using System.Xml.Linq;
 
 namespace texforge.Graph
 {
@@ -26,6 +27,19 @@ namespace texforge.Graph
         {
             this.name = name;
             uniqueName = new UniqueName(id);
+        }
+
+        public virtual object Process()
+        {
+            return null;
+        }
+
+        public virtual void Save(XElement element)
+        {
+        }
+
+        public virtual void Load(XElement element)
+        {
         }
 
         protected NodeData nodeData;

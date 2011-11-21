@@ -49,6 +49,7 @@
     <Compile Include="Graph\Node.cs" />
     <Compile Include="Graph\NodeData.cs" />
     <Compile Include="Graph\NodeFactory.cs" />
+    <Compile Include="Graph\Nodes\ImageNode.cs" />
     <Compile Include="Graph\UnitTest_Graph.cs" />
     <Compile Include="Noise.cs" />
     <Compile Include="Operations\Addition.cs" />

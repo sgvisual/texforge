@@ -14,6 +14,12 @@ namespace texforge
         protected Bitmap bitmap;
         protected BitmapData bitmapData = null;
 
+        public Atom(Image image)
+        {
+            bitmap = new Bitmap(image);
+            size = bitmap.Size;
+        }
+
         public Atom(byte[] bytes, Size size, PixelFormat pixelFormat)
         {
             bitmap = new Bitmap(size.Width, size.Height, pixelFormat);
