@@ -21,6 +21,12 @@ namespace texforge
 
         bool debug = false;
 
+        string associatedFile = "";
+        public string AssociatedFile
+        {
+            get { return associatedFile; }
+        }
+
         // Cached data
         Dictionary<Graph.Node.Socket, Rectangle> cachedSocketRender = new Dictionary<Node.Socket, Rectangle>();
         public Dictionary<Graph.Node.Socket, Rectangle> CachedSocketRender
@@ -307,7 +313,6 @@ namespace texforge
             if (debug)
             {
                 graphics.DrawString("(" + node.Data.header.point.X + ", " + node.Data.header.point.Y + ")", new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Red, new PointF((float)(origin.X), (float)(origin.Y - 10)));
-
             }
 
             // Label
@@ -437,6 +442,23 @@ namespace texforge
         {
             dragging = what;
             dragging.Position = TransformFromScreen(position, currentClip);
+        }
+
+        public void Save()
+        {
+            Save(associatedFile);
+        }
+
+        public void Save(string filename)
+        {
+            associatedFile = filename;
+            graph.Save(filename);
+        }
+
+        public void Load(string filename)
+        {
+            associatedFile = filename;
+            graph.Load(filename);
         }
 
 	}
