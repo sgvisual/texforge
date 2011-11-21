@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using texforge.Graph.Nodes;
 
 namespace texforge.Graph
 {
@@ -20,6 +21,7 @@ namespace texforge.Graph
         public void RegisterNodes()
         {
             nodes["ExampleNode"] = typeof(ExampleNode);
+            nodes["ImageNode"] = typeof(ImageNode);
         }
 
         public Node Create(string name, string id)

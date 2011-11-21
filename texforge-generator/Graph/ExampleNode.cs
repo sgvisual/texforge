@@ -16,6 +16,20 @@ namespace texforge.Graph
             RegisterSocket(Socket.Type.Output, "outA");
         }
 
+        public override object Process()
+        {
+            Node inA = GetSocket("inTestA").owner;
+            Node inB = GetSocket("inTestB").owner;
+
+            Atom A = inA.Data.atom;
+            Atom B = inB.Data.atom;
+
+            Operations.Addition add = new Operations.Addition(A, B);
+            Data.atom = add.Execute();
+
+            return Data;
+        }
+
 
 
     }

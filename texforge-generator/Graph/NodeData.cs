@@ -17,5 +17,6 @@ namespace texforge.Graph
         }
 
         public Header header = new Header();
+        public Atom atom;
     }
 }

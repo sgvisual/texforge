@@ -134,7 +134,11 @@ namespace texforge.Graph
                     node.Data = new NodeData();
                     node.Data.header = new NodeData.Header();
                     node.Data.header.point = p;
-              //      node.Data.header.title = el2.Value;
+
+                    // TODO:
+                    node.Load(el2.Descendants("Data").First());
+
+
                 }
             }
 
@@ -179,7 +183,13 @@ namespace texforge.Graph
                     item.Add(name);
                     item.Add(id);
                     item.Add(position);
+
+                    XElement data = new XElement("Data");
+                    n.Save(data);
+                    item.Add(data);
+
                     nodeElement.Add(item);
+
                 }
                 root.Add(nodeElement);
 
