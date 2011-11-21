@@ -144,5 +144,47 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+        private void SaveGraphAs()
+        {
+            SaveFileDialog saveAsDialog = new SaveFileDialog();
+            saveAsDialog.Filter = "texforge Graph|*.texforge";
+            saveAsDialog.Title = "Save a texforge Graph";
+            saveAsDialog.ShowDialog();
+            if (saveAsDialog.FileName != "")
+            {
+                graph.Save(saveAsDialog.FileName);
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveGraphAs();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (graph.AssociatedFile == "")
+            {
+                SaveGraphAs();
+            }
+            else
+            {
+                graph.Save();
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Filter = "texforge Graph|*.texforge";
+            openDialog.Title = "Load a texforge Graph";
+            openDialog.ShowDialog();
+            if (openDialog.FileName != "")
+            {
+                graph.Load(openDialog.FileName);
+                GraphRender.Invalidate();
+            }
+        }
+
     }
 }
