@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using texforge.Graph.Nodes;
+using System.IO;
+using System.Windows.Forms;
 
 namespace texforge.Graph
 {
@@ -20,7 +22,9 @@ namespace texforge.Graph
             aData.header.title = "A";
             a.Data = aData;
             a.Data.header.point = new Point(-175, -60);
-            //((ImageNode)a).LoadImage(@"C:\Projects\texforge\data\tests\toplayer.jpg");
+
+            Uri uri = new Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"..\..\..\data\tests\toplayer.jpg"));
+            ((ImageNode)a).LoadImage(Path.GetFullPath(uri.AbsolutePath));
 
             Node b = graph.CreateNode("ExampleNode", "");
             NodeData bData = new NodeData();

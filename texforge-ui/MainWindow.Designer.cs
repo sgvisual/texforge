@@ -32,6 +32,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,14 +43,14 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.RenderPreviewActive = new System.Windows.Forms.PictureBox();
             this.RenderPreviewFull = new System.Windows.Forms.PictureBox();
+            this.splitGraphProperties = new System.Windows.Forms.SplitContainer();
             this.GraphRender = new System.Windows.Forms.PictureBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.graphContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addRenderNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBlendNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GroupProperties = new System.Windows.Forms.GroupBox();
+            this.PanelProperties = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -59,8 +62,13 @@
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewActive)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewFull)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitGraphProperties)).BeginInit();
+            this.splitGraphProperties.Panel1.SuspendLayout();
+            this.splitGraphProperties.Panel2.SuspendLayout();
+            this.splitGraphProperties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).BeginInit();
             this.graphContextMenu.SuspendLayout();
+            this.GroupProperties.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -93,6 +101,31 @@
             this.newToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.openToolStripMenuItem.Text = "&Open...";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.saveAsToolStripMenuItem.Text = "Save &As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -138,8 +171,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.GraphRender);
-            this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
+            this.splitContainer1.Panel2.Controls.Add(this.splitGraphProperties);
             this.splitContainer1.Size = new System.Drawing.Size(624, 289);
             this.splitContainer1.SplitterDistance = 223;
             this.splitContainer1.TabIndex = 2;
@@ -184,28 +216,45 @@
             this.RenderPreviewFull.TabIndex = 0;
             this.RenderPreviewFull.TabStop = false;
             // 
+            // splitGraphProperties
+            // 
+            this.splitGraphProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitGraphProperties.Location = new System.Drawing.Point(0, 0);
+            this.splitGraphProperties.Name = "splitGraphProperties";
+            // 
+            // splitGraphProperties.Panel1
+            // 
+            this.splitGraphProperties.Panel1.Controls.Add(this.GraphRender);
+            this.splitGraphProperties.Panel1.Controls.Add(this.toolStrip1);
+            // 
+            // splitGraphProperties.Panel2
+            // 
+            this.splitGraphProperties.Panel2.Controls.Add(this.GroupProperties);
+            this.splitGraphProperties.Size = new System.Drawing.Size(397, 289);
+            this.splitGraphProperties.SplitterDistance = 294;
+            this.splitGraphProperties.TabIndex = 0;
+            // 
             // GraphRender
             // 
             this.GraphRender.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GraphRender.Location = new System.Drawing.Point(0, 25);
             this.GraphRender.Name = "GraphRender";
-            this.GraphRender.Size = new System.Drawing.Size(397, 264);
-            this.GraphRender.TabIndex = 1;
+            this.GraphRender.Size = new System.Drawing.Size(294, 264);
+            this.GraphRender.TabIndex = 3;
             this.GraphRender.TabStop = false;
             this.GraphRender.DragDrop += new System.Windows.Forms.DragEventHandler(this.GraphRender_DragDrop);
             this.GraphRender.DragOver += new System.Windows.Forms.DragEventHandler(this.GraphRender_DragOver);
             this.GraphRender.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphRender_Paint);
             this.GraphRender.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseClick);
             this.GraphRender.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseDown);
-            this.GraphRender.MouseEnter += new System.EventHandler(this.GraphRender_MouseEnter);
             this.GraphRender.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GraphRender_MouseMove);
             // 
             // toolStrip1
             // 
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(397, 25);
-            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Size = new System.Drawing.Size(294, 25);
+            this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // graphContextMenu
@@ -230,30 +279,24 @@
             this.addBlendNodeToolStripMenuItem.Text = "Add Blend Node";
             this.addBlendNodeToolStripMenuItem.Click += new System.EventHandler(this.addBlendNodeToolStripMenuItem_Click);
             // 
-            // openToolStripMenuItem
+            // GroupProperties
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.openToolStripMenuItem.Text = "&Open...";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.GroupProperties.Controls.Add(this.PanelProperties);
+            this.GroupProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GroupProperties.Location = new System.Drawing.Point(0, 0);
+            this.GroupProperties.Name = "GroupProperties";
+            this.GroupProperties.Size = new System.Drawing.Size(99, 289);
+            this.GroupProperties.TabIndex = 0;
+            this.GroupProperties.TabStop = false;
+            this.GroupProperties.Text = "Properties";
             // 
-            // saveToolStripMenuItem
+            // PanelProperties
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.S)));
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.saveAsToolStripMenuItem.Text = "Save &As...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.PanelProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelProperties.Location = new System.Drawing.Point(3, 16);
+            this.PanelProperties.Name = "PanelProperties";
+            this.PanelProperties.Size = new System.Drawing.Size(93, 270);
+            this.PanelProperties.TabIndex = 0;
             // 
             // MainWindow
             // 
@@ -272,7 +315,6 @@
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
@@ -281,8 +323,14 @@
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewActive)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RenderPreviewFull)).EndInit();
+            this.splitGraphProperties.Panel1.ResumeLayout(false);
+            this.splitGraphProperties.Panel1.PerformLayout();
+            this.splitGraphProperties.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitGraphProperties)).EndInit();
+            this.splitGraphProperties.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).EndInit();
             this.graphContextMenu.ResumeLayout(false);
+            this.GroupProperties.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -296,8 +344,6 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.PictureBox RenderPreviewActive;
         private System.Windows.Forms.PictureBox RenderPreviewFull;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.PictureBox GraphRender;
         private System.Windows.Forms.ContextMenuStrip graphContextMenu;
         private System.Windows.Forms.ToolStripMenuItem addRenderNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addBlendNodeToolStripMenuItem;
@@ -309,6 +355,11 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitGraphProperties;
+        private System.Windows.Forms.PictureBox GraphRender;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.GroupBox GroupProperties;
+        private System.Windows.Forms.Panel PanelProperties;
 
     }
 }

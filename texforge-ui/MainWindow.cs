@@ -14,7 +14,6 @@ namespace texforge
     {
         protected VisualGraph graph;
         Point mouseLastPosition = new Point();
-        protected Generator generator;
         bool abortedSave = false;
 
         public MainWindow()
@@ -27,12 +26,6 @@ namespace texforge
         private void MainWindow_Load(object sender, EventArgs e)
         {
             graph = new VisualGraph();
-            generator = new Generator();
-
-            texforge_definitions.settings settings = new texforge_definitions.settings();
-            settings.width = 512;
-            settings.height = 512;
-            generator.Generate(settings);
         }
 
         private void GraphRender_Paint(object sender, PaintEventArgs e)
@@ -58,10 +51,11 @@ namespace texforge
 
         private void RenderPreviewActive_Paint(object sender, PaintEventArgs e)
         {
-            Bitmap bmp = generator.ResultBitmap;
-            //e.Graphics.DrawImageUnscaled(image, new Point());
             e.Graphics.FillRectangle(Brushes.Green, e.ClipRectangle);
-            e.Graphics.DrawImageUnscaled(bmp, e.ClipRectangle);
+            if (graph.ActiveObject != null && graph.ActiveObject.GetPreview() != null)
+            {
+                e.Graphics.DrawImageUnscaled(graph.ActiveObject.GetPreview(), e.ClipRectangle);
+            }
         }
 
         private void GraphRender_MouseEnter(object sender, EventArgs e)
@@ -119,16 +113,30 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+        private void ChangeActiveObject(VisualGraph.DraggableObject draggable)
+        {
+            if (draggable != graph.ActiveObject)
+            {
+                graph.ActiveObject = draggable;
+                RenderPreviewActive.Invalidate();
+                PanelProperties.Controls.Clear();
+                Label name = new Label();
+                name.Text = draggable.GetName();
+                PanelProperties.Controls.Add(name);
+            }
+        }
+
         private void GraphRender_MouseDown(object sender, MouseEventArgs e)
         {
             bool right = (Control.MouseButtons & MouseButtons.Right) > 0;
             bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0;
             if ( e.Button == MouseButtons.Left && !right && !middle)
             {
-                object draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
+                VisualGraph.DraggableObject draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
                 if( draggable != null )
                 {
-                    splitContainer1.Panel2.DoDragDrop(draggable, DragDropEffects.Move);
+                    ChangeActiveObject(draggable);
+                    splitGraphProperties.Panel1.DoDragDrop(draggable, DragDropEffects.Move);
                 }
             }
         }
@@ -146,9 +154,7 @@ namespace texforge
             if (graph.Modified)
             {
                 switch (MessageBox.Show("Graph has unmodified changes, do you wish to save the changes before proceeding?",
-                                    "texforge Message",
-                                    MessageBoxButtons.YesNoCancel,
-                                    MessageBoxIcon.Question))
+                        "texforge Message", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
                 {
                     case DialogResult.Yes:
                         SaveGraph();
