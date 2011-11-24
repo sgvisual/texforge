@@ -16,6 +16,12 @@ namespace texforge
         const int subGridDivisions = 10;
 
         DraggableObject dragging = null;
+        DraggableObject active = null;
+        public DraggableObject ActiveObject
+        {
+            set { active = value; }
+            get { return active; }
+            }
 
         Graph.Graph graph;
 
@@ -52,6 +58,8 @@ namespace texforge
             }   
             public abstract bool Is(object compare);
             public virtual void Drop(VisualGraph graph, Point position, Rectangle clip) { graph.Modified = true; }
+            public abstract string GetName();
+            public abstract Bitmap GetPreview();
         }
 
         class DraggableNode : DraggableObject
@@ -82,7 +90,17 @@ namespace texforge
                     Point position = base.Position;
                     return new Point(position.X - offset.X, position.Y - offset.Y);
                 }
-            }  
+            }
+            public override string GetName()
+            {
+                return node.Data.header.title;
+            }
+            public override Bitmap GetPreview()
+            {
+                if (node.Data.atom == null)
+                    return null;
+                return node.Data.atom.Result;
+            }
         }
 
         class DraggableSocket : DraggableObject
@@ -186,6 +204,14 @@ namespace texforge
                 {
                     graph.graph.ConnectNodes(target, socket);
                 }
+            }
+            public override string GetName()
+            {
+                return socket.name;
+            }
+            public override Bitmap GetPreview()
+            {
+                return null;
             }
         }
 
@@ -308,6 +334,10 @@ namespace texforge
 
             // Actual node
             Brush outline = Brushes.Black;
+            if (active != null && active.Is(node))
+            {
+                outline = Brushes.LightGray;
+            }
             if (dragging != null && dragging.Is(node))
             {
                 outline = Brushes.White;
