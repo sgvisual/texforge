@@ -22,11 +22,13 @@ namespace texforge.Operations
             int bytes = (operandA.Result.Width*operandA.Result.Height);
             int[] test = new int[bytesA.Length];
             int k = 0;
+            // TODO: parallel loop
             for (int i = 0; i < bytesA.Length; i+=3)
             {
                 test[k++] = (0xff << 24) | ((bytesA[i]) << 16) | ((bytesA[i + 1] << 8)) | ((bytesA[i + 2] ));
             }
 
+            // TODO: parallel loop
             for (int i = 1; i < bytes - 1; i += 2)
             {
                 byte r0 = (byte)(Math.Min((test[i-1] >> 16), 255));

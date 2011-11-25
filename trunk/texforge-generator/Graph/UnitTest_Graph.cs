@@ -22,15 +22,15 @@ namespace texforge.Graph
             aData.header.title = "A";
             a.Data = aData;
             a.Data.header.point = new Point(-175, -60);
-
             Uri uri = new Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"..\..\..\data\tests\toplayer.jpg"));
             ((ImageNode)a).LoadImage(Path.GetFullPath(uri.AbsolutePath));
 
-            Node b = graph.CreateNode("ExampleNode", "");
+            Node b = graph.CreateNode("ColorOverlayNode", "");
             NodeData bData = new NodeData();
             bData.header.title = "B";
             b.Data = bData;
             b.Data.header.point = new Point(-45, 25);
+            //((ColorOverlayNode)b).Color = new texforge_definitions.Settings.Color("Color", new texforge_definitions.Types.Color()
 
             Node c = graph.CreateNode("ExampleNode", "");
             NodeData cData = new NodeData();
@@ -38,8 +38,8 @@ namespace texforge.Graph
             c.Data = cData;
             c.Data.header.point = new Point(100, -100);
 
-            graph.ConnectNodes(a.GetSocket("Out"), b.GetSocket("inTestA"));
-            graph.ConnectNodes(b.GetSocket("outA"), c.GetSocket("inTestB"));
+            graph.ConnectNodes(a.GetSocket("Out"), b.GetSocket("In"));
+            graph.ConnectNodes(b.GetSocket("Out"), c.GetSocket("inTestB"));
             graph.ConnectNodes(a.GetSocket("Out"), c.GetSocket("inTestA"));
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
