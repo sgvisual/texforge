@@ -97,6 +97,8 @@ namespace texforge
             }
             public override Bitmap GetPreview()
             {
+                node.Process();
+
                 if (node.Data.atom == null)
                     return null;
                 return node.Data.atom.Result;

@@ -15,9 +15,12 @@ namespace texforge.Graph
         public struct Transition
         {
             public Transition(Node.Socket from, Node.Socket to)
-            {
+            {                
                 this.from = from;
                 this.to = to;
+
+                this.from.AddConnection(to.owner);
+                this.to.AddConnection(from.owner);
             }
             public Node.Socket from;
             public Node.Socket to;
@@ -56,6 +59,9 @@ namespace texforge.Graph
 
         public void ConnectNodes(Node.Socket a, Node.Socket b)
         {
+            if (a == null || b == null)
+                throw new Exception("Cannot connect nodes because a Socket was not found");
+
             Transition t = new Transition(a, b);
             transitions.Add(t);            
         }
@@ -73,26 +79,15 @@ namespace texforge.Graph
             }
 
             if (remove != null)
+            {
+                remove.Value.to.RemoveConnection(remove.Value.from.owner);
+                remove.Value.from.RemoveConnection(remove.Value.to.owner);
                 transitions.Remove(remove.Value);
+            }
         }
 
         public Graph()
         { }
-
-        public Graph(SerializationInfo info, StreamingContext context)
-        {
-            //int numNodes = (int)info.GetValue("NumNodes", typeof(int));
-            //nodes = new List<Node>();
-            //for (int i = 0; i < numNodes; ++i)
-            //{
-            //    info.GetValue
-            //}
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            //info.A
-        }
 
         static T ParsePoint<T>(string str)
         {

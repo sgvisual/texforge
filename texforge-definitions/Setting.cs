@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace texforge_definitions
 {
@@ -128,6 +130,38 @@ namespace texforge_definitions
 
         public virtual void RandomizeBetween(T min, T max)
         {
+
+        }
+
+        public virtual void Save(XElement element)
+        {
+            XElement baseElement = new XElement("Setting", name);            
+            element.Add(baseElement);
+
+            //baseElement.Add(new XElement("Type", typeof(T));
+            baseElement.Add(new XElement("Value", value));
+            baseElement.Add(new XElement("Default", defaultValue));
+            baseElement.Add(new XElement("Min", minValue));
+            baseElement.Add(new XElement("Max", maxValue));
+
+        }
+
+        public virtual void Load(System.Xml.Linq.XElement element)
+        {
+            XElement baseElement = element.Descendants("Setting").First();
+            name = baseElement.Value;
+            
+            string valueStr = baseElement.Descendants("Value").First().Value;
+            value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(valueStr);
+
+            string defaultValueStr = baseElement.Descendants("Default").First().Value;
+            defaultValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(defaultValueStr);
+
+            string minValueStr = baseElement.Descendants("Min").First().Value;
+            minValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(minValueStr);
+
+            string maxValueStr = baseElement.Descendants("Max").First().Value;
+            maxValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(maxValueStr);
 
         }
 

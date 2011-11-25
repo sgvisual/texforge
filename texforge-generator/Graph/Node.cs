@@ -98,8 +98,20 @@ namespace texforge.Graph
                 this.owner = owner;
             }
 
+            public void AddConnection(Node node)
+            {
+                if (connections.Find(node) == null )
+                    connections.AddLast(node);
+            }
+
+            public void RemoveConnection(Node node)
+            {
+                connections.Remove(node);
+            }
+
             public string name;
             public readonly Node owner;
+            public LinkedList<Node> connections = new LinkedList<Node>();
         }
 
     }

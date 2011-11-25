@@ -22,6 +22,7 @@ namespace texforge.Graph
         {
             nodes["ExampleNode"] = typeof(ExampleNode);
             nodes["ImageNode"] = typeof(ImageNode);
+            nodes["ColorOverlayNode"] = typeof(ColorOverlayNode);
         }
 
         public Node Create(string name, string id)
