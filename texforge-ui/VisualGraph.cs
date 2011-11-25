@@ -361,6 +361,15 @@ namespace texforge
             graphics.FillRectangle(Brushes.ForestGreen, label);
             graphics.DrawString(node.Data.header.title, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 120.0f * zoom), Brushes.Black, new PointF((float)(label.X), (float)(label.Y - 3)));
 
+            // Render preview
+            if (node.Data.atom != null && node.Data.atom.Result != null)
+            {
+                int renderSize = (nodeRect.Height - labelHeight) * 3 / 4;
+                Rectangle render = new Rectangle(new Point(nodeRect.X + nodeRect.Width / 4, nodeRect.Y + (nodeRect.Height - renderSize - labelHeight) / 2 + labelHeight), new Size(renderSize, renderSize));
+                graphics.DrawRectangle(new Pen(Brushes.Black), new Rectangle(new Point(render.X - 1, render.Y - 1), new Size(render.Width + 1, render.Height + 1)));
+                graphics.DrawImage(node.Data.atom.Result, render);
+            }
+
             // Connector sockets
             Pen black = new Pen(Brushes.Black);
             List<Graph.Node.Socket> inputs = node.InputSockets;
