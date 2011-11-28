@@ -18,11 +18,17 @@ namespace texforge.Graph
 
         public override object Process()
         {
-            Node inA = GetSocket("inTestA").owner;
-            Node inB = GetSocket("inTestB").owner;
+            Socket sockA = GetSocket("inTestA");
+            Socket sockB = GetSocket("inTestB");
 
-            Atom A = inA.Data.atom;
-            Atom B = inB.Data.atom;
+            Atom A = null;
+            Atom B = null;
+
+            if (sockA.connections.Count > 0)
+                A = sockA.connections.First.Value.Data.atom;
+
+            if (sockB.connections.Count > 0)
+                B = sockB.connections.First.Value.Data.atom;
 
             Operations.Addition add = new Operations.Addition(A, B);
             Data.atom = add.Execute();

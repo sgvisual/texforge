@@ -25,6 +25,7 @@ namespace texforge.Graph.Nodes
 
         public override object Process()
         {
+            LoadImage(filename);
             return nodeData.atom;
         }
 

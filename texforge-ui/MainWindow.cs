@@ -47,6 +47,8 @@ namespace texforge
                     Text += "*";
                 }
             }
+            RenderPreviewActive.Invalidate();
+            RenderPreviewFull.Invalidate();
         }
 
         private void RenderPreviewActive_Paint(object sender, PaintEventArgs e)
@@ -248,6 +250,15 @@ namespace texforge
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = CheckAbortModifiedGraph();
+        }
+
+        private void RenderPreviewFull_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.FillRectangle(Brushes.Green, e.ClipRectangle);
+            if (graph.Output != null)
+            {
+                e.Graphics.DrawImageUnscaled(graph.Output, e.ClipRectangle);
+            }
         }
 
     }

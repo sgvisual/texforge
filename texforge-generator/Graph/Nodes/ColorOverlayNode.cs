@@ -22,7 +22,7 @@ namespace texforge.Graph.Nodes
 
         public override object Process()
         {
-            if ( inputSockets.Count == 0 )
+            if (inputSockets.Count == 0 || inputSockets[0].connections.Count == 0)
                 return null;
 
             nodeData.atom = inputSockets[0].connections.First.Value.Data.atom;
