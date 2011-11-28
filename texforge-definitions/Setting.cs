@@ -5,13 +5,15 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.ComponentModel;
+using texforge_definitions.Settings;
 
 namespace texforge_definitions
 {
     [Serializable()]
-    public class Setting<T> : ISerializable
+    public class Setting<T> : SettingBase
     {
         public Setting(string name, T value, T defaultValue)
+            : base()
         {
             this.name = name;
             this.value = value;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using texforge.Base;
 using System.Xml.Linq;
+using texforge_definitions.Settings;
 
 namespace texforge.Graph
 {
@@ -113,6 +114,18 @@ namespace texforge.Graph
             public readonly Node owner;
             public LinkedList<Node> connections = new LinkedList<Node>();
         }
+
+        protected LinkedList<SettingBase> settings = new LinkedList<SettingBase>();
+        public LinkedList<SettingBase> Settings
+        {
+            get { return settings; }
+        }
+
+        protected void AddSetting(SettingBase setting)
+        {
+            settings.AddLast(setting);
+        }
+
 
     }
 }
