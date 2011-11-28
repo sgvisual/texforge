@@ -16,6 +16,8 @@ namespace texforge.Graph.Nodes
         {
             RegisterSocket(Socket.Type.Input, "In");
             RegisterSocket(Socket.Type.Output, "Out");
+
+            AddSetting(overlayColor);
         }
 
         public override object Process()
