@@ -31,7 +31,11 @@ namespace texforge.Operations
         }
 
         public override Atom Execute()
-        {     
+        {
+            if (operandA == null )
+                return operandB;
+            if (operandB == null)
+                return operandA;
             byte[] bytesA = operandA.ToBytes();
             byte[] bytesB = operandB.ToBytes();
 

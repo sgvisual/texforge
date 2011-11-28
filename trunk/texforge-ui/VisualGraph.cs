@@ -117,8 +117,6 @@ namespace texforge
             }
             public override Bitmap GetPreview()
             {
-                node.Process();
-
                 if (node.Data.atom == null)
                     return null;
                 return node.Data.atom.Result;
@@ -173,7 +171,7 @@ namespace texforge
                     // Delete transition
                     if( transition != null )
                     {
-                        graph.graph.Transitions.Remove(transition.Value);
+                        graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
                     }
                     graph.Dirty = true;
                     return;
@@ -203,7 +201,7 @@ namespace texforge
                     {
                         return;
                     }
-                    graph.graph.Transitions.Remove(transition.Value);
+                    graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
                     if (fromOutput)
                     {
                         graph.graph.ConnectNodes(target, transition.Value.to);
@@ -294,6 +292,19 @@ namespace texforge
             return depth + 1;
         }
 
+        public void ProcessNode(Graph.Node root)
+        {
+            foreach (Graph.Graph.Transition transition in graph.Transitions)
+            {
+                if (transition.to.owner == root)
+                {
+                    ProcessNode(transition.from.owner);
+                }
+            }
+            root.Data.atom = null;
+            root.Process();
+        }
+
         public void Process()
         {
             dirty = false;
@@ -313,6 +324,8 @@ namespace texforge
                     }
                 }
             }
+            // Generate back up
+            ProcessNode(final);
         }
 
         public void Render(Graphics graphics, Rectangle clip)
