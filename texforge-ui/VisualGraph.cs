@@ -40,21 +40,13 @@ namespace texforge
             set { modified = value; }
         }
 
-        bool dirty = true;
-        public bool Dirty
-        {
-            get { return dirty; }
-            set { dirty = value; }
-        }
-
-        Graph.Node final = null;
         public Image Output
         {
             get
             {
-                if (final != null && final.Data.atom != null && final.Data.atom.Result != null)
+                if (graph.Final != null && graph.Final.Data.atom != null && graph.Final.Data.atom.Result != null)
                 {
-                    return final.Data.atom.Result;
+                    return graph.Final.Data.atom.Result;
                 }
                 return null;
             }
@@ -173,7 +165,6 @@ namespace texforge
                     {
                         graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
                     }
-                    graph.Dirty = true;
                     return;
                 }
                 // Find the socket types
@@ -210,7 +201,6 @@ namespace texforge
                     {
                         graph.graph.ConnectNodes(transition.Value.from, target);
                     }
-                    graph.Dirty = true;
                     return;
                 }
                 // Validate output to input to add a new transition
@@ -226,7 +216,6 @@ namespace texforge
                 {
                     graph.graph.ConnectNodes(target, socket);
                 }
-                graph.Dirty = true;
             }
             public override string GetName()
             {
@@ -254,7 +243,6 @@ namespace texforge
             graph = new Graph.Graph();
             associatedFile = "";
             modified = false;
-            dirty = true;
         }
 
         public void Zoom(float amount)
@@ -270,62 +258,6 @@ namespace texforge
         {
             offset.X += (int)((float)delta.X / zoom * 100.0f);
             offset.Y += (int)((float)delta.Y / zoom * 100.0f);
-        }
-
-        public int GetDepth(Graph.Node root, out Graph.Node deepest)
-        {
-            deepest = root;
-            int depth = -1;
-            foreach (Graph.Graph.Transition transition in graph.Transitions)
-            {
-                if (transition.from.owner == root)
-                {
-                    Graph.Node current = null;
-                    int currentDepth = GetDepth(transition.to.owner, out current);
-                    if (currentDepth > depth)
-                    {
-                        depth = currentDepth;
-                        deepest = current;
-                    }
-                }
-            }
-            return depth + 1;
-        }
-
-        public void ProcessNode(Graph.Node root)
-        {
-            foreach (Graph.Graph.Transition transition in graph.Transitions)
-            {
-                if (transition.to.owner == root)
-                {
-                    ProcessNode(transition.from.owner);
-                }
-            }
-            root.Data.atom = null;
-            root.Process();
-        }
-
-        public void Process()
-        {
-            dirty = false;
-            final = null;
-            int currentDepth = -1;
-            // Find the final output
-            foreach (Graph.Node node in graph.Nodes)
-            {
-                if (node.InputSockets.Count == 0)
-                {
-                    Graph.Node current;
-                    int depth = GetDepth(node, out current);
-                    if (depth > currentDepth)
-                    {
-                        currentDepth = depth;
-                        final = current;
-                    }
-                }
-            }
-            // Generate back up
-            ProcessNode(final);
         }
 
         public void Render(Graphics graphics, Rectangle clip)
@@ -390,10 +322,7 @@ namespace texforge
             graphics.FillRectangle(Brushes.Black, zenith);
             // Render nodes
             cachedSocketRender.Clear();
-            if (dirty)
-            {
-                Process();
-            }
+            graph.Process();
             foreach (Graph.Node node in graph.Nodes)
             {
                 RenderNode(node, graphics, clip);
@@ -515,7 +444,6 @@ namespace texforge
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
-            dirty = true;
         }
 
         public void AddBlendNode(Point position, Rectangle currentClip)
@@ -526,7 +454,6 @@ namespace texforge
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
-            dirty = true;
         }
 
         public DraggableObject GetDraggableObject(Point position, Rectangle currentClip)
@@ -599,7 +526,6 @@ namespace texforge
             associatedFile = filename;
             graph.Load(filename);
             modified = false;
-            dirty = true;
         }
 
 	}

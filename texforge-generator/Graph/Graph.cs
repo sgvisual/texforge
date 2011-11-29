@@ -21,9 +21,17 @@ namespace texforge.Graph
 
                 this.from.AddConnection(to.owner);
                 this.to.AddConnection(from.owner);
+
+                to.owner.Dirty = true;
             }
             public Node.Socket from;
             public Node.Socket to;
+        }
+
+        Node final = null;
+        public Node Final
+        {
+            get { return final; }
         }
 
         List<Node> nodes = new List<Node>();
@@ -39,10 +47,17 @@ namespace texforge.Graph
             get { return transitions; }
         }
 
+        bool dirty = true;
+        public bool Dirty
+        {
+            get { return dirty; }
+        }
+
         public Node CreateNode(string name, string id)
         {
             Node node = NodeFactory.Get().Create(name, id);
             nodes.Add(node);
+            dirty = true;
             return node;
         }
 
@@ -63,7 +78,8 @@ namespace texforge.Graph
                 throw new Exception("Cannot connect nodes because a Socket was not found");
 
             Transition t = new Transition(a, b);
-            transitions.Add(t);            
+            transitions.Add(t);
+            dirty = true;
         }
 
         public void DisconnectNodes(Node.Socket a, Node.Socket b)
@@ -83,6 +99,8 @@ namespace texforge.Graph
                 remove.Value.to.RemoveConnection(remove.Value.from.owner);
                 remove.Value.from.RemoveConnection(remove.Value.to.owner);
                 transitions.Remove(remove.Value);
+                remove.Value.to.owner.Dirty = true;
+                dirty = true;
             }
         }
 
@@ -157,6 +175,7 @@ namespace texforge.Graph
                 }
             }
 
+            dirty = true;
         }
 
         public void Save(string filename)
@@ -218,5 +237,55 @@ namespace texforge.Graph
                 Console.WriteLine(ex.Message);
             }
         }
+
+        protected int GetDepth(Node root, out Node deepest)
+        {
+            deepest = root;
+            int depth = -1;
+            foreach (Transition transition in Transitions)
+            {
+                if (transition.from.owner == root)
+                {
+                    Node current = null;
+                    int currentDepth = GetDepth(transition.to.owner, out current);
+                    if (currentDepth > depth)
+                    {
+                        depth = currentDepth;
+                        deepest = current;
+                    }
+                }
+            }
+            return depth + 1;
+        }
+
+        public void Process()
+        {
+            // If dirty, find the final node
+            if (dirty)
+            {
+                dirty = false;
+                final = null;
+                int currentDepth = -1;
+                foreach (Node node in Nodes)
+                {
+                    if (node.InputSockets.Count == 0)
+                    {
+                        Node current;
+                        int depth = GetDepth(node, out current);
+                        if (depth > currentDepth)
+                        {
+                            currentDepth = depth;
+                            final = current;
+                        }
+                    }
+                }
+            }
+            // Process all dirty nodes
+            foreach (Node node in Nodes)
+            {
+                node.ProcessIfDirty();
+            }
+        }
+
     }
 }
