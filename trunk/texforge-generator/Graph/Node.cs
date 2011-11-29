@@ -14,6 +14,12 @@ namespace texforge.Graph
         protected string name;
         protected UniqueName uniqueName;
 
+        bool dirty = true;
+        public bool Dirty
+        {
+            set { dirty = value; }
+        }
+
         public string Name
         {
             get { return name; }
@@ -33,6 +39,23 @@ namespace texforge.Graph
         public virtual object Process()
         {
             return null;
+        }
+
+        public void ProcessIfDirty()
+        {
+            if (!dirty)
+                return;
+            // Process parents first
+            foreach (Socket socket in inputSockets)
+            {
+                foreach (Node parent in socket.connections)
+                {
+                    parent.ProcessIfDirty();
+                }
+            }
+            Data.atom = null;
+            Process();
+            dirty = false;
         }
 
         public virtual void Save(XElement element)
@@ -56,6 +79,7 @@ namespace texforge.Graph
                 inputSockets.Add(new Socket(this, name));
             else
                 outputSockets.Add(new Socket(this, name));
+            dirty = true;
         }
 
         protected List<Socket> inputSockets = new List<Socket>();
