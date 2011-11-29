@@ -48,7 +48,7 @@ namespace texforge.Graph
             // Process parents first
             foreach (Socket socket in inputSockets)
             {
-                foreach (Node parent in socket.connections)
+                foreach (Node parent in socket.Connections)
                 {
                     parent.ProcessIfDirty();
                 }
@@ -136,7 +136,11 @@ namespace texforge.Graph
 
             public string name;
             public readonly Node owner;
-            public LinkedList<Node> connections = new LinkedList<Node>();
+            protected LinkedList<Node> connections = new LinkedList<Node>();
+            public LinkedList<Node> Connections
+            {
+                get { return connections; }
+            }
         }
 
         protected LinkedList<SettingBase> settings = new LinkedList<SettingBase>();
