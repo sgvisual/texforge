@@ -261,5 +261,20 @@ namespace texforge
             }
         }
 
+        private void exportOutputAsImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (graph.Output != null)
+            {
+                SaveFileDialog exportDialog = new SaveFileDialog();
+                exportDialog.Filter = "Portable Network Graphics|*.png|JPEG|*.jpg|Graphics Interchange Format|*.gif|Windows Bitmap|*.bmp";
+                exportDialog.Title = "Export texforge Graph output";
+                exportDialog.ShowDialog();
+                if (exportDialog.FileName != "")
+                {
+                    graph.Output.Save(exportDialog.FileName);
+                }
+            }
+        }
+
     }
 }
