@@ -9,7 +9,7 @@ namespace texforge.Graph.Nodes
 {
     public class ColorOverlayNode : Node
     {
-        Color overlayColor = new Color("Color", new texforge_definitions.Types.Color(255,255,255,255), new texforge_definitions.Types.Color(255,255,255,255), new texforge_definitions.Types.Color(0,0,0,0), new texforge_definitions.Types.Color(255,255,255,255));
+        Color overlayColor = new Color("Color", new texforge_definitions.Types.Color(255,0,0,255), new texforge_definitions.Types.Color(255,0,0,255), new texforge_definitions.Types.Color(0,0,0,0), new texforge_definitions.Types.Color(255,255,255,255));
 
         public ColorOverlayNode(string name, string id)
             : base(name, id)
@@ -22,13 +22,13 @@ namespace texforge.Graph.Nodes
 
         public override object Process()
         {
-            if (inputSockets.Count == 0 || inputSockets[0].connections.Count == 0)
+            if (inputSockets.Count == 0 || inputSockets[0].Connections.Count == 0)
                 return null;
 
-            nodeData.atom = inputSockets[0].connections.First.Value.Data.atom;
+            nodeData.atom = inputSockets[0].Connections.First.Value.Data.atom;
             
 
-            ColorBlend colorBlend = new ColorBlend(nodeData.atom, new texforge_definitions.Types.Color(255,0,0,255), ColorBlend.BlendType.Additive);
+            ColorBlend colorBlend = new ColorBlend(nodeData.atom, overlayColor.Value, ColorBlend.BlendType.Additive);
             nodeData.atom = colorBlend.Execute();
 
 

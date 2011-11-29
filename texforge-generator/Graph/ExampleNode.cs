@@ -24,11 +24,11 @@ namespace texforge.Graph
             Atom A = null;
             Atom B = null;
 
-            if (sockA.connections.Count > 0)
-                A = sockA.connections.First.Value.Data.atom;
+            if (sockA.Connections.Count > 0)
+                A = sockA.Connections.First.Value.Data.atom;
 
-            if (sockB.connections.Count > 0)
-                B = sockB.connections.First.Value.Data.atom;
+            if (sockB.Connections.Count > 0)
+                B = sockB.Connections.First.Value.Data.atom;
 
             Operations.Addition add = new Operations.Addition(A, B);
             Data.atom = add.Execute();
