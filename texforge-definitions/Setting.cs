@@ -141,10 +141,10 @@ namespace texforge_definitions
             element.Add(baseElement);
 
             //baseElement.Add(new XElement("Type", typeof(T));
-            baseElement.Add(new XElement("Value", value));
-            baseElement.Add(new XElement("Default", defaultValue));
-            baseElement.Add(new XElement("Min", minValue));
-            baseElement.Add(new XElement("Max", maxValue));
+            baseElement.Add(new XElement("Value", value.ToString()));
+            baseElement.Add(new XElement("Default", defaultValue.ToString()));
+            baseElement.Add(new XElement("Min", minValue.ToString()));
+            baseElement.Add(new XElement("Max", maxValue.ToString()));
 
         }
 
