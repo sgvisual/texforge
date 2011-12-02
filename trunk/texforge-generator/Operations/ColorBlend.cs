@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using texforge_definitions.Settings;
 
 namespace texforge.Operations
 {
@@ -19,13 +20,13 @@ namespace texforge.Operations
 
         protected Atom operandA;
         protected texforge_definitions.Types.Color blendColor;
-        protected BlendType blendType;
+        protected eBlendMode blendMode;
 
-        public ColorBlend(Atom a, texforge_definitions.Types.Color color, BlendType blendType          )
+        public ColorBlend(Atom a, texforge_definitions.Types.Color color, eBlendMode blendMode)
         {
             operandA = a;
             this.blendColor = color;
-            this.blendType = blendType;
+            this.blendMode = blendMode;
         }
 
         public override Atom Execute()
