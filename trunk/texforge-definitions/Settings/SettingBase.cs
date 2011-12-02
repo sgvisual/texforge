@@ -3,22 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Xml.Linq;
 
 namespace texforge_definitions.Settings
 {
-    [Serializable()]
-    public class SettingBase : ISerializable
+    public abstract class SettingBase 
     {
-        public SettingBase()
-        {
-        }
-
-        public SettingBase(SerializationInfo info, StreamingContext context)
-        {
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-        }
+        public abstract void Save(XElement element);
+        public abstract void Load(XElement element);
     }
 }
