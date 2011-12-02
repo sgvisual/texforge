@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using texforge.Graph;
+using texforge_definitions.Settings;
 
 namespace texforge
 {
@@ -72,6 +73,7 @@ namespace texforge
             public virtual void Drop(VisualGraph graph, Point position, Rectangle clip) { graph.Modified = true; }
             public abstract string GetName();
             public abstract Bitmap GetPreview();
+            public virtual LinkedList<SettingBase> GetSettings() { return new LinkedList<SettingBase>(); }
         }
 
         class DraggableNode : DraggableObject
@@ -112,6 +114,10 @@ namespace texforge
                 if (node.Data.atom == null)
                     return null;
                 return node.Data.atom.Result;
+            }
+            public override LinkedList<SettingBase> GetSettings()
+            {
+                return node.Settings;
             }
         }
 
@@ -347,6 +353,7 @@ namespace texforge
 
             // Actual node
             Brush outline = Brushes.Black;
+            Brush color = Brushes.LimeGreen;
             if (active != null && active.Is(node))
             {
                 outline = Brushes.LightGray;
@@ -356,11 +363,15 @@ namespace texforge
                 outline = Brushes.White;
                 origin = dragging.Position;
             }
+            if (graph.Final == node)
+            {
+                color = Brushes.Aqua;
+            }
             Size size = NodeGetSize(node);
             Point end = TransformToScreen(new Point(origin.X + size.Width, origin.Y + size.Height), clip);
             origin = TransformToScreen(origin, clip);
             Rectangle nodeRect = new Rectangle(origin, new Size(end.X - origin.X, end.Y - origin.Y));
-            graphics.FillRectangle(Brushes.LimeGreen, nodeRect);
+            graphics.FillRectangle(color, nodeRect);
             graphics.DrawRectangle(new Pen(outline), nodeRect);
 
             // Debug info
