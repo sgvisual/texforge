@@ -74,6 +74,10 @@ namespace texforge
             public abstract string GetName();
             public abstract Bitmap GetPreview();
             public virtual LinkedList<SettingBase> GetSettings() { return new LinkedList<SettingBase>(); }
+            public virtual bool Dirty
+            {
+                set { }
+            }
         }
 
         class DraggableNode : DraggableObject
@@ -118,6 +122,10 @@ namespace texforge
             public override LinkedList<SettingBase> GetSettings()
             {
                 return node.Settings;
+            }
+            public override bool Dirty
+            {
+                set { node.Dirty = value; }
             }
         }
 
