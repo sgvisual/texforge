@@ -17,7 +17,20 @@ namespace texforge.Graph
         bool dirty = true;
         public bool Dirty
         {
-            set { dirty = value; }
+            set 
+            { 
+                dirty = value;
+                if (dirty)
+                {
+                    foreach (Socket socket in OutputSockets)
+                    {
+                        foreach (Node child in socket.Connections)
+                        {
+                            child.Dirty = true;
+                        }
+                    }
+                }
+            }
         }
 
         public string Name

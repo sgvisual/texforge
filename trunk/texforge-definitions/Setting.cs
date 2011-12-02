@@ -127,12 +127,11 @@ namespace texforge_definitions
 
         public virtual void Randomize()
         {
-
+            RandomizeBetween(minValue, maxValue);
         }
 
         public virtual void RandomizeBetween(T min, T max)
         {
-
         }
 
         public virtual void Save(XElement element)

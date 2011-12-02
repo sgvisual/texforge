@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using texforge_generator.Base;
+using texforge_definitions.Settings;
 
 namespace texforge
 {
@@ -124,7 +125,13 @@ namespace texforge
                 PanelProperties.Controls.Clear();
                 Label name = new Label();
                 name.Text = draggable.GetName();
+                name.AutoSize = false;
+                name.Width = PanelProperties.Width - 5;
                 PanelProperties.Controls.Add(name);
+                foreach (SettingBase setting in draggable.GetSettings())
+                {
+                    SettingComponentFactory.CreateComponent(setting, PanelProperties);
+                }
             }
         }
 
@@ -273,6 +280,14 @@ namespace texforge
                 {
                     graph.Output.Save(exportDialog.FileName);
                 }
+            }
+        }
+
+        private void MainWindow_Resize(object sender, EventArgs e)
+        {
+            if (PanelProperties.Controls.Count > 0)
+            {
+                PanelProperties.Controls[0].Width = PanelProperties.Width - 5;
             }
         }
 
