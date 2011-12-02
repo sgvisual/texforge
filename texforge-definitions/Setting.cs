@@ -9,7 +9,6 @@ using texforge_definitions.Settings;
 
 namespace texforge_definitions
 {
-    [Serializable()]
     public class Setting<T> : SettingBase
     {
         public Setting(string name, T value, T defaultValue)
@@ -29,28 +28,6 @@ namespace texforge_definitions
             this.maxValue = max;
 
             SetAttributes();
-        }
-
-        public Setting(SerializationInfo info, StreamingContext context)
-        {
-            Value = (T)(info.GetValue("Value", typeof(T)));
-            DefaultValue = (T)(info.GetValue("DefaultValue", typeof(T)));
-            Min = (T)(info.GetValue("Min", typeof(T)));
-            Max = (T)(info.GetValue("Max", typeof(T)));
-            Name = (string)(info.GetValue("Name", typeof(string)));
-            Description = (string)(info.GetValue("Description", typeof(string)));
-            Help = (string)(info.GetValue("Help", typeof(string)));
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("Value", Value);
-            info.AddValue("DefaultValue", DefaultValue);
-            info.AddValue("Min", Min);
-            info.AddValue("Max", Max);
-            info.AddValue("Name", Name);
-            info.AddValue("Description", Description);
-            info.AddValue("Help", Help);
         }
 
         public void SetAttributes()
@@ -134,7 +111,7 @@ namespace texforge_definitions
         {
         }
 
-        public virtual void Save(XElement element)
+        public override void Save(XElement element)
         {
             XElement baseElement = new XElement("Setting", name);            
             element.Add(baseElement);
@@ -147,7 +124,7 @@ namespace texforge_definitions
 
         }
 
-        public virtual void Load(System.Xml.Linq.XElement element)
+        public override void Load(System.Xml.Linq.XElement element)
         {
             XElement baseElement = element.Descendants("Setting").First();
             name = baseElement.Value;

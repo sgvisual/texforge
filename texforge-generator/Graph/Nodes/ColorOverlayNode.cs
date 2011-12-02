@@ -37,18 +37,5 @@ namespace texforge.Graph.Nodes
             return nodeData.atom;
         }
 
-        public override void Save(System.Xml.Linq.XElement element)
-        {
-            base.Save(element);
-
-            overlayColor.Save(element);
-        }
-
-        public override void Load(System.Xml.Linq.XElement element)
-        {
-            base.Load(element);
-
-            overlayColor.Load(element);
-        }
     }
 }

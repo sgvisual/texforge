@@ -73,10 +73,18 @@ namespace texforge.Graph
 
         public virtual void Save(XElement element)
         {
+            foreach (SettingBase setting in settings)
+            {
+                setting.Save(element);
+            }
         }
 
         public virtual void Load(XElement element)
         {
+            foreach (SettingBase setting in settings)
+            {
+                setting.Load(element);
+            }
         }
 
         protected NodeData nodeData;
