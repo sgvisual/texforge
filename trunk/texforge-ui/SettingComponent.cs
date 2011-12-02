@@ -6,21 +6,22 @@ using texforge_definitions.Settings;
 using System.Windows.Forms;
 using texforge_definitions;
 using System.Drawing;
+using texforge.Graph;
 
 namespace texforge
 {
     public class SettingComponentFactory
     {
-        public static void CreateComponent(SettingBase setting, FlowLayoutPanel panel)
+        public static void CreateComponent(SettingBase setting, VisualGraph.DraggableObject owner, FlowLayoutPanel panel)
         {
             SettingComponent component = null;
             switch (setting.GetType().Name)
             {
                 case "Color":
-                    component = new ColorSettingComponent(setting);
+                    component = new ColorSettingComponent(setting, owner);
                     break;
                 default:
-                    component = new InvalidSettingComponent(setting);
+                    component = new InvalidSettingComponent(setting, owner);
                     break;
             }
             panel.Controls.Add(component.Container);
@@ -29,22 +30,30 @@ namespace texforge
         abstract class SettingComponent
         {
             protected Panel container;
+            protected VisualGraph.DraggableObject owner;
             public Panel Container
             {
                 get { return container; }
             }
 
-            public SettingComponent()
+            public SettingComponent(VisualGraph.DraggableObject owner)
             {
                 container = new Panel();
                 container.Dock = DockStyle.Bottom;
                 container.Tag = this;
+                this.owner = owner;
+            }
+
+            protected void ValueChanged()
+            {
+                owner.Dirty = true;
             }
         }
 
         class InvalidSettingComponent : SettingComponent
         {
-            public InvalidSettingComponent(SettingBase setting)
+            public InvalidSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner)
+                : base(owner)
             {
                 Label invalid = new Label();
                 invalid.Text = "Unsupported type: " + setting.GetType().Name;
@@ -57,7 +66,8 @@ namespace texforge
         {
             texforge_definitions.Settings.Color data;
 
-            public ColorSettingComponent(SettingBase setting)
+            public ColorSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner)
+                : base(owner)
             {
                 data = (texforge_definitions.Settings.Color)setting;
                 GroupBox box = new GroupBox();
@@ -77,8 +87,11 @@ namespace texforge
 
             void color_Paint(object sender, PaintEventArgs e)
             {
+                data.Randomize();
+                ValueChanged();
                 e.Graphics.FillRectangle(new SolidBrush(data.Value.WindowsColor), e.ClipRectangle);
             }
+
         }
 
     }
