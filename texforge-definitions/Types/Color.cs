@@ -14,6 +14,19 @@ namespace texforge_definitions.Types
         public byte blue;
         public byte alpha;
 
+        public Color(System.Drawing.Color color)
+        {
+            red = color.R;
+            green = color.G;
+            blue = color.B;
+            alpha = color.A;
+        }
+
+        public System.Drawing.Color WindowsColor
+        {
+            get { return System.Drawing.Color.FromArgb(alpha, red, green, blue); } 
+        }
+
         public Color(byte red, byte green, byte blue, byte alpha)
         {
             this.red = red;
