@@ -14,7 +14,14 @@ namespace texforge.Graph.Nodes
 
         public Color(string name, string id)
             : base(name, id)
-        { }
+        {
+            RegisterSocket(Socket.Type.Output, "Out");
+
+            AddSetting(color);
+
+            //atom = new Atom(System.Drawing.Color.White);
+            //Data.atom = atom;
+        }
 
         public override object Process()
         {
@@ -23,9 +30,8 @@ namespace texforge.Graph.Nodes
 
             atom.AtomColor = color.Value.WindowsColor;
 
-            // Unlike other nodes, this one doesnt need an atom,
-            // it just needs to know the color and it will blended by the 
-            // connected node, easiest way would be to have a special atom
+            Data.atom = atom;
+
             return atom;
         }
 
