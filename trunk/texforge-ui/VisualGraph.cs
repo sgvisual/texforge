@@ -455,9 +455,19 @@ namespace texforge
             return position;
         }
 
+        public void AddColorNode(Point position, Rectangle currentClip)
+        {
+            Graph.Node a = graph.CreateNode("Color", "");
+            NodeData aData = new NodeData();
+            aData.header.title = "Render" + graph.Nodes.Count;
+            a.Data = aData;
+            a.Data.header.point = TransformFromScreen(position, currentClip);
+            modified = true;
+        }
+
         public void AddRenderNode(Point position, Rectangle currentClip)
         {
-            Graph.Node a = graph.CreateNode("ExampleNode", "");
+            Graph.Node a = graph.CreateNode("ImageNode", "");
             NodeData aData = new NodeData();
             aData.header.title = "Render" + graph.Nodes.Count;
             a.Data = aData;
@@ -467,7 +477,7 @@ namespace texforge
 
         public void AddBlendNode(Point position, Rectangle currentClip)
         {
-            Graph.Node a = graph.CreateNode("ExampleNode", "");
+            Graph.Node a = graph.CreateNode("Blend", "");
             NodeData aData = new NodeData();
             aData.header.title = "Blend" + graph.Nodes.Count;
             a.Data = aData;

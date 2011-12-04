@@ -9,7 +9,7 @@ namespace texforge.Graph.Nodes
 {
     public class ColorOverlayNode : Node
     {
-        Color overlayColor = new Color("Color", new texforge_definitions.Types.Color(255,0,0,255), new texforge_definitions.Types.Color(255,0,0,255), new texforge_definitions.Types.Color(0,0,0,0), new texforge_definitions.Types.Color(255,255,255,255));
+        texforge_definitions.Settings.Color overlayColor = new texforge_definitions.Settings.Color("Color", new texforge_definitions.Types.Color(255, 0, 0, 255), new texforge_definitions.Types.Color(255, 0, 0, 255), new texforge_definitions.Types.Color(0, 0, 0, 0), new texforge_definitions.Types.Color(255, 255, 255, 255));
         BlendMode blendMode = new BlendMode("BlendMode", eBlendMode.None, eBlendMode.None);
 
         public ColorOverlayNode(string name, string id)

@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Atom.cs" />
+    <Compile Include="AtomAttributes.cs" />
     <Compile Include="Base\Generator.cs" />
     <Compile Include="Base\UniqueName.cs" />
     <Compile Include="Generators\Generator.cs" />
@@ -48,6 +49,8 @@
     <Compile Include="Graph\Node.cs" />
     <Compile Include="Graph\NodeData.cs" />
     <Compile Include="Graph\NodeFactory.cs" />
+    <Compile Include="Graph\Nodes\Blend.cs" />
+    <Compile Include="Graph\Nodes\Color.cs" />
     <Compile Include="Graph\Nodes\ColorOverlayNode.cs" />
     <Compile Include="Graph\Nodes\ImageNode.cs" />
     <Compile Include="Graph\UnitTest_Graph.cs" />

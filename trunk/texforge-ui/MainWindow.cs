@@ -291,5 +291,11 @@ namespace texforge
             }
         }
 
+        private void addColorNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.AddColorNode(mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
+        }
+
     }
 }
