@@ -13,6 +13,37 @@ namespace texforge
         protected Size size;
         protected Bitmap bitmap;
         protected BitmapData bitmapData = null;
+        protected Color color;
+        
+        public enum AtomType 
+        {
+            Color,
+            Bitmap
+        }
+
+        protected AtomType atomType = AtomType.Bitmap;
+        public bool IsColor
+        {
+            get { return atomType == AtomType.Color; }
+        }
+
+        public bool IsBitmap
+        {
+            get { return atomType == AtomType.Bitmap; }
+        }        
+
+        public Color AtomColor
+        {
+            get { return color; }
+            set { color = value; }
+        }
+
+        public Atom(System.Drawing.Color color)
+        {
+            atomType = AtomType.Color;
+            
+            this.color = color;
+        }
 
         public Atom(Image image)
         {
@@ -31,8 +62,7 @@ namespace texforge
         public Atom(Size size, PixelFormat pixelFormat)
         {
             this.size = size;
-            bitmap = new Bitmap(size.Width, size.Height, pixelFormat);
-            
+            bitmap = new Bitmap(size.Width, size.Height, pixelFormat);            
         }
 
         public void Clear(Color color)
@@ -141,5 +171,39 @@ namespace texforge
             bitmap.UnlockBits(bitmapData);
             bitmapData = null;
         }
+
+        protected AtomAttributes attributes;
+        public AtomAttributes Attributes
+        {
+            get { return attributes; }
+            set { attributes = value; }
+        }
+
+        public void SetAttributes()
+        {
+            Attribute[] attrs = Attribute.GetCustomAttributes(this.GetType());
+            foreach (Attribute a in attrs)
+            {
+                if (a is AtomAttributes)
+                {
+                    attributes = (AtomAttributes)a;
+                    break;
+                }
+            }
+
+            FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            foreach (FieldInfo field in fields)
+            {
+                foreach (Attribute attr in field.GetCustomAttributes(true))
+                {
+                    if (attr is AtomAttributes)
+                    {
+                        attributes = (AtomAttributes)attr;
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace texforge.Operations
 {
-    public abstract class Operation
+    public abstract class Operation 
     {
 
         public abstract Atom Execute();
