@@ -10,7 +10,6 @@ namespace texforge.Graph.Nodes
         texforge_definitions.Settings.Color color = new texforge_definitions.Settings.Color("Color", new texforge_definitions.Types.Color(System.Drawing.Color.White), new texforge_definitions.Types.Color(System.Drawing.Color.White),
             new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.White));
 
-        [AtomAttributes(IsColor = true)]
         Atom atom;
 
         public Color(string name, string id)
