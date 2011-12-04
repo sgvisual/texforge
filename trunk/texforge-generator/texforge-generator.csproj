@@ -39,7 +39,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Atom.cs" />
-    <Compile Include="AtomAttributes.cs" />
     <Compile Include="Base\Generator.cs" />
     <Compile Include="Base\UniqueName.cs" />
     <Compile Include="Generators\Generator.cs" />

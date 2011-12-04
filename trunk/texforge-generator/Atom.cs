@@ -171,39 +171,5 @@ namespace texforge
             bitmap.UnlockBits(bitmapData);
             bitmapData = null;
         }
-
-        protected AtomAttributes attributes;
-        public AtomAttributes Attributes
-        {
-            get { return attributes; }
-            set { attributes = value; }
-        }
-
-        public void SetAttributes()
-        {
-            Attribute[] attrs = Attribute.GetCustomAttributes(this.GetType());
-            foreach (Attribute a in attrs)
-            {
-                if (a is AtomAttributes)
-                {
-                    attributes = (AtomAttributes)a;
-                    break;
-                }
-            }
-
-            FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            foreach (FieldInfo field in fields)
-            {
-                foreach (Attribute attr in field.GetCustomAttributes(true))
-                {
-                    if (attr is AtomAttributes)
-                    {
-                        attributes = (AtomAttributes)attr;
-                        break;
-                    }
-                }
-            }
-        }
-
     }
 }
