@@ -124,23 +124,27 @@ namespace texforge_definitions
 
         }
 
-        public override void Load(System.Xml.Linq.XElement element)
+        public override void Load(ref System.Xml.Linq.XElement element)
         {
-            XElement baseElement = element.Descendants("Setting").First();
-            name = baseElement.Value;
-            
-            string valueStr = baseElement.Descendants("Value").First().Value;
+            name = element.Value;
+
+            string valueStr = element.Descendants("Value").First().Value;
             value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(valueStr);
 
-            string defaultValueStr = baseElement.Descendants("Default").First().Value;
+            string defaultValueStr = element.Descendants("Default").First().Value;
             defaultValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(defaultValueStr);
 
-            string minValueStr = baseElement.Descendants("Min").First().Value;
+            string minValueStr = element.Descendants("Min").First().Value;
             minValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(minValueStr);
 
-            string maxValueStr = baseElement.Descendants("Max").First().Value;
+            string maxValueStr = element.Descendants("Max").First().Value;
             maxValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(maxValueStr);
 
+            IEnumerable<XElement> siblings = element.ElementsAfterSelf();
+            if (siblings.Count() == 0)
+                element = null;
+            else
+                element = siblings.First();
         }
 
         //public static readonly int seed = 0;

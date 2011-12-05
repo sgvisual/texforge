@@ -81,9 +81,14 @@ namespace texforge.Graph
 
         public virtual void Load(XElement element)
         {
-            foreach (SettingBase setting in settings)
+            IEnumerable<XElement> baseElement = element.Descendants("Setting");
+            if( baseElement.Count() > 0 )
             {
-                setting.Load(element);
+                XElement settingElement = baseElement.First();
+                foreach (SettingBase setting in settings)
+                {
+                    setting.Load(ref settingElement);
+                }
             }
         }
 
