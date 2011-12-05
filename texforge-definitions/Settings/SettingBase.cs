@@ -10,6 +10,6 @@ namespace texforge_definitions.Settings
     public abstract class SettingBase 
     {
         public abstract void Save(XElement element);
-        public abstract void Load(XElement element);
+        public abstract void Load(ref XElement element);
     }
 }

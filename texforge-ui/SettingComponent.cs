@@ -12,16 +12,16 @@ namespace texforge
 {
     public class SettingComponentFactory
     {
-        public static void CreateComponent(SettingBase setting, VisualGraph.DraggableObject owner, FlowLayoutPanel panel)
+        public static void CreateComponent(SettingBase setting, VisualGraph.DraggableObject owner, FlowLayoutPanel panel, PictureBox render)
         {
             SettingComponent component = null;
             switch (setting.GetType().Name)
             {
                 case "Color":
-                    component = new ColorSettingComponent(setting, owner);
+                    component = new ColorSettingComponent(setting, owner, render);
                     break;
                 default:
-                    component = new InvalidSettingComponent(setting, owner);
+                    component = new InvalidSettingComponent(setting, owner, render);
                     break;
             }
             panel.Controls.Add(component.Container);
@@ -31,29 +31,35 @@ namespace texforge
         {
             protected Panel container;
             protected VisualGraph.DraggableObject owner;
+            protected PictureBox render;
+            protected List<Control> refresh = new List<Control>();
             public Panel Container
             {
                 get { return container; }
             }
 
-            public SettingComponent(VisualGraph.DraggableObject owner)
+            public SettingComponent(VisualGraph.DraggableObject owner, PictureBox render)
             {
                 container = new Panel();
                 container.Dock = DockStyle.Bottom;
                 container.Tag = this;
                 this.owner = owner;
+                this.render = render;
             }
 
             protected void ValueChanged()
             {
                 owner.Dirty = true;
+                foreach (Control control in refresh)
+                    control.Invalidate();
+                render.Invalidate();
             }
         }
 
         class InvalidSettingComponent : SettingComponent
         {
-            public InvalidSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner)
-                : base(owner)
+            public InvalidSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
             {
                 Label invalid = new Label();
                 invalid.Text = "Unsupported type: " + setting.GetType().Name;
@@ -66,8 +72,8 @@ namespace texforge
         {
             texforge_definitions.Settings.Color data;
 
-            public ColorSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner)
-                : base(owner)
+            public ColorSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Color)setting;
                 GroupBox box = new GroupBox();
@@ -83,12 +89,23 @@ namespace texforge
                 box.Controls.Add(panel);
                 container.Controls.Add(box);
                 color.Paint += new PaintEventHandler(color_Paint);
+                change.Click += new EventHandler(change_Click);
+                refresh.Add(color);
+            }
+
+            void change_Click(object sender, EventArgs e)
+            {
+                ColorDialog choose = new ColorDialog();
+                DialogResult choice = choose.ShowDialog();
+                if (choice == DialogResult.OK)
+                {
+                    data.Value = new texforge_definitions.Types.Color(choose.Color);
+                    ValueChanged();
+                }
             }
 
             void color_Paint(object sender, PaintEventArgs e)
             {
-                data.Randomize();
-                ValueChanged();
                 e.Graphics.FillRectangle(new SolidBrush(data.Value.WindowsColor), e.ClipRectangle);
             }
 

@@ -130,7 +130,7 @@ namespace texforge
                 PanelProperties.Controls.Add(name);
                 foreach (SettingBase setting in draggable.GetSettings())
                 {
-                    SettingComponentFactory.CreateComponent(setting, draggable, PanelProperties);
+                    SettingComponentFactory.CreateComponent(setting, draggable, PanelProperties, GraphRender);
                 }
             }
         }
