@@ -12,8 +12,8 @@ namespace texforge.Graph.Nodes
         texforge_definitions.Settings.Color overlayColor = new texforge_definitions.Settings.Color("Color", new texforge_definitions.Types.Color(255, 0, 0, 255), new texforge_definitions.Types.Color(255, 0, 0, 255), new texforge_definitions.Types.Color(0, 0, 0, 0), new texforge_definitions.Types.Color(255, 255, 255, 255));
         BlendMode blendMode = new BlendMode("BlendMode", eBlendMode.None, eBlendMode.None);
 
-        public ColorOverlayNode(string name, string id)
-            : base(name, id)
+        public ColorOverlayNode(string name, string id, Graph graph)
+            : base(name, id, graph)
         {
             RegisterSocket(Socket.Type.Input, "In");
             RegisterSocket(Socket.Type.Output, "Out");

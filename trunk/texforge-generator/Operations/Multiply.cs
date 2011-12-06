@@ -22,35 +22,6 @@ namespace texforge.Operations
             operandB = b;
         }
 
-        protected Atom MultiplyColor(ref Atom A, ref Atom B)
-        {
-            if (A.IsColor && B.IsColor )
-            {
-                byte a = (byte)((A.AtomColor.A * B.AtomColor.A) / 255);
-                byte r = (byte)((A.AtomColor.R * B.AtomColor.R) / 255);
-                byte g = (byte)((A.AtomColor.G * B.AtomColor.G) / 255);
-                byte b = (byte)((A.AtomColor.B * B.AtomColor.B) / 255);
-                return new Atom(System.Drawing.Color.FromArgb(a,r,g,b));
-            }
-
-            Atom color = A.IsColor ? A : B;
-            Atom bitmap = A.IsBitmap ? A : B;
-
-            byte[] source = bitmap.ToBytes();
-            byte[] result = new byte[source.Length];
-
-            int bytes = source.Length;
-            for (int i = 0; i < bytes - 4; i += 4)
-            {
-                result[i + 0] = (byte)((source[i + 0] * color.AtomColor.B) / 255);
-                result[i + 1] = (byte)((source[i + 1] * color.AtomColor.G) / 255);
-                result[i + 2] = (byte)((source[i + 2] * color.AtomColor.R) / 255);
-                result[i + 3] = (byte)((source[i + 3] * color.AtomColor.A) / 255);
-            }
-
-            return new Atom(result, bitmap.Result.Size, bitmap.Result.PixelFormat);
-        }
-
         public Atom MultiplyBitmaps(ref Atom A, ref Atom B)
         {
             byte[] bytesA = A.ToBytes();
@@ -71,10 +42,7 @@ namespace texforge.Operations
 
         public override Atom Execute()
         {
-            if (operandA.IsBitmap && operandB.IsBitmap)
-                return MultiplyBitmaps(ref operandA, ref operandB);
-
-            return MultiplyColor(ref operandA, ref operandB);
+            return MultiplyBitmaps(ref operandA, ref operandB);
         }
 
     }

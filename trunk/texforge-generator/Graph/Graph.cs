@@ -9,8 +9,7 @@ using System.ComponentModel;
 
 namespace texforge.Graph
 {
-   // [Serializable()]
-    public class Graph //: ISerializable
+    public class Graph 
     {
         public struct Transition
         {
@@ -55,7 +54,7 @@ namespace texforge.Graph
 
         public Node CreateNode(string name, string id)
         {
-            Node node = NodeFactory.Get().Create(name, id);
+            Node node = NodeFactory.Get().Create(name, id, this);
             nodes.Add(node);
             dirty = true;
             return node;
@@ -104,8 +103,16 @@ namespace texforge.Graph
             }
         }
 
-        public Graph()
-        { }
+        public Graph(GraphSettings settings)
+        {
+            this.settings = settings;
+        }
+
+        protected GraphSettings settings;
+        public GraphSettings Settings
+        {
+            get { return settings; }
+        }
 
         static T ParsePoint<T>(string str)
         {

@@ -27,9 +27,9 @@ namespace texforge.Graph
             nodes["Color"] = typeof(Color);
         }
 
-        public Node Create(string name, string id)
+        public Node Create(string name, string id, Graph graph)
         {
-            Node node = (Node)System.Activator.CreateInstance(nodes[name], new object[] { name, id });            
+            Node node = (Node)System.Activator.CreateInstance(nodes[name], new object[] { name, id, graph });            
             return node;
         }
 

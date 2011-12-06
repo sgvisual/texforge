@@ -15,34 +15,21 @@ namespace texforge
         protected BitmapData bitmapData = null;
         protected Color color;
         
-        public enum AtomType 
-        {
-            Color,
-            Bitmap
-        }
-
-        protected AtomType atomType = AtomType.Bitmap;
-        public bool IsColor
-        {
-            get { return atomType == AtomType.Color; }
-        }
-
-        public bool IsBitmap
-        {
-            get { return atomType == AtomType.Bitmap; }
-        }        
-
         public Color AtomColor
         {
             get { return color; }
-            set { color = value; }
+            set { color = value; Clear(color); }
         }
 
-        public Atom(System.Drawing.Color color)
+        public Atom(System.Drawing.Color color, Size size, PixelFormat pixelFormat)
         {
-            atomType = AtomType.Color;
-            
+            this.size = size;
             this.color = color;
+
+            bitmap = new Bitmap(size.Width, size.Height, pixelFormat);
+
+            Clear(color);
+
         }
 
         public Atom(Image image)
@@ -74,7 +61,15 @@ namespace texforge
 
             IntPtr ptr = bitmapData.Scan0;
 
-            Parallel.For(0, bytes, r => { if (r % 3 == 2) rgb[r] = color.R; if (r % 3 == 1) rgb[r] = color.G; if (r % 3 == 0) rgb[r] = color.B; });
+            //Parallel.For(0, bytes, r => { if (r % 4 == 3) rgb[r] = color.A; if (r % 3 == 2) rgb[r] = color.R; if (r % 3 == 1) rgb[r] = color.G; if (r % 3 == 0) rgb[r] = color.B; });
+
+            for (int i = 0; i < bytes - 4; i += 4)
+            {
+                rgb[i + 0] = color.B;
+                rgb[i + 1] = color.G;
+                rgb[i + 2] = color.R;
+                rgb[i + 3] = color.A;
+            }
 
             System.Runtime.InteropServices.Marshal.Copy(rgb, 0, ptr, bytes);
 

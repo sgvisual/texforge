@@ -30,9 +30,9 @@ namespace texforge.Operations
             operandB = b;
         }
 
-        public override Atom Execute()
+        protected Atom AddBitmaps(ref Atom A, ref Atom B)
         {
-            if (operandA == null )
+            if (operandA == null)
                 return operandB;
             if (operandB == null)
                 return operandA;
@@ -45,17 +45,22 @@ namespace texforge.Operations
             byte[] result = new byte[bytesB.Length];
 
             int bytes = bytesB.Length;
-            Parallel.For(0, bytes, index => 
-            { 
-                if ( mode == eMode.Average )
+            Parallel.For(0, bytes, index =>
+            {
+                if (mode == eMode.Average)
                     result[index] = (byte)(Math.Min(((bytesA[index] + bytesB[index]) / 2), 255));
                 else
-                if ( mode == eMode.Add )
+                if (mode == eMode.Add)
                     result[index] = (byte)(Math.Min(((bytesA[index] + bytesB[index])), 255));
             });
 
             return new Atom(result, operandA.Result.Size, operandA.Result.PixelFormat);
-                        
+
+        }
+
+        public override Atom Execute()
+        {
+            return AddBitmaps(ref operandA, ref operandB);                        
         }
     }
 }
