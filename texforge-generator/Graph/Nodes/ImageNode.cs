@@ -10,8 +10,8 @@ namespace texforge.Graph.Nodes
     {
         protected string filename;
 
-        public ImageNode(string name, string id)
-            : base(name, id)
+        public ImageNode(string name, string id, Graph graph)
+            : base(name, id, graph)
         {
             RegisterSocket(Socket.Type.Output, "Out");
         }

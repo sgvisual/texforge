@@ -12,8 +12,8 @@ namespace texforge.Graph.Nodes
 
         protected BlendMode blendMode = new BlendMode("BlendMode", eBlendMode.None, eBlendMode.None);
         
-        public Blend(string name, string id)
-            : base(name, id)
+        public Blend(string name, string id, Graph graph)
+            : base(name, id, graph)
         {
             RegisterSocket(Socket.Type.Input, "A");
             RegisterSocket(Socket.Type.Input, "B");

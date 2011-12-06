@@ -12,8 +12,8 @@ namespace texforge.Graph.Nodes
 
         Atom atom;
 
-        public Color(string name, string id)
-            : base(name, id)
+        public Color(string name, string id, Graph graph)
+            : base(name, id, graph)
         {
             RegisterSocket(Socket.Type.Output, "Out");
 
@@ -26,7 +26,7 @@ namespace texforge.Graph.Nodes
         public override object Process()
         {
             if (atom == null)
-                atom = new Atom(System.Drawing.Color.White);
+                atom = new Atom(System.Drawing.Color.White, graph.Settings.size, graph.Settings.PixelFormat);
 
             atom.AtomColor = color.Value.WindowsColor;
 

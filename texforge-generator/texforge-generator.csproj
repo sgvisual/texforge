@@ -45,6 +45,7 @@
     <Compile Include="Generators\Heightmap.cs" />
     <Compile Include="Graph\ExampleNode.cs" />
     <Compile Include="Graph\Graph.cs" />
+    <Compile Include="Graph\GraphSettings.cs" />
     <Compile Include="Graph\Node.cs" />
     <Compile Include="Graph\NodeData.cs" />
     <Compile Include="Graph\NodeFactory.cs" />

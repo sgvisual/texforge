@@ -43,9 +43,10 @@ namespace texforge.Graph
             get { return uniqueName.Value; }
         }
 
-        public Node(string name, string id)
+        public Node(string name, string id, Graph graph)
         {
             this.name = name;
+            this.graph = graph;
             uniqueName = new UniqueName(id);
         }
 
@@ -180,6 +181,6 @@ namespace texforge.Graph
             settings.AddLast(setting);
         }
 
-
+        protected Graph graph;
     }
 }

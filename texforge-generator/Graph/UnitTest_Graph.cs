@@ -15,7 +15,7 @@ namespace texforge.Graph
 
         public UnitTest_Graph()
         {
-            graph = new Graph();
+            graph = new Graph(new GraphSettings());
             
             Node a = graph.CreateNode("ImageNode", "");//graph.CreateNode();
             NodeData aData = new NodeData();

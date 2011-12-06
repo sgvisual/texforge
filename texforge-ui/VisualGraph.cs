@@ -254,7 +254,7 @@ namespace texforge
 
         public void Clear()
         {
-            graph = new Graph.Graph();
+            graph = new Graph.Graph(new GraphSettings());
             associatedFile = "";
             modified = false;
         }
