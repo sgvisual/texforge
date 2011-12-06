@@ -20,7 +20,7 @@ namespace texforge.Graph.Nodes
         {
             this.filename = filename;
             if ( File.Exists(filename) )
-                nodeData.atom = new Atom(System.Drawing.Image.FromFile(filename));
+                nodeData.atom = new Atom(System.Drawing.Image.FromFile(filename), graph.Settings.size);
         }
 
         public override object Process()
