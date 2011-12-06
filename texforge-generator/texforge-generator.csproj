@@ -51,8 +51,7 @@
     <Compile Include="Graph\NodeFactory.cs" />
     <Compile Include="Graph\Nodes\Blend.cs" />
     <Compile Include="Graph\Nodes\Color.cs" />
-    <Compile Include="Graph\Nodes\ColorOverlayNode.cs" />
-    <Compile Include="Graph\Nodes\ImageNode.cs" />
+    <Compile Include="Graph\Nodes\Image.cs" />
     <Compile Include="Graph\UnitTest_Graph.cs" />
     <Compile Include="Noise.cs" />
     <Compile Include="Operations\Addition.cs" />

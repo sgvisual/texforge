@@ -134,6 +134,7 @@ namespace texforge.Graph
                     return s;
             }
 
+            System.Diagnostics.Debug.Assert(false, string.Format("Socket {0} not found for node {1}", name, this.name));
             return null;
         }
         

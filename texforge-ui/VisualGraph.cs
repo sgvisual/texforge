@@ -467,7 +467,7 @@ namespace texforge
 
         public void AddRenderNode(Point position, Rectangle currentClip)
         {
-            Graph.Node a = graph.CreateNode("ImageNode", "");
+            Graph.Node a = graph.CreateNode("Image", "");
             NodeData aData = new NodeData();
             aData.header.title = "Render" + graph.Nodes.Count;
             a.Data = aData;
