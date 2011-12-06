@@ -17,30 +17,30 @@ namespace texforge.Graph
         {
             graph = new Graph(new GraphSettings());
             
-            Node a = graph.CreateNode("ImageNode", "");//graph.CreateNode();
+            Node a = graph.CreateNode("Image", "");
             NodeData aData = new NodeData();
-            aData.header.title = "A";
+            aData.header.title = "Image";
             a.Data = aData;
             a.Data.header.point = new Point(-175, -60);
             Uri uri = new Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"..\..\..\data\tests\toplayer.jpg"));
-            ((ImageNode)a).LoadImage(Path.GetFullPath(uri.AbsolutePath));
+            ((Nodes.Image)a).LoadImage(Path.GetFullPath(uri.AbsolutePath));
 
-            Node b = graph.CreateNode("ColorOverlayNode", "");
+            Node b = graph.CreateNode("Color", "");
             NodeData bData = new NodeData();
-            bData.header.title = "B";
+            bData.header.title = "Blend";
             b.Data = bData;
             b.Data.header.point = new Point(-45, 25);
-            //((ColorOverlayNode)b).Color = new texforge_definitions.Settings.Color("Color", new texforge_definitions.Types.Color()
+            b.Data.atom = new Atom(System.Drawing.Color.Red, graph.Settings.size, graph.Settings.PixelFormat);
 
-            Node c = graph.CreateNode("ExampleNode", "");
+            Node c = graph.CreateNode("Blend", "");
             NodeData cData = new NodeData();
-            cData.header.title = "C";
+            cData.header.title = "Blend2";
             c.Data = cData;
             c.Data.header.point = new Point(100, -100);
 
-            graph.ConnectNodes(a.GetSocket("Out"), b.GetSocket("In"));
-            graph.ConnectNodes(b.GetSocket("Out"), c.GetSocket("inTestB"));
-            graph.ConnectNodes(a.GetSocket("Out"), c.GetSocket("inTestA"));
+            graph.ConnectNodes(a.GetSocket("Out"), c.GetSocket("A"));
+            graph.ConnectNodes(b.GetSocket("Out"), c.GetSocket("B"));
+            //graph.ConnectNodes(a.GetSocket("Out"), c.GetSocket("In"));
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
             

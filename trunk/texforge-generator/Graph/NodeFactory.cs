@@ -21,8 +21,7 @@ namespace texforge.Graph
         public void RegisterNodes()
         {
             nodes["ExampleNode"] = typeof(ExampleNode);
-            nodes["ImageNode"] = typeof(ImageNode);
-            nodes["ColorOverlayNode"] = typeof(ColorOverlayNode);
+            nodes["Image"] = typeof(Image);
             nodes["Blend"] = typeof(Blend);
             nodes["Color"] = typeof(Color);
         }

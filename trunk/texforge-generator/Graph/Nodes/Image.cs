@@ -6,11 +6,11 @@ using System.IO;
 
 namespace texforge.Graph.Nodes
 {
-    public class ImageNode : Node
+    public class Image : Node
     {
         protected string filename;
 
-        public ImageNode(string name, string id, Graph graph)
+        public Image(string name, string id, Graph graph)
             : base(name, id, graph)
         {
             RegisterSocket(Socket.Type.Output, "Out");
