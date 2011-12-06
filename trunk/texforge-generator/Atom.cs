@@ -32,9 +32,9 @@ namespace texforge
 
         }
 
-        public Atom(Image image)
+        public Atom(Image image, Size size)
         {
-            bitmap = new Bitmap(image);
+            bitmap = new Bitmap(image, size);
             size = bitmap.Size;
         }
 
