@@ -485,6 +485,16 @@ namespace texforge
             modified = true;
         }
 
+        public void AddGeneratorNode(Point position, Rectangle currentClip)
+        {
+            Graph.Node a = graph.CreateNode("Generator", "");
+            NodeData aData = new NodeData();
+            aData.header.title = "Generator" + graph.Nodes.Count;
+            a.Data = aData;
+            a.Data.header.point = TransformFromScreen(position, currentClip);
+            modified = true;
+        }
+
         public DraggableObject GetDraggableObject(Point position, Rectangle currentClip)
         {
             // Check for sockets

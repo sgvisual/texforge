@@ -297,5 +297,11 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+        private void addGeneratorNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.AddGeneratorNode(mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
+        }
+
     }
 }

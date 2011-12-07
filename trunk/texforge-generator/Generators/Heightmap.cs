@@ -17,18 +17,19 @@ namespace texforge.Generators
 
         public override Atom Generate()
         {
-            Atom a = new Atom(m_size, m_pixelFormat);
+            Atom atom = new Atom(m_size, m_pixelFormat);
 
-            byte[] bytes = a.ToBytes();
+            byte[] bytes = atom.ToBytes();
 
             Random rand = new Random();            
 
-            for (int i = 0; i < bytes.Length; i += 3)
+            for (int i = 0; i < bytes.Length; i += 4)
             {
                 //int color = (rand.Next(int.MaxValue));
                 float n = Noise.SmoothNoise(i, i +1);
                 int color = (int)(n * 5);
 
+                byte a = (byte)(color >> 24);
                 byte r = (byte)(color >> 16);
                 byte g = (byte)(color >> 8);
                 byte b = (byte)(color);
@@ -36,12 +37,13 @@ namespace texforge.Generators
                 bytes[i + 0] = r;
                 bytes[i + 1] = g;
                 bytes[i + 2] = b;
+                bytes[i + 3] = a;
 
             }
 
-            a.Write(bytes);
+            atom.Write(bytes);
 
-            return a;
+            return atom;
         }
     }
 }

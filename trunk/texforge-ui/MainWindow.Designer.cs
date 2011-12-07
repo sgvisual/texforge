@@ -53,6 +53,7 @@
             this.addRenderNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBlendNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addColorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addGeneratorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -295,30 +296,38 @@
             this.graphContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addRenderNodeToolStripMenuItem,
             this.addBlendNodeToolStripMenuItem,
-            this.addColorNodeToolStripMenuItem});
+            this.addColorNodeToolStripMenuItem,
+            this.addGeneratorNodeToolStripMenuItem});
             this.graphContextMenu.Name = "graphContextMenu";
-            this.graphContextMenu.Size = new System.Drawing.Size(160, 92);
+            this.graphContextMenu.Size = new System.Drawing.Size(174, 114);
             // 
             // addRenderNodeToolStripMenuItem
             // 
             this.addRenderNodeToolStripMenuItem.Name = "addRenderNodeToolStripMenuItem";
-            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.addRenderNodeToolStripMenuItem.Text = "Add Render Node";
             this.addRenderNodeToolStripMenuItem.Click += new System.EventHandler(this.addRenderNodeToolStripMenuItem_Click);
             // 
             // addBlendNodeToolStripMenuItem
             // 
             this.addBlendNodeToolStripMenuItem.Name = "addBlendNodeToolStripMenuItem";
-            this.addBlendNodeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addBlendNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.addBlendNodeToolStripMenuItem.Text = "Add Blend Node";
             this.addBlendNodeToolStripMenuItem.Click += new System.EventHandler(this.addBlendNodeToolStripMenuItem_Click);
             // 
             // addColorNodeToolStripMenuItem
             // 
             this.addColorNodeToolStripMenuItem.Name = "addColorNodeToolStripMenuItem";
-            this.addColorNodeToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addColorNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.addColorNodeToolStripMenuItem.Text = "Add Color Node";
             this.addColorNodeToolStripMenuItem.Click += new System.EventHandler(this.addColorNodeToolStripMenuItem_Click);
+            // 
+            // addGeneratorNodeToolStripMenuItem
+            // 
+            this.addGeneratorNodeToolStripMenuItem.Name = "addGeneratorNodeToolStripMenuItem";
+            this.addGeneratorNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.addGeneratorNodeToolStripMenuItem.Text = "Add Generator Node";
+            this.addGeneratorNodeToolStripMenuItem.Click += new System.EventHandler(this.addGeneratorNodeToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -385,6 +394,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportOutputAsImageToolStripMenuItem;
         private System.Windows.Forms.FlowLayoutPanel PanelProperties;
         private System.Windows.Forms.ToolStripMenuItem addColorNodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addGeneratorNodeToolStripMenuItem;
 
     }
 }
