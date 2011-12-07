@@ -23,6 +23,7 @@ namespace texforge.Graph
             nodes["Image"] = typeof(Image);
             nodes["Blend"] = typeof(Blend);
             nodes["Color"] = typeof(Color);
+            nodes["Generator"] = typeof(Generator);
         }
 
         public Node Create(string name, string id, Graph graph)

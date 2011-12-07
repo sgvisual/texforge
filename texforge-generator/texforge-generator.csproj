@@ -43,7 +43,6 @@
     <Compile Include="Base\UniqueName.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\Heightmap.cs" />
-    <Compile Include="Graph\ExampleNode.cs" />
     <Compile Include="Graph\Graph.cs" />
     <Compile Include="Graph\GraphSettings.cs" />
     <Compile Include="Graph\Node.cs" />
@@ -51,6 +50,7 @@
     <Compile Include="Graph\NodeFactory.cs" />
     <Compile Include="Graph\Nodes\Blend.cs" />
     <Compile Include="Graph\Nodes\Color.cs" />
+    <Compile Include="Graph\Nodes\Generator.cs" />
     <Compile Include="Graph\Nodes\Image.cs" />
     <Compile Include="Graph\UnitTest_Graph.cs" />
     <Compile Include="Noise.cs" />
