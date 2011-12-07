@@ -20,6 +20,18 @@ namespace texforge
                 case "Color":
                     component = new ColorSettingComponent(setting, owner, render);
                     break;
+                case "BlendMode":
+                    component = new BlendModeSettingComponent(setting, owner, render);
+                    break;
+                case "Int":
+                    component = new IntSettingComponent(setting, owner, render);
+                    break;
+                case "Float":
+                    component = new FloatSettingComponent(setting, owner, render);
+                    break;
+                case "Bool":
+                    component = new BoolSettingComponent(setting, owner, render);
+                    break;
                 default:
                     component = new InvalidSettingComponent(setting, owner, render);
                     break;
@@ -54,6 +66,18 @@ namespace texforge
                     control.Invalidate();
                 render.Invalidate();
             }
+
+            protected Panel CreateDefaultGroupBox(string name)
+            {
+                GroupBox box = new GroupBox();
+                box.Text = name;
+                box.Dock = DockStyle.Fill;
+                Panel panel = new Panel();
+                panel.Dock = DockStyle.Fill;
+                box.Controls.Add(panel);
+                container.Controls.Add(box);
+                return panel;
+            }
         }
 
         class InvalidSettingComponent : SettingComponent
@@ -76,20 +100,12 @@ namespace texforge
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Color)setting;
-                GroupBox box = new GroupBox();
-                box.Text = data.Name;
-                box.Dock = DockStyle.Fill;
-                SplitContainer panel = new SplitContainer();
+                Panel panel = CreateDefaultGroupBox(data.Name);
                 PictureBox color = new PictureBox();
-                panel.Panel1.Controls.Add(color);
-                Button change = new Button();
-                change.Text = "Change";
-                panel.Panel2.Controls.Add(change);
-                panel.Dock = DockStyle.Fill;
-                box.Controls.Add(panel);
-                container.Controls.Add(box);
+                color.Dock = DockStyle.Fill;
+                panel.Controls.Add(color);
                 color.Paint += new PaintEventHandler(color_Paint);
-                change.Click += new EventHandler(change_Click);
+                color.Click += new EventHandler(change_Click);
                 refresh.Add(color);
             }
 
@@ -111,6 +127,106 @@ namespace texforge
 
         }
 
+        class BlendModeSettingComponent : SettingComponent
+        {
+            texforge_definitions.Settings.BlendMode data;
+
+            public BlendModeSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
+            {
+                data = (texforge_definitions.Settings.BlendMode)setting;
+                Panel panel = CreateDefaultGroupBox(data.Name);
+                ComboBox mode = new ComboBox();
+                foreach( texforge_definitions.Settings.eBlendMode blendMode in Enum.GetValues(typeof(texforge_definitions.Settings.eBlendMode)))
+                {
+                    mode.Items.Add(blendMode.ToString());
+                }
+                mode.SelectedIndex = (int)data.Value;
+                panel.Controls.Add(mode);
+                mode.SelectedIndexChanged += new EventHandler(mode_SelectedIndexChanged);
+            }
+
+            void mode_SelectedIndexChanged(object sender, EventArgs e)
+            {
+                data.Value = (texforge_definitions.Settings.eBlendMode)((ComboBox)sender).SelectedIndex;
+                ValueChanged();
+            }
+        }
+
+        class IntSettingComponent : SettingComponent
+        {
+            //texforge_definitions.Settings.Int data;
+
+            public IntSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
+            {
+                //data = (texforge_definitions.Settings.Int)setting;
+                Panel panel = CreateDefaultGroupBox(/*data.Name*/"HALP!");
+                TextBox input = new TextBox();
+                input.Text = "0";//data.Value.ToString();
+                panel.Controls.Add(input);
+                input.TextChanged += new EventHandler(input_TextChanged);
+            }
+
+            void input_TextChanged(object sender, EventArgs e)
+            {
+                int newValue;
+                if (int.TryParse(((TextBox)sender).Text, out newValue))
+                {
+                    //data.Value = newValue;
+                    ValueChanged();
+                }
+            }
+        }
+
+        class FloatSettingComponent : SettingComponent
+        {
+            //texforge_definitions.Settings.Float data;
+
+            public FloatSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
+            {
+                //data = (texforge_definitions.Settings.Float)setting;
+                Panel panel = CreateDefaultGroupBox(/*data.Name*/"HALP!");
+                TextBox input = new TextBox();
+                input.Text = "0.0";//data.Value.ToString();
+                panel.Controls.Add(input);
+                input.TextChanged += new EventHandler(input_TextChanged);
+            }
+
+            void input_TextChanged(object sender, EventArgs e)
+            {
+                float newValue;
+                if (float.TryParse(((TextBox)sender).Text, out newValue))
+                {
+                    //data.Value = newValue;
+                    ValueChanged();
+                }
+            }
+        }
+
+        class BoolSettingComponent : SettingComponent
+        {
+            //texforge_definitions.Settings.Bool data;
+
+            public BoolSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
+            {
+                //data = (texforge_definitions.Settings.Bool)setting;
+                Panel panel = CreateDefaultGroupBox(/*data.Name*/"HALP!");
+                CheckBox value = new CheckBox();
+                value.Checked = false;//data.Value;
+                panel.Controls.Add(value);
+                value.CheckedChanged += new EventHandler(value_CheckedChanged);
+            }
+
+            void value_CheckedChanged(object sender, EventArgs e)
+            {
+                //data.Value = ((CheckBox)sender).Checked;
+                ValueChanged();
+            }
+
+        }
     }
 
 }
