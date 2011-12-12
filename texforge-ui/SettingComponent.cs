@@ -155,15 +155,15 @@ namespace texforge
 
         class IntSettingComponent : SettingComponent
         {
-            //texforge_definitions.Settings.Int data;
+            texforge_definitions.Settings.Int data;
 
             public IntSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
-                //data = (texforge_definitions.Settings.Int)setting;
-                Panel panel = CreateDefaultGroupBox(/*data.Name*/"HALP!");
+                data = (texforge_definitions.Settings.Int)setting;
+                Panel panel = CreateDefaultGroupBox(data.Name);
                 TextBox input = new TextBox();
-                input.Text = "0";//data.Value.ToString();
+                input.Text = data.Value.ToString();
                 panel.Controls.Add(input);
                 input.TextChanged += new EventHandler(input_TextChanged);
             }
@@ -173,7 +173,7 @@ namespace texforge
                 int newValue;
                 if (int.TryParse(((TextBox)sender).Text, out newValue))
                 {
-                    //data.Value = newValue;
+                    data.Value = newValue;
                     ValueChanged();
                 }
             }
@@ -181,15 +181,15 @@ namespace texforge
 
         class FloatSettingComponent : SettingComponent
         {
-            //texforge_definitions.Settings.Float data;
+            texforge_definitions.Settings.Float data;
 
             public FloatSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
-                //data = (texforge_definitions.Settings.Float)setting;
-                Panel panel = CreateDefaultGroupBox(/*data.Name*/"HALP!");
+                data = (texforge_definitions.Settings.Float)setting;
+                Panel panel = CreateDefaultGroupBox(data.Name);
                 TextBox input = new TextBox();
-                input.Text = "0.0";//data.Value.ToString();
+                input.Text = data.Value.ToString();
                 panel.Controls.Add(input);
                 input.TextChanged += new EventHandler(input_TextChanged);
             }
@@ -199,7 +199,7 @@ namespace texforge
                 float newValue;
                 if (float.TryParse(((TextBox)sender).Text, out newValue))
                 {
-                    //data.Value = newValue;
+                    data.Value = newValue;
                     ValueChanged();
                 }
             }
@@ -207,22 +207,22 @@ namespace texforge
 
         class BoolSettingComponent : SettingComponent
         {
-            //texforge_definitions.Settings.Bool data;
+            texforge_definitions.Settings.Bool data;
 
             public BoolSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
-                //data = (texforge_definitions.Settings.Bool)setting;
-                Panel panel = CreateDefaultGroupBox(/*data.Name*/"HALP!");
+                data = (texforge_definitions.Settings.Bool)setting;
+                Panel panel = CreateDefaultGroupBox(data.Name);
                 CheckBox value = new CheckBox();
-                value.Checked = false;//data.Value;
+                value.Checked = data.Value;
                 panel.Controls.Add(value);
                 value.CheckedChanged += new EventHandler(value_CheckedChanged);
             }
 
             void value_CheckedChanged(object sender, EventArgs e)
             {
-                //data.Value = ((CheckBox)sender).Checked;
+                data.Value = ((CheckBox)sender).Checked;
                 ValueChanged();
             }
 

@@ -80,7 +80,7 @@ namespace texforge_definitions
 
         public T Value
         {
-            get { return value; }
+            get { return Clamp(value); }
             set { this.value = value; }
         }
 
@@ -102,6 +102,12 @@ namespace texforge_definitions
             set { minValue = value; }
         }
 
+        // Clamp must be implemented by each deriving settings
+        public virtual T Clamp(T value)
+        {
+            return value;
+        }
+  
         public virtual void Randomize()
         {
             RandomizeBetween(minValue, maxValue);
