@@ -9,9 +9,9 @@ namespace texforge.Graph.Nodes
     public class Blend : Node
     {
 
-
         protected BlendMode blendMode = new BlendMode("BlendMode", eBlendMode.None, eBlendMode.None);
-        
+        protected Float blendAmount = new Float("Amount", 1f, 1f, 0f, 1f);
+
         public Blend(string name, string id, Graph graph)
             : base(name, id, graph)
         {
@@ -20,6 +20,7 @@ namespace texforge.Graph.Nodes
             RegisterSocket(Socket.Type.Output, "Result");
 
             AddSetting(blendMode);
+            AddSetting(blendAmount);
         }
 
         public override object Process()
@@ -54,7 +55,7 @@ namespace texforge.Graph.Nodes
                     break;
 
                 case eBlendMode.Multiply:
-                    operation = new Operations.Multiply(a, b);
+                    operation = new Operations.Multiply(a, b, blendAmount.Value);
                     break;
 
                 case eBlendMode.Screen:
@@ -63,7 +64,7 @@ namespace texforge.Graph.Nodes
 
                     // TESTING
                 default:
-                    operation = new Operations.Multiply(a, b);
+                    operation = new Operations.Multiply(a, b, blendAmount.Value);
                     break;
             }
 

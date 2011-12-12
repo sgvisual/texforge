@@ -41,14 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FloatSetting.cs" />
-    <Compile Include="IntSetting.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="SettingAttributes.cs" />
     <Compile Include="settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\BlendMode.cs" />
+    <Compile Include="Settings\Bool.cs" />
     <Compile Include="Settings\Color.cs" />
+    <Compile Include="Settings\Float.cs" />
+    <Compile Include="Settings\Int.cs" />
     <Compile Include="Settings\SettingBase.cs" />
     <Compile Include="Types\Color.cs" />
   </ItemGroup>

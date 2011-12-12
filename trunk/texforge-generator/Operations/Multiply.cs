@@ -13,13 +13,14 @@ namespace texforge.Operations
         protected Atom operandA;
         protected Atom operandB;
 
-        protected FloatSetting m_scalar = new FloatSetting("Coefficient", 1f, 1f, 0f, 1f);
+        //protected texforge_definitions.Settings.Float m_scalar = new texforge_definitions.Settings.Float("Coefficient", 1f, 1f, 0f, 1f);
+        float m_scalar = 1f;
 
-
-        public Multiply(Atom a, Atom b)
+        public Multiply(Atom a, Atom b, float scalar)
         {
             operandA = a;
             operandB = b;
+            m_scalar = scalar;
         }
 
         public Atom MultiplyBitmaps(ref Atom A, ref Atom B)
@@ -32,7 +33,7 @@ namespace texforge.Operations
             int bytes = bytesA.Length;
             Parallel.For(0, bytes, index =>
             {
-                byte r = (byte)(((bytesA[index] * bytesB[index]) / 255f) * m_scalar.Value);
+                byte r = (byte)(((bytesA[index] * bytesB[index]) / 255f) * m_scalar);
                 result[index] = (byte)(Math.Min(r, 255f));
             });
 
