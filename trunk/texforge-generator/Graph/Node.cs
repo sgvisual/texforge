@@ -76,7 +76,9 @@ namespace texforge.Graph
         {
             foreach (SettingBase setting in settings)
             {
-                setting.Save(element);
+                XElement settingElement = new XElement("Setting");
+                setting.Save(settingElement);
+                element.Add(settingElement);
             }
         }
 

@@ -60,7 +60,7 @@ namespace texforge_definitions.Types
                     string b = v[2].ToUpper().Replace(@"B=", "");
                     byte blue = 0;
                     byte.TryParse(b, out blue);
-                    string a = v[0].ToUpper().Replace(@"A=", "");
+                    string a = v[3].ToUpper().Replace(@"A=", "");
                     byte alpha = 0;
                     byte.TryParse(a, out alpha);
 

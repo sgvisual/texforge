@@ -119,20 +119,20 @@ namespace texforge_definitions
 
         public override void Save(XElement element)
         {
-            XElement baseElement = new XElement("Setting", name);            
-            element.Add(baseElement);
-
-            //baseElement.Add(new XElement("Type", typeof(T));
+            XElement baseElement = new XElement(name);
+            
             baseElement.Add(new XElement("Value", value.ToString()));
             baseElement.Add(new XElement("Default", defaultValue.ToString()));
             baseElement.Add(new XElement("Min", minValue.ToString()));
             baseElement.Add(new XElement("Max", maxValue.ToString()));
 
+            element.Add(baseElement);
+
         }
 
         public override void Load(ref System.Xml.Linq.XElement element)
         {
-            name = element.Value;
+            //name = element.Descendants(;
 
             string valueStr = element.Descendants("Value").First().Value;
             value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(valueStr);
