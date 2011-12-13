@@ -18,13 +18,13 @@ namespace texforge_definitions.Settings
         Burn
     }
 
-    [SettingAttributes(CanRandomize=false)]
-    public class BlendMode : texforge_definitions.Setting<eBlendMode>
+    public class BlendMode : Enumeration
     {
 
         public BlendMode(string name, eBlendMode value, eBlendMode defaultValue)
-            : base(name, value, defaultValue)
+            : base(name, value.ToString(), defaultValue.ToString(), typeof(eBlendMode))
         {
+            
         }
 
 
