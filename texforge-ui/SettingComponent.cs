@@ -20,9 +20,6 @@ namespace texforge
                 case "Color":
                     component = new ColorSettingComponent(setting, owner, render);
                     break;
-                case "BlendMode":
-                    component = new BlendModeSettingComponent(setting, owner, render);
-                    break;
                 case "Int":
                     component = new IntSettingComponent(setting, owner, render);
                     break;
@@ -35,6 +32,11 @@ namespace texforge
                 default:
                     component = new InvalidSettingComponent(setting, owner, render);
                     break;
+            }
+            // Special handling for enums
+            if (setting.GetType().IsSubclassOf(typeof(Enumeration)))
+            {
+                component = new EnumSettingComponent(setting, owner, render);
             }
             panel.Controls.Add(component.Container);
         }
@@ -127,28 +129,31 @@ namespace texforge
 
         }
 
-        class BlendModeSettingComponent : SettingComponent
+        class EnumSettingComponent : SettingComponent
         {
-            texforge_definitions.Settings.BlendMode data;
+            texforge_definitions.Settings.Enumeration data;
+            Dictionary<int, string> items = new Dictionary<int, string>();
 
-            public BlendModeSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public EnumSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
-                data = (texforge_definitions.Settings.BlendMode)setting;
+                data = (texforge_definitions.Settings.Enumeration)setting;
                 Panel panel = CreateDefaultGroupBox(data.Name);
                 ComboBox mode = new ComboBox();
-                foreach( texforge_definitions.Settings.eBlendMode blendMode in Enum.GetValues(typeof(texforge_definitions.Settings.eBlendMode)))
+                foreach( string item in data.AvailableValues)
                 {
-                    mode.Items.Add(blendMode.ToString());
+                    int index = mode.Items.Add(item);
+                    items[index] = item;
+                    if (item == data.Value)
+                        mode.SelectedIndex = index;
                 }
-                mode.SelectedIndex = (int)data.Value;
                 panel.Controls.Add(mode);
                 mode.SelectedIndexChanged += new EventHandler(mode_SelectedIndexChanged);
             }
 
             void mode_SelectedIndexChanged(object sender, EventArgs e)
             {
-                data.Value = (texforge_definitions.Settings.eBlendMode)((ComboBox)sender).SelectedIndex;
+                data.Value = items[((ComboBox)sender).SelectedIndex];
                 ValueChanged();
             }
         }

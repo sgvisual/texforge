@@ -44,7 +44,7 @@ namespace texforge.Graph.Nodes
 
             Operations.Operation operation = null;
 
-            switch (blendMode.Value)
+            switch ((eBlendMode)Enum.Parse(typeof(eBlendMode), blendMode.Value, true))
             {
                 case eBlendMode.Add:
                     operation = new Operations.Addition(a, b);
