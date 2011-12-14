@@ -50,6 +50,7 @@
     <Compile Include="Settings\Color.cs" />
     <Compile Include="Settings\Enum.cs" />
     <Compile Include="Settings\Float.cs" />
+    <Compile Include="Settings\GeneratorType.cs" />
     <Compile Include="Settings\Int.cs" />
     <Compile Include="Settings\SettingBase.cs" />
     <Compile Include="Types\Color.cs" />
