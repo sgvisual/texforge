@@ -184,6 +184,7 @@ namespace texforge
             if (!CheckAbortModifiedGraph())
             {
                 graph.Clear();
+                PanelProperties.Controls.Clear();
                 GraphRender.Invalidate();
             }
         }
@@ -249,6 +250,7 @@ namespace texforge
                 if (openDialog.FileName != "")
                 {
                     graph.Load(openDialog.FileName);
+                    PanelProperties.Controls.Clear();
                     GraphRender.Invalidate();
                 }
             }
