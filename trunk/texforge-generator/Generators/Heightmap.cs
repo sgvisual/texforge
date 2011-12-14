@@ -17,7 +17,7 @@ namespace texforge.Generators
 
         public override Atom Generate()
         {
-            Atom atom = new Atom(m_size, m_pixelFormat);
+            Atom atom = new Atom(size, pixelFormat);
 
             byte[] bytes = atom.ToBytes();
 

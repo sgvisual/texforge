@@ -32,6 +32,21 @@ namespace texforge
 
         }
 
+        public Atom(Size size, PixelFormat pixelFormat, Color[][] colors)
+        {
+            bitmap = new Bitmap(size.Width, size.Height, pixelFormat);
+
+            // TODO: optimize
+            for (int i = 0; i < size.Width; i++)
+            {
+                for (int j = 0; j < size.Height; j++)
+                {
+                    bitmap.SetPixel(i, j, colors[i][j]);
+                }
+            }
+
+        }
+
         public Atom(Image image, Size size)
         {
             bitmap = new Bitmap(image, size);

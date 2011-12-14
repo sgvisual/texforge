@@ -43,6 +43,7 @@
     <Compile Include="Base\UniqueName.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\Heightmap.cs" />
+    <Compile Include="Generators\PerlinNoise.cs" />
     <Compile Include="Graph\Graph.cs" />
     <Compile Include="Graph\GraphSettings.cs" />
     <Compile Include="Graph\Node.cs" />

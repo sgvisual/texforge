@@ -11,12 +11,12 @@ namespace texforge.Generators
     {
         public Generator(Size size, PixelFormat pixelFormat) 
         { 
-            m_size = size;
-            m_pixelFormat = pixelFormat;
+            this.size = size;
+            this.pixelFormat = pixelFormat;
         }
         public abstract Atom Generate();
 
-        protected Size m_size;
-        protected PixelFormat m_pixelFormat;
+        protected Size size;
+        protected PixelFormat pixelFormat;
     }
 }
