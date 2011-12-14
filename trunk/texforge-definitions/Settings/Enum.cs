@@ -19,6 +19,8 @@ namespace texforge_definitions.Settings
         {
             foreach (object item in Enum.GetValues(enumeration))
                 availableValues.Add(item.ToString());
+            minValue = availableValues[0];
+            maxValue = availableValues[availableValues.Count() - 1];
         }
     }
 }

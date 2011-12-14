@@ -257,6 +257,10 @@ namespace texforge
             graph = new Graph.Graph(new GraphSettings());
             associatedFile = "";
             modified = false;
+            offset = new Point();
+            zoom = 100.0f;
+            dragging = null;
+            active = null;
         }
 
         public void Zoom(float amount)
@@ -562,9 +566,9 @@ namespace texforge
 
         public void Load(string filename)
         {
+            Clear();
             associatedFile = filename;
             graph.Load(filename);
-            modified = false;
         }
 
 	}
