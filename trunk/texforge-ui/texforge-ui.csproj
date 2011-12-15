@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Preview.cs" />
     <Compile Include="SettingComponent.cs" />
     <Compile Include="VisualGraph.cs" />
     <Compile Include="MainWindow.cs">
