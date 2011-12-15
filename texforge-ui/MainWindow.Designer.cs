@@ -54,6 +54,7 @@
             this.addBlendNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addColorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addGeneratorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.previewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -125,8 +126,8 @@
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.saveAsToolStripMenuItem.Text = "Save &As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
@@ -134,8 +135,8 @@
             // exportOutputAsImageToolStripMenuItem
             // 
             this.exportOutputAsImageToolStripMenuItem.Name = "exportOutputAsImageToolStripMenuItem";
-            this.exportOutputAsImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.E)));
+            this.exportOutputAsImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.E)));
             this.exportOutputAsImageToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.exportOutputAsImageToolStripMenuItem.Text = "&Export output as image...";
             this.exportOutputAsImageToolStripMenuItem.Click += new System.EventHandler(this.exportOutputAsImageToolStripMenuItem_Click);
@@ -151,7 +152,8 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debugInfoToolStripMenuItem});
+            this.debugInfoToolStripMenuItem,
+            this.previewToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.viewToolStripMenuItem.Text = "&View";
@@ -160,7 +162,7 @@
             // 
             this.debugInfoToolStripMenuItem.CheckOnClick = true;
             this.debugInfoToolStripMenuItem.Name = "debugInfoToolStripMenuItem";
-            this.debugInfoToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.debugInfoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.debugInfoToolStripMenuItem.Text = "&Debug Info";
             this.debugInfoToolStripMenuItem.Click += new System.EventHandler(this.debugInfoToolStripMenuItem_Click);
             // 
@@ -329,6 +331,12 @@
             this.addGeneratorNodeToolStripMenuItem.Text = "Add Generator Node";
             this.addGeneratorNodeToolStripMenuItem.Click += new System.EventHandler(this.addGeneratorNodeToolStripMenuItem_Click);
             // 
+            // previewToolStripMenuItem
+            // 
+            this.previewToolStripMenuItem.Name = "previewToolStripMenuItem";
+            this.previewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.previewToolStripMenuItem.Text = "&Preview";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -395,6 +403,7 @@
         private System.Windows.Forms.FlowLayoutPanel PanelProperties;
         private System.Windows.Forms.ToolStripMenuItem addColorNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addGeneratorNodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem previewToolStripMenuItem;
 
     }
 }

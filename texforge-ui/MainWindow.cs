@@ -27,6 +27,7 @@ namespace texforge
         private void MainWindow_Load(object sender, EventArgs e)
         {
             graph = new VisualGraph();
+            Preview.PreviewFactory<TiledPreview>(previewToolStripMenuItem.DropDownItems, graph.Graph);
         }
 
         private void GraphRender_Paint(object sender, PaintEventArgs e)
@@ -50,6 +51,8 @@ namespace texforge
             }
             RenderPreviewActive.Invalidate();
             RenderPreviewFull.Invalidate();
+            foreach (ToolStripItem item in previewToolStripMenuItem.DropDownItems)
+                ((Preview)item.Tag).Invalidate();
         }
 
         private void RenderPreviewActive_Paint(object sender, PaintEventArgs e)

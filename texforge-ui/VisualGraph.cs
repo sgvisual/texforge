@@ -25,6 +25,10 @@ namespace texforge
         }
 
         Graph.Graph graph;
+        public Graph.Graph Graph
+        {
+            get { return graph; }
+        }
 
         bool debug = false;
 
