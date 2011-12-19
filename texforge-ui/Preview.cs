@@ -12,6 +12,9 @@ namespace texforge
         Form window = null;
         protected Graph.Graph graph;
         PictureBox render;
+        protected Point offset = new Point();
+        protected float zoom = 100.0f;
+        Point mouseLastPosition = new Point();
 
         public static void PreviewFactory<T>(ToolStripItemCollection subMenu, Graph.Graph graph)
         {
@@ -42,10 +45,56 @@ namespace texforge
                 render = new PictureBox();
                 render.Dock = DockStyle.Fill;
                 render.Paint += new PaintEventHandler(render_Paint);
+                render.MouseWheel += new MouseEventHandler(render_MouseWheel);
+                render.MouseMove += new MouseEventHandler(render_MouseMove);
+                render.MouseEnter += new EventHandler(render_MouseEnter);
                 window.Controls.Add(render);
                 window.Show();
             }
             window.BringToFront();
+        }
+
+        void render_MouseEnter(object sender, EventArgs e)
+        {
+            Rectangle origin = render.RectangleToScreen(new Rectangle());
+            mouseLastPosition = new Point(Control.MousePosition.X - origin.X, Control.MousePosition.Y - origin.Y);
+        }
+
+        void render_MouseMove(object sender, MouseEventArgs e)
+        {
+            bool left = (Control.MouseButtons & MouseButtons.Left) > 0;
+            bool right = (Control.MouseButtons & MouseButtons.Right) > 0;
+            bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0;
+            if ((left && right) || middle)
+            {
+                Point delta = new Point(e.Location.X - mouseLastPosition.X, e.Location.Y - mouseLastPosition.Y);
+                offset.X += delta.X;
+                offset.Y += delta.Y;
+                if (graph.Final != null && graph.Final.Data.atom != null && graph.Final.Data.atom.Result != null)
+                {
+                    Bitmap output = graph.Final.Data.atom.Result;
+                    while (offset.X > output.Width)
+                        offset.X -= output.Width;
+                    while (-offset.X > output.Width)
+                        offset.X += output.Width;
+                    while (offset.Y > output.Height)
+                        offset.Y -= output.Height;
+                    while (-offset.Y > output.Height)
+                        offset.Y += output.Height;
+                }
+                render.Invalidate();
+            }
+            mouseLastPosition = e.Location;
+        }
+
+        void render_MouseWheel(object sender, MouseEventArgs e)
+        {
+            zoom += (float)e.Delta / 10.0f;
+            if (zoom < 30.0f)
+                zoom = 30.0f;
+            if (zoom > 300.0f)
+                zoom = 300.0f;
+            render.Invalidate();
         }
 
         protected abstract void Render(PaintEventArgs e);
@@ -66,6 +115,8 @@ namespace texforge
 
     public class TiledPreview : Preview
     {
+        Dictionary<int, Bitmap> tileCache = new Dictionary<int, Bitmap>();
+
         protected override string GetToolStripName()
         {
             return "Tiled Preview";
@@ -76,15 +127,33 @@ namespace texforge
             if( graph.Final != null && graph.Final.Data.atom != null && graph.Final.Data.atom.Result != null )
             {
                 Bitmap output = graph.Final.Data.atom.Result;
-                for (int x = e.ClipRectangle.X; x < e.ClipRectangle.X + e.ClipRectangle.Width; x += output.Width)
+                int width = (int)((float)output.Width * zoom / 100.0f);
+                int height = (int)((float)output.Height * zoom / 100.0f);
+                int offsetX = (int)((float)offset.X * zoom / 100.0f);
+                int offsetY = (int)((float)offset.Y * zoom / 100.0f);
+                Bitmap image = null;
+                if (tileCache.ContainsKey(width))
                 {
-                    for (int y = e.ClipRectangle.Y; y < e.ClipRectangle.Y + e.ClipRectangle.Height; y += output.Height)
+                    image = tileCache[width];
+                }
+                else
+                {
+                    image = new Bitmap(width, height);
+                    Graphics.FromImage(image).DrawImage(output, 0, 0, width, height);
+                    if (tileCache.Count >= 10)
+                        tileCache.Clear();
+                    tileCache[width] = image;
+                }
+                for (int x = e.ClipRectangle.X - width; x < e.ClipRectangle.X + e.ClipRectangle.Width + width; x += width)
+                {
+                    for (int y = e.ClipRectangle.Y - height; y < e.ClipRectangle.Y + e.ClipRectangle.Height + height; y += height)
                     {
-                        e.Graphics.DrawImageUnscaled(output, new Point(x, y));
+                        e.Graphics.DrawImageUnscaled(image, new Point(x + offsetX, y + offsetY));
                     }
                 }
-                
             }
+            //e.Graphics.DrawString("Zoom: " + zoom, new Font("Terminal", 12.0f), Brushes.Black, new PointF(10.0f, 10.0f));
+            //e.Graphics.DrawString("Offset: " + offset.X + ", " + offset.Y, new Font("Terminal", 12.0f), Brushes.Black, new PointF(10.0f, 30.0f));
         }
 
         public TiledPreview(ToolStripItemCollection subMenu, Graph.Graph graph)
