@@ -197,7 +197,7 @@ namespace texforge.Graph
                 foreach (Node n in nodes)
                 {
                     XElement item = new XElement("Item");
-                    XElement name = new XElement("Name", n.Name);
+                    XElement name = new XElement("Name", n.TypeName);
                     XElement id  = new XElement("ID", n.ID);
                     XElement position = new XElement("Position", n.Data.header.point);
 

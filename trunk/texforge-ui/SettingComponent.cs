@@ -17,6 +17,9 @@ namespace texforge
             SettingComponent component = null;
             switch (setting.GetType().Name)
             {
+                case "String":
+                    component = new StringSettingComponent(setting, owner, render);
+                    break;
                 case "Color":
                     component = new ColorSettingComponent(setting, owner, render);
                     break;
@@ -181,6 +184,28 @@ namespace texforge
                     data.Value = newValue;
                     ValueChanged();
                 }
+            }
+        }
+
+        class StringSettingComponent : SettingComponent
+        {
+            texforge_definitions.Settings.String data;
+
+            public StringSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
+            {
+                data = (texforge_definitions.Settings.String)setting;
+                Panel panel = CreateDefaultGroupBox(data.Name);
+                TextBox input = new TextBox();
+                input.Text = data.Value.ToString();
+                panel.Controls.Add(input);
+                input.TextChanged += new EventHandler(input_TextChanged);
+            }
+
+            void input_TextChanged(object sender, EventArgs e)
+            {
+                data.Value = ((TextBox)sender).Text;
+                ValueChanged();
             }
         }
 

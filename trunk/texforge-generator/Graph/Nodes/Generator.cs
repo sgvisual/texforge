@@ -10,8 +10,8 @@ namespace texforge.Graph.Nodes
     {
         protected GeneratorType generatorType = new GeneratorType("GeneratorType", eGeneratorType.None, eGeneratorType.None);
 
-        protected texforge_definitions.Settings.Color startColor = new texforge_definitions.Settings.Color("Start Color", new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.White));
-        protected texforge_definitions.Settings.Color endColor = new texforge_definitions.Settings.Color("End Color", new texforge_definitions.Types.Color(System.Drawing.Color.White), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.White));
+        protected texforge_definitions.Settings.Color startColor = new texforge_definitions.Settings.Color("StartColor", new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.White));
+        protected texforge_definitions.Settings.Color endColor = new texforge_definitions.Settings.Color("EndColor", new texforge_definitions.Types.Color(System.Drawing.Color.White), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.White));
 
         public Generator(string name, string id, Graph graph)
             : base(name, id, graph)

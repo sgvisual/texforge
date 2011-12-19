@@ -11,8 +11,10 @@ namespace texforge.Graph
 {
     public class Node 
     {
-        protected string name;
+        //protected string name;
         protected UniqueName uniqueName;
+
+        protected texforge_definitions.Settings.String name;
 
         bool dirty = true;
         public bool Dirty
@@ -33,9 +35,15 @@ namespace texforge.Graph
             }
         }
 
+        public string TypeName
+        {
+            get { return GetType().Name; }
+        }
+
         public string Name
         {
-            get { return name; }
+            get { return name.Value; }
+            set { name.Value = value; }
         }
 
         public string ID
@@ -45,9 +53,12 @@ namespace texforge.Graph
 
         public Node(string name, string id, Graph graph)
         {
-            this.name = name;
+            this.name = new texforge_definitions.Settings.String("Name", name, string.Empty, string.Empty, string.Empty);
+
             this.graph = graph;
             uniqueName = new UniqueName(id);
+
+            AddSetting(this.name);
         }
 
         public virtual object Process()
