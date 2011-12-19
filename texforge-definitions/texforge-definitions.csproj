@@ -53,6 +53,7 @@
     <Compile Include="Settings\GeneratorType.cs" />
     <Compile Include="Settings\Int.cs" />
     <Compile Include="Settings\SettingBase.cs" />
+    <Compile Include="Settings\String.cs" />
     <Compile Include="Types\Color.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

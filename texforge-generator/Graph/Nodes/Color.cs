@@ -35,5 +35,11 @@ namespace texforge.Graph.Nodes
             return atom;
         }
 
+        public override void Save(System.Xml.Linq.XElement element)
+        {
+            base.Save(element);
+
+
+        }
     }
 }

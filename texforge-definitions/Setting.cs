@@ -122,9 +122,15 @@ namespace texforge_definitions
             XElement baseElement = new XElement(name);
             
             baseElement.Add(new XElement("Value", value.ToString()));
-            baseElement.Add(new XElement("Default", defaultValue.ToString()));
-            baseElement.Add(new XElement("Min", minValue.ToString()));
-            baseElement.Add(new XElement("Max", maxValue.ToString()));
+            
+            if ( defaultValue != null )
+                baseElement.Add(new XElement("Default", defaultValue.ToString()));
+            
+            if ( minValue != null )
+                baseElement.Add(new XElement("Min", minValue.ToString()));
+            
+            if ( maxValue != null )
+                baseElement.Add(new XElement("Max", maxValue.ToString()));
 
             element.Add(baseElement);
 
@@ -132,6 +138,7 @@ namespace texforge_definitions
 
         public override void Load(ref System.Xml.Linq.XElement element)
         {
+
             //name = element.Descendants(;
 
             string valueStr = element.Descendants("Value").First().Value;
@@ -140,11 +147,17 @@ namespace texforge_definitions
             string defaultValueStr = element.Descendants("Default").First().Value;
             defaultValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(defaultValueStr);
 
-            string minValueStr = element.Descendants("Min").First().Value;
-            minValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(minValueStr);
+            if ( element.Descendants("Min").Count() > 0 )
+            {
+                string minValueStr = element.Descendants("Min").First().Value;
+                minValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(minValueStr);
+            }
 
-            string maxValueStr = element.Descendants("Max").First().Value;
-            maxValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(maxValueStr);
+            if (element.Descendants("Max").Count() > 0)
+            {
+                string maxValueStr = element.Descendants("Max").First().Value;
+                maxValue = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(maxValueStr);
+            }
 
             IEnumerable<XElement> siblings = element.ElementsAfterSelf();
             if (siblings.Count() == 0)

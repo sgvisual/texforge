@@ -115,7 +115,7 @@ namespace texforge
             }
             public override string GetName()
             {
-                return node.Data.header.title;
+                return node.Name;
             }
             public override Bitmap GetPreview()
             {
@@ -399,7 +399,7 @@ namespace texforge
             // Label
             Rectangle label = new Rectangle(nodeRect.X + 2, nodeRect.Y + 2, nodeRect.Width - 3, labelHeight);
             graphics.FillRectangle(Brushes.ForestGreen, label);
-            graphics.DrawString(node.Data.header.title, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 120.0f * zoom), Brushes.Black, new PointF((float)(label.X), (float)(label.Y - 3)));
+            graphics.DrawString(node.Name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 120.0f * zoom), Brushes.Black, new PointF((float)(label.X), (float)(label.Y - 3)));
 
             // Render preview
             if (node.Data.atom != null && node.Data.atom.Result != null)
@@ -466,8 +466,8 @@ namespace texforge
         public void AddColorNode(Point position, Rectangle currentClip)
         {
             Graph.Node a = graph.CreateNode("Color", "");
+            a.Name = "Render" + graph.Nodes.Count;
             NodeData aData = new NodeData();
-            aData.header.title = "Render" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
@@ -477,7 +477,7 @@ namespace texforge
         {
             Graph.Node a = graph.CreateNode("Image", "");
             NodeData aData = new NodeData();
-            aData.header.title = "Render" + graph.Nodes.Count;
+            a.Name = "Image" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
@@ -486,8 +486,8 @@ namespace texforge
         public void AddBlendNode(Point position, Rectangle currentClip)
         {
             Graph.Node a = graph.CreateNode("Blend", "");
+            a.Name = "Blend" + graph.Nodes.Count;
             NodeData aData = new NodeData();
-            aData.header.title = "Blend" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
@@ -496,8 +496,8 @@ namespace texforge
         public void AddGeneratorNode(Point position, Rectangle currentClip)
         {
             Graph.Node a = graph.CreateNode("Generator", "");
+            a.Name = "Generator" + graph.Nodes.Count;
             NodeData aData = new NodeData();
-            aData.header.title = "Generator" + graph.Nodes.Count;
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
