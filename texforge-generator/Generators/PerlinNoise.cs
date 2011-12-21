@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using texforge_definitions.Helpers;
 
 namespace texforge.Generators
 {
@@ -13,6 +14,8 @@ namespace texforge.Generators
 
         protected Color startColor;
         protected Color endColor;
+        protected string randomSeed;
+        public static Random random;
 
         public Color StartColor
         {
@@ -24,6 +27,25 @@ namespace texforge.Generators
         {
             get { return endColor; }
             set { endColor = value; }
+        }
+
+        public string Seed
+        {
+            get { return randomSeed; }
+            set { SetSeed(value);  }
+        }
+
+        public void SetSeed(string seed)
+        {
+            int result = 0;
+            if (int.TryParse(seed, out result))
+            {
+                random = new Random(result);
+                return;
+            }
+
+            random = new Random(BitConverter.ToInt32(new Crc32().ComputeHash(new System.Text.UTF8Encoding().GetBytes(seed)), 0));
+
         }
 
         public PerlinNoise(System.Drawing.Size size, System.Drawing.Imaging.PixelFormat pixelFormat)
@@ -76,7 +98,6 @@ namespace texforge.Generators
 
         static float[][] GenerateWhiteNoise(int width, int height)
         {
-            Random random = new Random(0); //Seed to 0 for testing
             float[][] noise = GetEmptyArray<float>(width, height);
 
             for (int i = 0; i < width; i++)
