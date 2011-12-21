@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Crc32.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="SettingAttributes.cs" />
     <Compile Include="settings.cs" />

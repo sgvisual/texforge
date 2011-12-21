@@ -62,6 +62,7 @@ namespace texforge
                 container.Tag = this;
                 this.owner = owner;
                 this.render = render;
+                this.container.Height = 50;
             }
 
             protected void ValueChanged()

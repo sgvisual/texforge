@@ -12,6 +12,8 @@ namespace texforge.Graph.Nodes
 
         protected texforge_definitions.Settings.Color startColor = new texforge_definitions.Settings.Color("StartColor", new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.White));
         protected texforge_definitions.Settings.Color endColor = new texforge_definitions.Settings.Color("EndColor", new texforge_definitions.Types.Color(System.Drawing.Color.White), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.Black), new texforge_definitions.Types.Color(System.Drawing.Color.White));
+        protected texforge_definitions.Settings.String randomSeed = new texforge_definitions.Settings.String("Seed", "1", "1", string.Empty, string.Empty);
+
 
         public Generator(string name, string id, Graph graph)
             : base(name, id, graph)
@@ -23,6 +25,7 @@ namespace texforge.Graph.Nodes
             AddSetting(generatorType);
             AddSetting(startColor);
             AddSetting(endColor);
+            AddSetting(randomSeed);
         }
 
       
@@ -42,6 +45,7 @@ namespace texforge.Graph.Nodes
                     generator = new texforge.Generators.PerlinNoise(graph.Settings.size, graph.Settings.PixelFormat);
                     ((texforge.Generators.PerlinNoise)generator).StartColor = startColor.Value.WindowsColor;
                     ((texforge.Generators.PerlinNoise)generator).EndColor = endColor.Value.WindowsColor;
+                    ((texforge.Generators.PerlinNoise)generator).Seed = randomSeed.Value;
                     break;
             }
 
