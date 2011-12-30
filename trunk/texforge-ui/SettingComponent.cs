@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using texforge_definitions;
 using System.Drawing;
 using texforge.Graph;
+using System.IO;
 
 namespace texforge
 {
@@ -17,6 +18,9 @@ namespace texforge
             SettingComponent component = null;
             switch (setting.GetType().Name)
             {
+                case "Filename":
+                    component = new FilenameSettingComponent(setting, owner, render);
+                    break;
                 case "String":
                     component = new StringSettingComponent(setting, owner, render);
                     break;
@@ -65,7 +69,7 @@ namespace texforge
                 this.container.Height = 50;
             }
 
-            protected void ValueChanged()
+            protected virtual void ValueChanged()
             {
                 owner.Dirty = true;
                 foreach (Control control in refresh)
@@ -201,6 +205,54 @@ namespace texforge
                 input.Text = data.Value.ToString();
                 panel.Controls.Add(input);
                 input.TextChanged += new EventHandler(input_TextChanged);
+            }
+
+            void input_TextChanged(object sender, EventArgs e)
+            {
+                data.Value = ((TextBox)sender).Text;
+                ValueChanged();
+            }
+        }
+
+        class FilenameSettingComponent : SettingComponent
+        {
+            texforge_definitions.Settings.Filename data;
+
+            TextBox input;
+
+            public FilenameSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+                : base(owner, render)
+            {
+                data = (texforge_definitions.Settings.Filename)setting;
+                Panel panel = CreateDefaultGroupBox(data.Name);
+                input = new TextBox();
+                input.Text = data.Value.ToString();
+                panel.Controls.Add(input);
+                Button browse = new Button();
+                browse.Text = "...";
+                panel.Controls.Add(browse);
+                browse.Click += new EventHandler(browse_Click);
+                input.TextChanged += new EventHandler(input_TextChanged);
+            }            
+
+            void browse_Click(object sender, EventArgs e)
+            {
+                using (OpenFileDialog fd = new OpenFileDialog())
+                {
+                    if (fd.ShowDialog() == DialogResult.OK)
+                    {
+                        input.Text = fd.FileName;
+                        ValueChanged();
+                    }
+                }
+            }
+
+            protected override void ValueChanged()
+            {
+                if (File.Exists(input.Text))
+                {
+                    base.ValueChanged();
+                }
             }
 
             void input_TextChanged(object sender, EventArgs e)
