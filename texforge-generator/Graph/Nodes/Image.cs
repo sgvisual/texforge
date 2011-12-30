@@ -3,29 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using texforge_definitions.Settings;
 
 namespace texforge.Graph.Nodes
 {
     public class Image : Node
     {
-        protected string filename;
+        //protected string filename;
+
+        protected Filename filename = new Filename("Filename", string.Empty, string.Empty, string.Empty, string.Empty);
+
 
         public Image(string name, string id, Graph graph)
             : base(name, id, graph)
         {
             RegisterSocket(Socket.Type.Output, "Out");
+
+            AddSetting(filename);
         }
 
         public void LoadImage(string filename)
         {
-            this.filename = filename;
+            this.filename.Value = filename;
             if ( File.Exists(filename) )
                 nodeData.atom = new Atom(System.Drawing.Image.FromFile(filename), graph.Settings.size);
         }
 
         public override object Process()
         {
-            LoadImage(filename);
+            LoadImage(filename.Value);
             return nodeData.atom;
         }
 
@@ -34,6 +40,7 @@ namespace texforge.Graph.Nodes
             base.Load(element);
 
             string filename = element.Descendants("Image").First().Value;
+            this.filename.Value = filename;
             LoadImage(filename);
         }
 
@@ -41,7 +48,7 @@ namespace texforge.Graph.Nodes
         {
             base.Save(element);
 
-            element.Add(new System.Xml.Linq.XElement("Image", filename));
+            element.Add(new System.Xml.Linq.XElement("Image", filename.Value));
         }
     }
 }
