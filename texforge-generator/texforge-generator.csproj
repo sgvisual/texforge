@@ -60,6 +60,7 @@
     <Compile Include="Operations\Addition.cs" />
     <Compile Include="Operations\Blur.cs" />
     <Compile Include="Operations\ColorBlend.cs" />
+    <Compile Include="Operations\Invert.cs" />
     <Compile Include="Operations\Multiply.cs" />
     <Compile Include="Operations\Operation.cs" />
     <Compile Include="Operations\Screen.cs" />

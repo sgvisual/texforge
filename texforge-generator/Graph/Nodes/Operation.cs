@@ -30,6 +30,10 @@ namespace texforge.Graph.Nodes
                 case eOperationType.Blur:
                     Blur();
                     break;
+
+                case eOperationType.Invert:
+                    Invert();
+                    break;
             }
 
             if (operation == null)
@@ -38,6 +42,14 @@ namespace texforge.Graph.Nodes
             Data.atom = operation.Execute();
             return Data.atom;
 
+        }
+
+        protected void Invert()
+        {
+            if (inputSockets[0].Connections.Count == 1)
+            {
+                operation = new Operations.Invert(inputSockets[0].Connections.First.Value.Data.atom);
+            }
         }
 
         protected void Blur()
