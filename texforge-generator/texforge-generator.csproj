@@ -53,6 +53,8 @@
     <Compile Include="Graph\Nodes\Color.cs" />
     <Compile Include="Graph\Nodes\Generator.cs" />
     <Compile Include="Graph\Nodes\Image.cs" />
+    <Compile Include="Graph\Nodes\Operation.cs" />
+    <Compile Include="Graph\Nodes\OperationType.cs" />
     <Compile Include="Graph\UnitTest_Graph.cs" />
     <Compile Include="Noise.cs" />
     <Compile Include="Operations\Addition.cs" />

@@ -20,52 +20,58 @@ namespace texforge.Operations
             byte[] result = new byte[bytesA.Length];
 
             int bytes = (operandA.Result.Width*operandA.Result.Height);
-            int[] test = new int[bytesA.Length];
+            int[] buffer = new int[bytesA.Length];
             int k = 0;
+            
             // TODO: parallel loop
-            for (int i = 0; i < bytesA.Length; i+=3)
+            for (int i = 0; i < bytesA.Length; i+=4)
             {
-                test[k++] = (0xff << 24) | ((bytesA[i]) << 16) | ((bytesA[i + 1] << 8)) | ((bytesA[i + 2] ));
+                buffer[k++] = ((bytesA[i + 3]) | ((bytesA[i + 2] << 8)) | ((bytesA[i + 1]) << 16) | (bytesA[i] << 24));
             }
 
             // TODO: parallel loop
             for (int i = 1; i < bytes - 1; i += 2)
             {
-                byte r0 = (byte)(Math.Min((test[i-1] >> 16), 255));
-                byte g0 = (byte)(Math.Min((test[i-1] >> 8), 255));
-                byte b0 = (byte)(Math.Min((test[i-1]), 255));
+                byte r0 = (byte)(Math.Min((buffer[i - 1] & 0xff000000) >> 24, 255));
+                byte g0 = (byte)(Math.Min((buffer[i - 1] & 0x00ff0000) >> 16, 255));
+                byte b0 = (byte)(Math.Min((buffer[i - 1] & 0x0000ff00) >> 8, 255));
+                byte a0 = (byte)(Math.Min((buffer[i - 1] & 0x000000ff), 255));
 
-                byte r1 = (byte)(Math.Min((test[i+1] >> 16), 255));
-                byte g1 = (byte)(Math.Min((test[i+1] >> 8), 255));
-                byte b1 = (byte)(Math.Min((test[i+1]), 255));
+                byte r1 = (byte)(Math.Min((buffer[i + 1] & 0xff000000) >> 24, 255));
+                byte g1 = (byte)(Math.Min((buffer[i + 1] & 0x00ff0000) >> 16, 255));
+                byte b1 = (byte)(Math.Min((buffer[i + 1] & 0x0000ff00) >> 8, 255));
+                byte a1 = (byte)(Math.Min((buffer[i + 1] & 0x000000ff), 255));
 
                 byte r = (byte)((r0 + r1) / 2);
                 byte g = (byte)((g0 + g1) / 2);
                 byte b = (byte)((b0 + b1) / 2);
+                byte a = (byte)((a0 + a1) / 2);
 
-                int f = (0xff << 24) | ((r) << 16) | ((g << 8)) | ((b));
-                test[i - 1] = f;
-                test[i] = f;
-                test[i - 1] = f;
+                int f = ((r << 24) | (g << 16) | (b << 8) | a);
+                buffer[i - 1] = f;
+                buffer[i] = f;
+                buffer[i + 1] = f;
 
             }
 
-            //// pixelates
-            //for (int i = 1; i < bytes-1; i+=4)
+            // pixelates
+            //for (int i = 1; i < bytes - 1; i += 4)
             //{
             //    int avg = test[i];// (test[i - 1] + test[i] + test[i + 1]) / 3;
-            //    test[i-1] = avg;
+            //    test[i - 1] = avg;
             //    test[i] = avg;
-            //    test[i+1] = avg;
+            //    test[i + 1] = avg;
             //}
 
+            // TODO: parallel for
             k = 0;
-            for (int i = 0; i < bytes; ++i )
+            for (int i = 0; i < bytes; i++)
             {
-                result[k + 0] = (byte)(Math.Min((test[i] >> 16) , 255));
-                result[k + 1] = (byte)(Math.Min((test[i] >> 8) , 255));
-                result[k + 2] = (byte)(Math.Min((test[i] ) , 255));
-                k += 3;                
+                result[k + 0] = (byte)(Math.Min(((buffer[i] & 0xff000000) >> 24), 255));
+                result[k + 1] = (byte)(Math.Min(((buffer[i] & 0x00ff0000) >> 16), 255));
+                result[k + 2] = (byte)(Math.Min(((buffer[i] & 0x0000ff00) >> 8), 255));
+                result[k + 3] = (byte)(Math.Min((buffer[i] & 0x000000ff), 255));
+                k += 4;
             }
 
         //    int blurRadius = 10;

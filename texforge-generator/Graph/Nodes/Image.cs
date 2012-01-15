@@ -9,10 +9,7 @@ namespace texforge.Graph.Nodes
 {
     public class Image : Node
     {
-        //protected string filename;
-
         protected Filename filename = new Filename("Filename", string.Empty, string.Empty, string.Empty, string.Empty);
-
 
         public Image(string name, string id, Graph graph)
             : base(name, id, graph)

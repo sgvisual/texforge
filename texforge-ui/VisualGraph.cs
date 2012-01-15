@@ -503,6 +503,16 @@ namespace texforge
             modified = true;
         }
 
+        public void AddOperationNode(Point position, Rectangle currentClip)
+        {
+            Graph.Node a = graph.CreateNode("Operation", "");
+            a.Name = "Operation" + graph.Nodes.Count;
+            NodeData aData = new NodeData();
+            a.Data = aData;
+            a.Data.header.point = TransformFromScreen(position, currentClip);
+            modified = true;
+        }
+
         public DraggableObject GetDraggableObject(Point position, Rectangle currentClip)
         {
             // Check for sockets
