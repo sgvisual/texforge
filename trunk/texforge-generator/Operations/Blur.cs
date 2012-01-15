@@ -7,19 +7,17 @@ namespace texforge.Operations
 {
     public class Blur : Operation
     {
-        protected Atom operandA;
-
-        public Blur(Atom a)
+        public Blur(Atom atom)
+            : base(atom)
         {
-            operandA = a;
         }
 
         public override Atom Execute()
         {
-            byte[] bytesA = operandA.ToBytes();
+            byte[] bytesA = atom.ToBytes();
             byte[] result = new byte[bytesA.Length];
 
-            int bytes = (operandA.Result.Width*operandA.Result.Height);
+            int bytes = (atom.Result.Width*atom.Result.Height);
             int[] buffer = new int[bytesA.Length];
             int k = 0;
             
@@ -76,7 +74,7 @@ namespace texforge.Operations
 
         //    int blurRadius = 10;
 
-        //    int w = operandA.Result.Width - 1;
+        //    int w = atom.Result.Width - 1;
         //    int tableSize = 2 * blurRadius + 1;
 
         //    int[] divide = new int[256 * tableSize ];
@@ -86,7 +84,7 @@ namespace texforge.Operations
 
         //    int inIndex = 0;
 
-        //    for ( int y = 0; y < operandA.Result.Height; ++y )
+        //    for ( int y = 0; y < atom.Result.Height; ++y )
         //    {
         //        int outIndex = y;
         //        int tr = 0;
@@ -147,7 +145,7 @@ namespace texforge.Operations
             ////float[] weight = { 0.2270270270f, 0.1945945946f, 0.1216216216f, 0.0540540541f, 0.0162162162f };
 
 
-            //byte[] bytesA = operandA.ToBytes();
+            //byte[] bytesA = atom.ToBytes();
 
             //byte[] result = new byte[bytesA.Length];
 
@@ -167,7 +165,7 @@ namespace texforge.Operations
             //    result[index] = (byte)(Math.Min(color*1024, 255));
             //}
 
-            return new Atom(result, operandA.Result.Size, operandA.Result.PixelFormat);
+            return new Atom(result, atom.Result.Size, atom.Result.PixelFormat);
         }
     }
 }

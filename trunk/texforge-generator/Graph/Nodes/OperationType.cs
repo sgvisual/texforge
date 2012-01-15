@@ -9,7 +9,8 @@ namespace texforge.Graph.Nodes
     public enum eOperationType
     {
         None,
-        Blur
+        Blur,
+        Invert
     }
 
     class OperationType : Enumeration

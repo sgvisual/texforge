@@ -7,8 +7,17 @@ namespace texforge.Operations
 {
     public abstract class Operation 
     {
+        public Operation()
+        {
+        }
+
+        public Operation(Atom atom)
+        {
+            this.atom = atom;
+        }
 
         public abstract Atom Execute();
 
+        protected Atom atom;
     }
 }
