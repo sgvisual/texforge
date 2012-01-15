@@ -308,5 +308,11 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+        private void addOperationNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.AddOperationNode(mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
+        }
+
     }
 }

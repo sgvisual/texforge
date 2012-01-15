@@ -39,6 +39,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.previewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -54,7 +55,7 @@
             this.addBlendNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addColorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addGeneratorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.previewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addOperationNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -126,8 +127,8 @@
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.S)));
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.saveAsToolStripMenuItem.Text = "Save &As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
@@ -135,8 +136,8 @@
             // exportOutputAsImageToolStripMenuItem
             // 
             this.exportOutputAsImageToolStripMenuItem.Name = "exportOutputAsImageToolStripMenuItem";
-            this.exportOutputAsImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.E)));
+            this.exportOutputAsImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.E)));
             this.exportOutputAsImageToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.exportOutputAsImageToolStripMenuItem.Text = "&Export output as image...";
             this.exportOutputAsImageToolStripMenuItem.Click += new System.EventHandler(this.exportOutputAsImageToolStripMenuItem_Click);
@@ -162,9 +163,15 @@
             // 
             this.debugInfoToolStripMenuItem.CheckOnClick = true;
             this.debugInfoToolStripMenuItem.Name = "debugInfoToolStripMenuItem";
-            this.debugInfoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.debugInfoToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.debugInfoToolStripMenuItem.Text = "&Debug Info";
             this.debugInfoToolStripMenuItem.Click += new System.EventHandler(this.debugInfoToolStripMenuItem_Click);
+            // 
+            // previewToolStripMenuItem
+            // 
+            this.previewToolStripMenuItem.Name = "previewToolStripMenuItem";
+            this.previewToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.previewToolStripMenuItem.Text = "&Preview";
             // 
             // statusStrip1
             // 
@@ -299,9 +306,10 @@
             this.addRenderNodeToolStripMenuItem,
             this.addBlendNodeToolStripMenuItem,
             this.addColorNodeToolStripMenuItem,
-            this.addGeneratorNodeToolStripMenuItem});
+            this.addGeneratorNodeToolStripMenuItem,
+            this.addOperationNodeToolStripMenuItem});
             this.graphContextMenu.Name = "graphContextMenu";
-            this.graphContextMenu.Size = new System.Drawing.Size(174, 114);
+            this.graphContextMenu.Size = new System.Drawing.Size(174, 136);
             // 
             // addRenderNodeToolStripMenuItem
             // 
@@ -331,11 +339,12 @@
             this.addGeneratorNodeToolStripMenuItem.Text = "Add Generator Node";
             this.addGeneratorNodeToolStripMenuItem.Click += new System.EventHandler(this.addGeneratorNodeToolStripMenuItem_Click);
             // 
-            // previewToolStripMenuItem
+            // addOperationNodeToolStripMenuItem
             // 
-            this.previewToolStripMenuItem.Name = "previewToolStripMenuItem";
-            this.previewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.previewToolStripMenuItem.Text = "&Preview";
+            this.addOperationNodeToolStripMenuItem.Name = "addOperationNodeToolStripMenuItem";
+            this.addOperationNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.addOperationNodeToolStripMenuItem.Text = "Add Operation Node";
+            this.addOperationNodeToolStripMenuItem.Click += new System.EventHandler(this.addOperationNodeToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -404,6 +413,7 @@
         private System.Windows.Forms.ToolStripMenuItem addColorNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addGeneratorNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem previewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addOperationNodeToolStripMenuItem;
 
     }
 }
