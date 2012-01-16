@@ -81,7 +81,7 @@ namespace texforge_definitions
         public T Value
         {
             get { return Clamp(value); }
-            set { this.value = value; }
+            set { this.value = value; if (OnChange != null) OnChange.Invoke(this, null); }
         }
 
         public T DefaultValue
@@ -165,6 +165,8 @@ namespace texforge_definitions
             else
                 element = siblings.First();
         }
+
+        public event EventHandler OnChange;
 
         //public static readonly int seed = 0;
         //public static Random random = new Random(seed);

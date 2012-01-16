@@ -11,6 +11,8 @@ namespace texforge.Graph.Nodes
 
         protected Operations.Operation operation;
 
+        protected string originalName;
+
         public Operation(string name, string id, Graph graph)
             : base(name, id, graph)
         {
@@ -18,6 +20,22 @@ namespace texforge.Graph.Nodes
             RegisterSocket(Socket.Type.Output, "Out");
 
             AddSetting(operationType);
+
+            operationType.OnChange += new EventHandler(operationType_OnChange);
+
+        }
+
+        void operationType_OnChange(object sender, EventArgs e)
+        {
+            eOperationType t = (eOperationType)Enum.Parse(typeof(eOperationType), operationType.Value, true);
+
+            if (originalName == null)
+                originalName = Name;
+
+            if (t != eOperationType.None)
+                Name = operationType.Value;
+            else
+                Name = originalName;
         }
 
         public override object Process()
