@@ -27,12 +27,12 @@ namespace texforge
         private void MainWindow_Load(object sender, EventArgs e)
         {
             graph = new VisualGraph();
-            Preview.PreviewFactory<TiledPreview>(previewToolStripMenuItem.DropDownItems, graph.Graph);
+            Preview.PreviewFactory<TiledPreview>(previewToolStripMenuItem.DropDownItems, graph);
         }
 
         private void GraphRender_Paint(object sender, PaintEventArgs e)
         {
-            graph.Render(e.Graphics, e.ClipRectangle);
+            graph.Render(e.Graphics, e.ClipRectangle, GraphRender);
             Text = "texforge";
             if (graph.AssociatedFile == "")
             {
