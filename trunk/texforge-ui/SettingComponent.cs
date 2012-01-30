@@ -62,11 +62,11 @@ namespace texforge
             public SettingComponent(VisualGraph.DraggableObject owner, PictureBox render)
             {
                 container = new Panel();
-                container.Dock = DockStyle.Bottom;
+                container.Dock = DockStyle.Fill;
                 container.Tag = this;
+                container.Height = 50;
                 this.owner = owner;
                 this.render = render;
-                this.container.Height = 50;
             }
 
             protected virtual void ValueChanged()
@@ -233,6 +233,8 @@ namespace texforge
                 panel.Controls.Add(browse);
                 browse.Click += new EventHandler(browse_Click);
                 input.TextChanged += new EventHandler(input_TextChanged);
+                browse.Top += 25;
+                container.Height += 25;
             }            
 
             void browse_Click(object sender, EventArgs e)

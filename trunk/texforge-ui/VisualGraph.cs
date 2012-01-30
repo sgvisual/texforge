@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using texforge.Graph;
 using texforge_definitions.Settings;
+using System.Windows.Forms;
 
 namespace texforge
 {
@@ -15,6 +16,8 @@ namespace texforge
         const int originWidth = 3;
         const int gridSize = 100;
         const int subGridDivisions = 10;
+
+        Control drawnSurface = null;
 
         DraggableObject dragging = null;
         DraggableObject active = null;
@@ -28,6 +31,13 @@ namespace texforge
         public Graph.Graph Graph
         {
             get { return graph; }
+        }
+
+        Preview currentPreview = null;
+        public Preview CurrentPreview
+        {
+            set { currentPreview = value; }
+            get { return currentPreview; }
         }
 
         bool debug = false;
@@ -282,13 +292,19 @@ namespace texforge
             offset.Y += (int)((float)delta.Y / zoom * 100.0f);
         }
 
-        public void Render(Graphics graphics, Rectangle clip)
+        public void Invalidate()
         {
+            drawnSurface.Invalidate();
+        }
+
+        public void Render(Graphics graphics, Rectangle clip, Control surface)
+        {
+            drawnSurface = surface;
             graphics.FillRectangle(Brushes.CornflowerBlue, clip);
-            Point center = GetCenter(clip);
+            Point center = GetCenter(new Rectangle(0, 0, surface.Width, surface.Height));
             // Horizon and Zenith;
-            Rectangle horizon = new Rectangle(clip.X, center.Y - originWidth / 2, clip.X + clip.Width, originWidth);
-            Rectangle zenith = new Rectangle(center.X - originWidth / 2, clip.Y, originWidth, clip.Y + clip.Height);
+            Rectangle horizon = new Rectangle(clip.X, center.Y - originWidth / 2, clip.X + surface.Width, originWidth);
+            Rectangle zenith = new Rectangle(center.X - originWidth / 2, clip.Y, originWidth, clip.Y + surface.Height);
             // Subgrid
             Brush color = Brushes.DarkGray;
             Rectangle yaxis = zenith;
@@ -345,6 +361,8 @@ namespace texforge
             // Render nodes
             cachedSocketRender.Clear();
             graph.Process();
+            if (currentPreview != null)
+                currentPreview.Invalidate();
             foreach (Graph.Node node in graph.Nodes)
             {
                 RenderNode(node, graphics, clip);
@@ -384,8 +402,9 @@ namespace texforge
                 color = Brushes.Aqua;
             }
             Size size = NodeGetSize(node);
-            Point end = TransformToScreen(new Point(origin.X + size.Width, origin.Y + size.Height), clip);
-            origin = TransformToScreen(origin, clip);
+            Rectangle actualClip = new Rectangle(0, 0, drawnSurface.Width, drawnSurface.Height);
+            Point end = TransformToScreen(new Point(origin.X + size.Width, origin.Y + size.Height), actualClip);
+            origin = TransformToScreen(origin, actualClip);
             Rectangle nodeRect = new Rectangle(origin, new Size(end.X - origin.X, end.Y - origin.Y));
             graphics.FillRectangle(color, nodeRect);
             graphics.DrawRectangle(new Pen(outline), nodeRect);
@@ -436,6 +455,9 @@ namespace texforge
                 graphics.DrawString(connector.name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Black, new PointF((float)(connectorShape.X - label.Width / 4), (float)(connectorShape.Y + 1)));
                 cachedSocketRender[connector] = connectorShape;
             }
+            
+            //graphics.DrawString(clip.X.ToString() + "," + clip.Y + "," + clip.Width + "," + clip.Height, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Red, new PointF((float)(0), (float)(0)));
+            //graphics.DrawString(drawnSurface.Left.ToString() + "," + drawnSurface.Top + "," + drawnSurface.Width + "," + drawnSurface.Height, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Red, new PointF((float)(0), (float)(10)));
         }
 
         Point GetCenter(Rectangle clip)

@@ -10,18 +10,18 @@ namespace texforge
     public abstract class Preview
     {
         Form window = null;
-        protected Graph.Graph graph;
+        protected VisualGraph graph;
         PictureBox render;
         protected Point offset = new Point();
         protected float zoom = 100.0f;
         Point mouseLastPosition = new Point();
 
-        public static void PreviewFactory<T>(ToolStripItemCollection subMenu, Graph.Graph graph)
+        public static void PreviewFactory<T>(ToolStripItemCollection subMenu, VisualGraph graph)
         {
             T preview = (T)System.Activator.CreateInstance(typeof(T), new object[] { subMenu, graph });
         }
 
-        protected Preview(ToolStripItemCollection subMenu, Graph.Graph graph)
+        protected Preview(ToolStripItemCollection subMenu, VisualGraph graph)
         {
             ToolStripItem item = subMenu.Add(GetToolStripName());
             item.Click += new EventHandler(item_Click);
@@ -29,7 +29,7 @@ namespace texforge
             this.graph = graph;
         }
 
-        public void Invalidate()
+        public virtual void Invalidate()
         {
             if( render != null )
                 render.Invalidate();
@@ -42,6 +42,7 @@ namespace texforge
                 window = new Form();
                 window.Text = GetToolStripName();
                 window.FormClosed += new FormClosedEventHandler(window_FormClosed);
+                window.Move += new EventHandler(window_Move);
                 render = new PictureBox();
                 render.Dock = DockStyle.Fill;
                 render.Paint += new PaintEventHandler(render_Paint);
@@ -50,8 +51,14 @@ namespace texforge
                 render.MouseEnter += new EventHandler(render_MouseEnter);
                 window.Controls.Add(render);
                 window.Show();
+                graph.CurrentPreview = this;
             }
             window.BringToFront();
+        }
+
+        void window_Move(object sender, EventArgs e)
+        {
+            graph.Invalidate();
         }
 
         void render_MouseEnter(object sender, EventArgs e)
@@ -70,9 +77,9 @@ namespace texforge
                 Point delta = new Point(e.Location.X - mouseLastPosition.X, e.Location.Y - mouseLastPosition.Y);
                 offset.X += delta.X;
                 offset.Y += delta.Y;
-                if (graph.Final != null && graph.Final.Data.atom != null && graph.Final.Data.atom.Result != null)
+                if (graph.Graph.Final != null && graph.Graph.Final.Data.atom != null && graph.Graph.Final.Data.atom.Result != null)
                 {
-                    Bitmap output = graph.Final.Data.atom.Result;
+                    Bitmap output = graph.Graph.Final.Data.atom.Result;
                     while (offset.X > output.Width)
                         offset.X -= output.Width;
                     while (-offset.X > output.Width)
@@ -108,6 +115,7 @@ namespace texforge
         {
             window.Dispose();
             window = null;
+            graph.CurrentPreview = null;
         }
 
         protected abstract string GetToolStripName();
@@ -122,11 +130,16 @@ namespace texforge
             return "Tiled Preview";
         }
 
+        public override void Invalidate()
+        {
+            base.Invalidate();
+            tileCache.Clear();
+        }
         protected override void Render(PaintEventArgs e)
         {
-            if( graph.Final != null && graph.Final.Data.atom != null && graph.Final.Data.atom.Result != null )
+            if (graph.Graph.Final != null && graph.Graph.Final.Data.atom != null && graph.Graph.Final.Data.atom.Result != null)
             {
-                Bitmap output = graph.Final.Data.atom.Result;
+                Bitmap output = graph.Graph.Final.Data.atom.Result;
                 int width = (int)((float)output.Width * zoom / 100.0f);
                 int height = (int)((float)output.Height * zoom / 100.0f);
                 int offsetX = (int)((float)offset.X * zoom / 100.0f);
@@ -156,7 +169,7 @@ namespace texforge
             //e.Graphics.DrawString("Offset: " + offset.X + ", " + offset.Y, new Font("Terminal", 12.0f), Brushes.Black, new PointF(10.0f, 30.0f));
         }
 
-        public TiledPreview(ToolStripItemCollection subMenu, Graph.Graph graph)
+        public TiledPreview(ToolStripItemCollection subMenu, VisualGraph graph)
             : base(subMenu, graph)
         {
         }
