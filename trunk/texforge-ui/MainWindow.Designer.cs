@@ -56,6 +56,11 @@
             this.addColorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addGeneratorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addOperationNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unsetFinalOutputNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nodeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceSetAsOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disconnectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -74,6 +79,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).BeginInit();
             this.GroupProperties.SuspendLayout();
             this.graphContextMenu.SuspendLayout();
+            this.nodeContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -127,8 +133,8 @@
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.saveAsToolStripMenuItem.Text = "Save &As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
@@ -136,8 +142,8 @@
             // exportOutputAsImageToolStripMenuItem
             // 
             this.exportOutputAsImageToolStripMenuItem.Name = "exportOutputAsImageToolStripMenuItem";
-            this.exportOutputAsImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.E)));
+            this.exportOutputAsImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.E)));
             this.exportOutputAsImageToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
             this.exportOutputAsImageToolStripMenuItem.Text = "&Export output as image...";
             this.exportOutputAsImageToolStripMenuItem.Click += new System.EventHandler(this.exportOutputAsImageToolStripMenuItem_Click);
@@ -307,9 +313,10 @@
             this.addBlendNodeToolStripMenuItem,
             this.addColorNodeToolStripMenuItem,
             this.addGeneratorNodeToolStripMenuItem,
-            this.addOperationNodeToolStripMenuItem});
+            this.addOperationNodeToolStripMenuItem,
+            this.unsetFinalOutputNodeToolStripMenuItem});
             this.graphContextMenu.Name = "graphContextMenu";
-            this.graphContextMenu.Size = new System.Drawing.Size(174, 136);
+            this.graphContextMenu.Size = new System.Drawing.Size(188, 158);
             // 
             // addRenderNodeToolStripMenuItem
             // 
@@ -346,6 +353,43 @@
             this.addOperationNodeToolStripMenuItem.Text = "Add Operation Node";
             this.addOperationNodeToolStripMenuItem.Click += new System.EventHandler(this.addOperationNodeToolStripMenuItem_Click);
             // 
+            // unsetFinalOutputNodeToolStripMenuItem
+            // 
+            this.unsetFinalOutputNodeToolStripMenuItem.Name = "unsetFinalOutputNodeToolStripMenuItem";
+            this.unsetFinalOutputNodeToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.unsetFinalOutputNodeToolStripMenuItem.Text = "Unset final output node";
+            this.unsetFinalOutputNodeToolStripMenuItem.Click += new System.EventHandler(this.unsetFinalOutputNodeToolStripMenuItem_Click);
+            // 
+            // nodeContextMenu
+            // 
+            this.nodeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteNodeToolStripMenuItem,
+            this.forceSetAsOutputToolStripMenuItem,
+            this.disconnectAllToolStripMenuItem});
+            this.nodeContextMenu.Name = "nodeContextMenu";
+            this.nodeContextMenu.Size = new System.Drawing.Size(169, 70);
+            // 
+            // deleteNodeToolStripMenuItem
+            // 
+            this.deleteNodeToolStripMenuItem.Name = "deleteNodeToolStripMenuItem";
+            this.deleteNodeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.deleteNodeToolStripMenuItem.Text = "Delete node";
+            this.deleteNodeToolStripMenuItem.Click += new System.EventHandler(this.deleteNodeToolStripMenuItem_Click);
+            // 
+            // forceSetAsOutputToolStripMenuItem
+            // 
+            this.forceSetAsOutputToolStripMenuItem.Name = "forceSetAsOutputToolStripMenuItem";
+            this.forceSetAsOutputToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.forceSetAsOutputToolStripMenuItem.Text = "Force set as output";
+            this.forceSetAsOutputToolStripMenuItem.Click += new System.EventHandler(this.forceSetAsOutputToolStripMenuItem_Click);
+            // 
+            // disconnectAllToolStripMenuItem
+            // 
+            this.disconnectAllToolStripMenuItem.Name = "disconnectAllToolStripMenuItem";
+            this.disconnectAllToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.disconnectAllToolStripMenuItem.Text = "Disconnect all";
+            this.disconnectAllToolStripMenuItem.Click += new System.EventHandler(this.disconnectAllToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,6 +403,7 @@
             this.Text = "texforge";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -380,6 +425,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.GraphRender)).EndInit();
             this.GroupProperties.ResumeLayout(false);
             this.graphContextMenu.ResumeLayout(false);
+            this.nodeContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -414,6 +460,11 @@
         private System.Windows.Forms.ToolStripMenuItem addGeneratorNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem previewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addOperationNodeToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip nodeContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem deleteNodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forceSetAsOutputToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disconnectAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unsetFinalOutputNodeToolStripMenuItem;
 
     }
 }

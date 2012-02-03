@@ -28,9 +28,29 @@ namespace texforge.Graph
         }
 
         Node final = null;
+        bool forcedFinal = false;
         public Node Final
         {
             get { return final; }
+            set 
+            { 
+                final = value;
+                if (final == null)
+                {
+                    forcedFinal = false;
+                    settings.FinalOutputNode = new Base.UniqueName("");
+                }
+                else
+                {
+                    forcedFinal = true;
+                    settings.FinalOutputNode = new Base.UniqueName(final.ID);
+                }
+                dirty = true;
+            }
+        }
+        public bool ForcedFinalSet
+        {
+            get { return forcedFinal; }
         }
 
         List<Node> nodes = new List<Node>();
@@ -81,6 +101,43 @@ namespace texforge.Graph
             dirty = true;
         }
 
+        protected void RemoveTransition(Transition remove)
+        {
+            remove.to.RemoveConnection(remove.from.owner);
+            remove.from.RemoveConnection(remove.to.owner);
+            transitions.Remove(remove);
+            remove.to.owner.Dirty = true;
+            dirty = true;
+        }
+
+        public void DisconnectAllFromNode(Node node)
+        {
+            Transition? remove = null;
+            do
+            {
+                remove = null;
+                foreach (Transition t in transitions)
+                {
+                    if (t.from.owner == node || t.to.owner == node)
+                    {
+                        remove = t;
+                        break;
+                    }
+                }
+
+                if (remove != null)
+                {
+                    RemoveTransition(remove.Value);
+                }
+            } while (remove != null);
+        }
+
+        public void RemoveNode(Node node)
+        {
+            DisconnectAllFromNode(node);
+            nodes.Remove(node);
+        }
+
         public void DisconnectNodes(Node.Socket a, Node.Socket b)
         {
             Transition? remove = null;
@@ -95,11 +152,7 @@ namespace texforge.Graph
 
             if (remove != null)
             {
-                remove.Value.to.RemoveConnection(remove.Value.from.owner);
-                remove.Value.from.RemoveConnection(remove.Value.to.owner);
-                transitions.Remove(remove.Value);
-                remove.Value.to.owner.Dirty = true;
-                dirty = true;
+                RemoveTransition(remove.Value);
             }
         }
 
@@ -181,6 +234,9 @@ namespace texforge.Graph
     
                 }
             }
+
+            // Find the final node
+            Final = GetNodeFromID(settings.FinalOutputNode.Value);
 
             dirty = true;
         }
@@ -271,18 +327,21 @@ namespace texforge.Graph
             if (dirty)
             {
                 dirty = false;
-                final = null;
-                int currentDepth = -1;
-                foreach (Node node in Nodes)
+                if( !forcedFinal )
                 {
-                    if (node.InputSockets.Count == 0)
+                    final = null;
+                    int currentDepth = -1;
+                    foreach (Node node in Nodes)
                     {
-                        Node current;
-                        int depth = GetDepth(node, out current);
-                        if (depth > currentDepth)
+                        if (node.InputSockets.Count == 0)
                         {
-                            currentDepth = depth;
-                            final = current;
+                            Node current;
+                            int depth = GetDepth(node, out current);
+                            if (depth > currentDepth)
+                            {
+                                currentDepth = depth;
+                                final = current;
+                            }
                         }
                     }
                 }

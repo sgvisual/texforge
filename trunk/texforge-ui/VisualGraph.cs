@@ -92,6 +92,15 @@ namespace texforge
             {
                 set { }
             }
+            public virtual void Delete()
+            {
+            }
+            public virtual void DisconnectAll()
+            {
+            }
+            public virtual void SetAsFinalOutput()
+            {
+            }
         }
 
         class DraggableNode : DraggableObject
@@ -140,6 +149,18 @@ namespace texforge
             public override bool Dirty
             {
                 set { node.Dirty = value; }
+            }
+            public override void Delete()
+            {
+                node.Remove();
+            }
+            public override void DisconnectAll()
+            {
+                node.DisconnectAll();
+            }
+            public override void SetAsFinalOutput()
+            {
+                node.SetAsFinalOutput();
             }
         }
 
