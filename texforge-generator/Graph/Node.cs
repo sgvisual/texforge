@@ -195,6 +195,21 @@ namespace texforge.Graph
             settings.AddLast(setting);
         }
 
+        public void Remove()
+        {
+            graph.RemoveNode(this);
+        }
+
+        public void DisconnectAll()
+        {
+            graph.DisconnectAllFromNode(this);
+        }
+
+        public void SetAsFinalOutput()
+        {
+            graph.Final = this;
+        }
+
         protected Graph graph;
     }
 }

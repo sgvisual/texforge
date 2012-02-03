@@ -22,6 +22,7 @@ namespace texforge
             InitializeComponent();
             GraphRender.MouseWheel += new MouseEventHandler(GraphRender_MouseWheel);
             GraphRender.AllowDrop = true;
+            this.KeyPreview = true;
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -97,7 +98,16 @@ namespace texforge
             bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0; 
             if (e.Button == MouseButtons.Right && !left && !middle)
             {
-                graphContextMenu.Show(Control.MousePosition);
+                VisualGraph.DraggableObject draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
+                if (draggable != null)
+                {
+                    ChangeActiveObject(draggable);
+                    nodeContextMenu.Show(Control.MousePosition);
+                }
+                else
+                {
+                    graphContextMenu.Show(Control.MousePosition);
+                }
             }
         }
 
@@ -314,5 +324,42 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+        private void deleteNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.ActiveObject.Delete();
+            graph.ActiveObject = null;
+            GraphRender.Invalidate();
+        }
+
+        private void forceSetAsOutputToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.ActiveObject.SetAsFinalOutput();
+            GraphRender.Invalidate();
+        }
+
+        private void disconnectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.ActiveObject.DisconnectAll();
+            GraphRender.Invalidate();
+        }
+
+        private void unsetFinalOutputNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.Graph.Final = null;
+            GraphRender.Invalidate();
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (graph.ActiveObject != null)
+                {
+                    graph.ActiveObject.Delete();
+                    graph.ActiveObject = null;
+                    GraphRender.Invalidate();
+                }
+            }
+        }
     }
 }
