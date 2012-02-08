@@ -25,22 +25,28 @@ namespace texforge.Graph.Nodes
 
         public override object Process()
         {
-            if (inputSockets[0].Connections.Count == 0)
-            {
-                if (inputSockets[1].Connections.Count > 0)
-                    return inputSockets[1].Connections.First.Value.Data.atom;
+            Atom a = null;
+            if ( inputSockets[0].connection != null )
+                a = inputSockets[0].connection.atom;
 
+            Atom b = null;
+            if ( inputSockets[1].connection != null )
+                b = inputSockets[1].connection.atom;
+
+            if (a == null && b == null)
                 return null;
-            }
-            else
-            if (inputSockets[1].Connections.Count == 0)
+
+            if (b == null)
             {
-                return inputSockets[0].Connections.First.Value.Data.atom;
+                displayAtom = a;
+                return a;
             }
 
-                
-            Atom a = inputSockets[0].Connections.First.Value.Data.atom;
-            Atom b = inputSockets[1].Connections.First.Value.Data.atom;
+            if (a == null)
+            {
+                displayAtom = b;
+                return b;
+            }
 
             Operations.Operation operation = null;
 
@@ -70,8 +76,10 @@ namespace texforge.Graph.Nodes
 
             if (operation != null)
             {
-                Data.atom = operation.Execute();
-                return Data.atom;
+                Atom atom = operation.Execute();
+                GetSocket("Result").atom = atom;
+                displayAtom = atom;
+                return atom;
             }
 
             // TODO: throw exception or invalidate node

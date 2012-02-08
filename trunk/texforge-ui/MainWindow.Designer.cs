@@ -56,6 +56,7 @@
             this.addColorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addGeneratorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addOperationNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSplitChannelsNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unsetFinalOutputNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nodeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -314,44 +315,53 @@
             this.addColorNodeToolStripMenuItem,
             this.addGeneratorNodeToolStripMenuItem,
             this.addOperationNodeToolStripMenuItem,
+            this.addSplitChannelsNodeToolStripMenuItem,
             this.unsetFinalOutputNodeToolStripMenuItem});
             this.graphContextMenu.Name = "graphContextMenu";
-            this.graphContextMenu.Size = new System.Drawing.Size(188, 158);
+            this.graphContextMenu.Size = new System.Drawing.Size(192, 158);
+            
             // 
             // addRenderNodeToolStripMenuItem
             // 
             this.addRenderNodeToolStripMenuItem.Name = "addRenderNodeToolStripMenuItem";
-            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.addRenderNodeToolStripMenuItem.Text = "Add Render Node";
             this.addRenderNodeToolStripMenuItem.Click += new System.EventHandler(this.addRenderNodeToolStripMenuItem_Click);
             // 
             // addBlendNodeToolStripMenuItem
             // 
             this.addBlendNodeToolStripMenuItem.Name = "addBlendNodeToolStripMenuItem";
-            this.addBlendNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.addBlendNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.addBlendNodeToolStripMenuItem.Text = "Add Blend Node";
             this.addBlendNodeToolStripMenuItem.Click += new System.EventHandler(this.addBlendNodeToolStripMenuItem_Click);
             // 
             // addColorNodeToolStripMenuItem
             // 
             this.addColorNodeToolStripMenuItem.Name = "addColorNodeToolStripMenuItem";
-            this.addColorNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.addColorNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.addColorNodeToolStripMenuItem.Text = "Add Color Node";
             this.addColorNodeToolStripMenuItem.Click += new System.EventHandler(this.addColorNodeToolStripMenuItem_Click);
             // 
             // addGeneratorNodeToolStripMenuItem
             // 
             this.addGeneratorNodeToolStripMenuItem.Name = "addGeneratorNodeToolStripMenuItem";
-            this.addGeneratorNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.addGeneratorNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.addGeneratorNodeToolStripMenuItem.Text = "Add Generator Node";
             this.addGeneratorNodeToolStripMenuItem.Click += new System.EventHandler(this.addGeneratorNodeToolStripMenuItem_Click);
             // 
             // addOperationNodeToolStripMenuItem
             // 
             this.addOperationNodeToolStripMenuItem.Name = "addOperationNodeToolStripMenuItem";
-            this.addOperationNodeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.addOperationNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.addOperationNodeToolStripMenuItem.Text = "Add Operation Node";
             this.addOperationNodeToolStripMenuItem.Click += new System.EventHandler(this.addOperationNodeToolStripMenuItem_Click);
+            // 
+            // addSplitChannelsNodeToolStripMenuItem
+            // 
+            this.addSplitChannelsNodeToolStripMenuItem.Name = "addSplitChannelsNodeToolStripMenuItem";
+            this.addSplitChannelsNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.addSplitChannelsNodeToolStripMenuItem.Text = "Add Split Channels Node";
+            this.addSplitChannelsNodeToolStripMenuItem.Click += new System.EventHandler(this.addSplitChannelsNodeToolStripMenuItem_Click);
             // 
             // unsetFinalOutputNodeToolStripMenuItem
             // 
@@ -460,6 +470,7 @@
         private System.Windows.Forms.ToolStripMenuItem addGeneratorNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem previewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addOperationNodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addSplitChannelsNodeToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip nodeContextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forceSetAsOutputToolStripMenuItem;

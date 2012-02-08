@@ -59,9 +59,9 @@ namespace texforge
         {
             get
             {
-                if (graph.Final != null && graph.Final.Data.atom != null && graph.Final.Data.atom.Result != null)
+                if (graph.Final != null && graph.Final.DisplayAtom != null && graph.Final.DisplayAtom.Result != null)
                 {
-                    return graph.Final.Data.atom.Result;
+                    return graph.Final.DisplayAtom.Result;
                 }
                 return null;
             }
@@ -138,9 +138,9 @@ namespace texforge
             }
             public override Bitmap GetPreview()
             {
-                if (node.Data.atom == null)
+                if (node.DisplayAtom == null)
                     return null;
-                return node.Data.atom.Result;
+                return node.DisplayAtom.Result;
             }
             public override LinkedList<SettingBase> GetSettings()
             {
@@ -442,12 +442,12 @@ namespace texforge
             graphics.DrawString(node.Name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 120.0f * zoom), Brushes.Black, new PointF((float)(label.X), (float)(label.Y - 3)));
 
             // Render preview
-            if (node.Data.atom != null && node.Data.atom.Result != null)
+            if (node.DisplayAtom != null && node.DisplayAtom.Result != null)
             {
                 int renderSize = (nodeRect.Height - labelHeight) * 3 / 4;
                 Rectangle render = new Rectangle(new Point(nodeRect.X + nodeRect.Width / 4, nodeRect.Y + (nodeRect.Height - renderSize - labelHeight) / 2 + labelHeight), new Size(renderSize, renderSize));
                 graphics.DrawRectangle(new Pen(Brushes.Black), new Rectangle(new Point(render.X - 1, render.Y - 1), new Size(render.Width + 1, render.Height + 1)));
-                graphics.DrawImage(node.Data.atom.Result, render);
+                graphics.DrawImage(node.DisplayAtom.Result, render);
             }
 
             // Connector sockets
@@ -550,6 +550,16 @@ namespace texforge
         {
             Graph.Node a = graph.CreateNode("Operation", "");
             a.Name = "Operation" + graph.Nodes.Count;
+            NodeData aData = new NodeData();
+            a.Data = aData;
+            a.Data.header.point = TransformFromScreen(position, currentClip);
+            modified = true;
+        }
+
+        public void AddSplitChannelsNode(Point position, Rectangle currentClip)
+        {
+            Graph.Node a = graph.CreateNode("SplitChannels", "");
+            a.Name = "Split Channels" + graph.Nodes.Count;
             NodeData aData = new NodeData();
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);

@@ -24,13 +24,14 @@ namespace texforge.Graph
             a.Data.header.point = new Point(-175, -60);
             Uri uri = new Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"..\..\..\data\tests\toplayer.jpg"));
             ((Nodes.Image)a).LoadImage(Path.GetFullPath(uri.AbsolutePath));
+            a.Process();
 
             Node b = graph.CreateNode("Color", "");
             NodeData bData = new NodeData();
             bData.header.title = "Blend";
             b.Data = bData;
             b.Data.header.point = new Point(-45, 25);
-            b.Data.atom = new Atom(System.Drawing.Color.Red, graph.Settings.size, graph.Settings.PixelFormat);
+            b.Process();
 
             Node c = graph.CreateNode("Blend", "");
             NodeData cData = new NodeData();

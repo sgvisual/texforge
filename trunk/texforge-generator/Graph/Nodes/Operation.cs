@@ -57,8 +57,10 @@ namespace texforge.Graph.Nodes
             if (operation == null)
                 return null;
 
-            Data.atom = operation.Execute();
-            return Data.atom;
+            Atom atom = operation.Execute();
+            GetSocket("Out").atom = atom;
+            displayAtom = atom;
+            return atom;
 
         }
 
@@ -66,7 +68,7 @@ namespace texforge.Graph.Nodes
         {
             if (inputSockets[0].Connections.Count == 1)
             {
-                operation = new Operations.Invert(inputSockets[0].Connections.First.Value.Data.atom);
+                operation = new Operations.Invert(inputSockets[0].connection.atom);
             }
         }
 
@@ -74,7 +76,7 @@ namespace texforge.Graph.Nodes
         {
             if (inputSockets[0].Connections.Count == 1)
             {
-                operation = new Operations.Blur(inputSockets[0].Connections.First.Value.Data.atom);
+                operation = new Operations.Blur(inputSockets[0].connection.atom);
             }
         }
     }

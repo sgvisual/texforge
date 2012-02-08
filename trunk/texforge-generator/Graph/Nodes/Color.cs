@@ -30,8 +30,8 @@ namespace texforge.Graph.Nodes
 
             atom.AtomColor = color.Value.WindowsColor;
 
-            Data.atom = atom;
-
+            GetSocket("Out").atom = atom;
+            displayAtom = atom;
             return atom;
         }
 
