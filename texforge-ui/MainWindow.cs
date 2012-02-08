@@ -324,6 +324,11 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
+		private void addSplitChannelsNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.AddSplitChannelsNode(mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
+        }
         private void deleteNodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graph.ActiveObject.Delete();

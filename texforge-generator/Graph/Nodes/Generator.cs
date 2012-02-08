@@ -49,8 +49,10 @@ namespace texforge.Graph.Nodes
                     break;
             }
 
-            Data.atom = generator.Generate();
-            return Data.atom;
+            Atom atom = generator.Generate();
+            GetSocket("Out").atom = atom;
+            displayAtom = atom;
+            return atom;
         }
 
         protected texforge.Generators.Generator generator; 

@@ -43,6 +43,13 @@ namespace texforge.Operations
 
         public override Atom Execute()
         {
+            if (operandA == null && operandB == null)
+                return null;
+            if (operandA == null)
+                return operandB;
+            if (operandB == null)
+                return operandA;
+
             return MultiplyBitmaps(ref operandA, ref operandB);
         }
 

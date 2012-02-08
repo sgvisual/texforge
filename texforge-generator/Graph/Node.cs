@@ -11,8 +11,13 @@ namespace texforge.Graph
 {
     public class Node 
     {
-        //protected string name;
+
         protected UniqueName uniqueName;
+        protected Atom displayAtom;
+        public Atom DisplayAtom
+        {
+            get { return displayAtom; }
+        }
 
         protected texforge_definitions.Settings.String name;
 
@@ -78,7 +83,9 @@ namespace texforge.Graph
                     parent.ProcessIfDirty();
                 }
             }
-            Data.atom = null;
+            
+            displayAtom = null;
+
             Process();
             dirty = false;
         }
@@ -116,9 +123,9 @@ namespace texforge.Graph
         public void RegisterSocket(Socket.Type type, string name)
         {
             if ( type == Socket.Type.Input )
-                inputSockets.Add(new Socket(this, name));
+                inputSockets.Add(new Socket(this, name, null));
             else
-                outputSockets.Add(new Socket(this, name));
+                outputSockets.Add(new Socket(this, name, null));
             dirty = true;
         }
 
@@ -158,7 +165,8 @@ namespace texforge.Graph
                 Input,
                 Output
             }
-            public Socket(Node owner, string name)
+
+            public Socket(Node owner, string name, Atom atom)
             {
                 this.name = name;
                 this.owner = owner;
@@ -175,8 +183,11 @@ namespace texforge.Graph
                 connections.Remove(node);
             }
 
+            public Atom atom;
             public string name;
             public readonly Node owner;
+            public Socket connection;
+
             protected LinkedList<Node> connections = new LinkedList<Node>();
             public LinkedList<Node> Connections
             {

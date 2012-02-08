@@ -22,14 +22,18 @@ namespace texforge.Graph.Nodes
         public void LoadImage(string filename)
         {
             this.filename.Value = filename;
-            if ( File.Exists(filename) )
-                nodeData.atom = new Atom(System.Drawing.Image.FromFile(filename), graph.Settings.size);
+            if (File.Exists(filename))
+            {
+                displayAtom = new Atom(System.Drawing.Image.FromFile(filename), graph.Settings.size);
+                GetSocket("Out").atom = displayAtom;
+            }
         }
 
         public override object Process()
         {
             LoadImage(filename.Value);
-            return nodeData.atom;
+            
+            return displayAtom;
         }
 
         public override void Load(System.Xml.Linq.XElement element)

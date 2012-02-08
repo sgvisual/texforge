@@ -21,7 +21,10 @@ namespace texforge.Graph
                 this.from.AddConnection(to.owner);
                 this.to.AddConnection(from.owner);
 
+                //from.owner.Process();
+				from.owner.Dirty = true;
                 to.owner.Dirty = true;
+                //to.owner.Process();
             }
             public Node.Socket from;
             public Node.Socket to;
@@ -95,6 +98,9 @@ namespace texforge.Graph
         {
             if (a == null || b == null)
                 throw new Exception("Cannot connect nodes because a Socket was not found");
+
+            a.connection = b;
+            b.connection = a;
 
             Transition t = new Transition(a, b);
             transitions.Add(t);
