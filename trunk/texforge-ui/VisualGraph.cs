@@ -6,6 +6,7 @@ using System.Drawing;
 using texforge.Graph;
 using texforge_definitions.Settings;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace texforge
 {
@@ -16,6 +17,7 @@ namespace texforge
         const int originWidth = 3;
         const int gridSize = 100;
         const int subGridDivisions = 10;
+        const int connectorSize = 8;
 
         Control drawnSurface = null;
 
@@ -175,13 +177,20 @@ namespace texforge
             {
                 return socket == compare;
             }
-            public override void Drop(VisualGraph graph, Point position, Rectangle clip)
+
+            public enum DropResult
             {
-                base.Drop(graph, position, clip);
-                Graph.Node.Socket target = null;
-                Graph.Graph.Transition? transition = null;
-                bool fromOutput = false;
-                bool toOutput = false;
+                Invalid,
+                DeleteTransition,
+                ReconnectTo,
+                ReconnectFrom,
+                ConnectTo,
+                ConnectFrom,
+            }
+
+            public DropResult CanDropInSocket(VisualGraph graph, Point position, out Graph.Node.Socket target, out Graph.Graph.Transition? transition)
+            {
+                target = null;
                 // Find the target socket
                 foreach (KeyValuePair<Graph.Node.Socket, Rectangle> socket in graph.CachedSocketRender)
                 {
@@ -192,7 +201,9 @@ namespace texforge
                         break;
                     }
                 }
+
                 // Find if its in any transitions
+                transition = null;
                 foreach (Graph.Graph.Transition connector in graph.graph.Transitions)
                 {
                     if (connector.from == socket)
@@ -206,17 +217,21 @@ namespace texforge
                         break;
                     }
                 }
+
                 // No target node
-                if (target == null )
+                if (target == null)
                 {
                     // Delete transition
-                    if( transition != null )
+                    if (transition != null)
                     {
-                        graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
+                        return DropResult.DeleteTransition;
                     }
-                    return;
+                    return DropResult.Invalid;
                 }
+
                 // Find the socket types
+                bool fromOutput = false;
+                bool toOutput = false;
                 foreach (Graph.Node.Socket nodeSocket in socket.owner.OutputSockets)
                 {
                     if (nodeSocket == socket)
@@ -233,37 +248,78 @@ namespace texforge
                         break;
                     }
                 }
+
                 // Move existing transition
                 if (transition != null)
                 {
                     // Validate same type to same type
                     if ((fromOutput && !toOutput) || (!fromOutput && toOutput))
                     {
-                        return;
+                        return DropResult.Invalid;
                     }
-                    graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
                     if (fromOutput)
                     {
-                        graph.graph.ConnectNodes(target, transition.Value.to);
+                        return DropResult.ReconnectTo;
                     }
                     else
                     {
-                        graph.graph.ConnectNodes(transition.Value.from, target);
+                        // Already one there, can't reconnect
+                        if (target.Connections.Count > 0)
+                        {
+                            return DropResult.Invalid;
+                        }
+                        return DropResult.ReconnectFrom;
                     }
-                    return;
                 }
+
                 // Validate output to input to add a new transition
                 if ((fromOutput && toOutput) || (!fromOutput && !toOutput))
                 {
-                    return;
+                    return DropResult.Invalid;
                 }
                 if (fromOutput)
                 {
-                    graph.graph.ConnectNodes(socket, target);
+                    // Already one there, can't reconnect
+                    if (target.Connections.Count > 0)
+                    {
+                        return DropResult.Invalid;
+                    }
+                    return DropResult.ConnectTo;
                 }
                 else
                 {
-                    graph.graph.ConnectNodes(target, socket);
+                    return DropResult.ConnectFrom;
+                }
+            }
+
+            public override void Drop(VisualGraph graph, Point position, Rectangle clip)
+            {
+                base.Drop(graph, position, clip);
+
+                Graph.Graph.Transition? transition = null;
+                Graph.Node.Socket target = null;
+
+                switch (CanDropInSocket(graph, position, out target, out transition))
+                {
+                    case DropResult.DeleteTransition:
+                        graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
+                        break;
+                    case DropResult.Invalid:
+                        break;
+                    case DropResult.ReconnectTo:
+                        graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
+                        graph.graph.ConnectNodes(target, transition.Value.to);
+                        break;
+                    case DropResult.ReconnectFrom:
+                        graph.graph.DisconnectNodes(transition.Value.from, transition.Value.to);
+                        graph.graph.ConnectNodes(transition.Value.from, target);
+                        break;
+                    case DropResult.ConnectTo:
+                        graph.graph.ConnectNodes(socket, target);
+                        break;
+                    case DropResult.ConnectFrom:
+                        graph.graph.ConnectNodes(target, socket);
+                        break;
                 }
             }
             public override string GetName()
@@ -389,17 +445,97 @@ namespace texforge
                 RenderNode(node, graphics, clip);
             }
             // Render transitions
+            bool foundDragged = false;
             foreach (Graph.Graph.Transition transition in graph.Transitions)
             {
                 Rectangle fromConnector = cachedSocketRender[transition.from];
                 Rectangle toConnector = cachedSocketRender[transition.to];
-                graphics.DrawLine(new Pen(Brushes.Yellow, 8), new Point(fromConnector.X + fromConnector.Width / 2, fromConnector.Y + fromConnector.Height / 2), new Point(toConnector.X + toConnector.Width / 2, toConnector.Y + toConnector.Height / 2));
+                Point from = new Point(fromConnector.X + fromConnector.Width / 2, fromConnector.Y + fromConnector.Height / 2);
+                Point to = new Point(toConnector.X + toConnector.Width / 2, toConnector.Y + toConnector.Height / 2);
+                Point? dragPos = null;
+                if (dragging != null && dragging.Is(transition.from))
+                {
+                    foundDragged = true;
+                    dragPos = from = TransformToScreen(dragging.Position, clip);
+                }
+                else if (dragging != null && dragging.Is(transition.to))
+                {
+                    foundDragged = true;
+                    dragPos = to = TransformToScreen(dragging.Position, clip);
+                }
+                RenderTransitionCurve(graphics, from, to);
+                if (dragPos.HasValue)
+                {
+                    RenderDraggingSocket(graphics, (DraggableSocket)dragging, dragPos.Value);
+                }
             }
+            if (!foundDragged && dragging != null)
+            {
+                Graph.Node.Socket target = null;
+                foreach (Graph.Node node in Graph.Nodes)
+                {
+                    foreach( Graph.Node.Socket socket in node.InputSockets)
+                    {
+                        if (dragging.Is(socket))
+                        {
+                            target = socket;
+                            break;
+                        }
+                    }
+                    foreach( Graph.Node.Socket socket in node.OutputSockets)
+                    {
+                        if (dragging.Is(socket))
+                        {
+                            target = socket;
+                            break;
+                        }
+                    }
+                    if (target != null)
+                        break;
+                }
+                if (target != null)
+                {
+                    Point from = new Point(cachedSocketRender[target].X + connectorSize / 2, cachedSocketRender[target].Y + connectorSize / 2);
+                    Point to = TransformToScreen(dragging.Position, clip);
+                    RenderTransitionCurve(graphics, from, to);
+                    RenderDraggingSocket(graphics, (DraggableSocket)dragging, to);
+                }
+            }
+        }
+
+        void RenderDraggingSocket(Graphics graphics, DraggableSocket dragSocket, Point dragPos)
+        {
+            Graph.Node.Socket target = null;
+            Graph.Graph.Transition? trans = null;
+            Brush targetSocket = Brushes.LawnGreen;
+            switch (dragSocket.CanDropInSocket(this, dragPos, out target, out trans))
+            {
+                case DraggableSocket.DropResult.Invalid:
+                    targetSocket = Brushes.Gray;
+                    break;
+
+                case DraggableSocket.DropResult.DeleteTransition:
+                    targetSocket = Brushes.Red;
+                    break;
+            }
+            Rectangle fakeSocket = new Rectangle(dragPos.X - connectorSize / 2, dragPos.Y - connectorSize / 2, connectorSize, connectorSize);
+            graphics.FillEllipse(targetSocket, fakeSocket);
+            graphics.DrawEllipse(new Pen(Brushes.Black), fakeSocket);
+        }
+
+        void RenderTransitionCurve(Graphics graphics, Point from, Point to)
+        {
+            Point[] curve = new Point[4];
+            curve[0] = from;
+            curve[3] = to;
+            curve[1] = new Point(curve[0].X + (curve[3].X - curve[0].X) * 1 / 4, curve[0].Y + (curve[3].Y - curve[0].Y) * 1 / 8);
+            curve[2] = new Point(curve[0].X + (curve[3].X - curve[0].X) * 3 / 4, curve[0].Y + (curve[3].Y - curve[0].Y) * 7 / 8);
+            graphics.DrawCurve(new Pen(Brushes.Black, connectorSize + 1), curve);
+            graphics.DrawCurve(new Pen(Brushes.LightSteelBlue, connectorSize - 1), curve);
         }
 
         void RenderNode(Graph.Node node, Graphics graphics, Rectangle clip)
         {
-            const int connectorSize = 8;
             const int connectorOffset = 3;
             const int labelDefaultHeight = 15;
             int labelHeight = (int)((float)labelDefaultHeight / 100.0f * zoom);
@@ -459,7 +595,10 @@ namespace texforge
             {
                 height += delta;
                 Rectangle connectorShape = new Rectangle(origin.X + connectorOffset, height - connectorSize / 2, connectorSize, connectorSize);
-                graphics.FillEllipse(Brushes.White, connectorShape);
+                Brush connectorColor = Brushes.White;
+                if (connector.Connections.Count > 0)
+                    connectorColor = Brushes.LightSteelBlue;
+                graphics.FillEllipse(connectorColor, connectorShape);
                 graphics.DrawEllipse(black, connectorShape);
                 graphics.DrawString(connector.name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Black, new PointF((float)(connectorShape.X + connectorShape.Width + 1), (float)(connectorShape.Y + 1)));
                 cachedSocketRender[connector] = connectorShape;
@@ -471,7 +610,10 @@ namespace texforge
             {
                 height += delta;
                 Rectangle connectorShape = new Rectangle(end.X - connectorSize - connectorOffset, height - connectorSize / 2, connectorSize, connectorSize);
-                graphics.FillEllipse(Brushes.White, connectorShape);
+                Brush connectorColor = Brushes.White;
+                if (connector.Connections.Count > 0)
+                    connectorColor = Brushes.LightSteelBlue;
+                graphics.FillEllipse(connectorColor, connectorShape); 
                 graphics.DrawEllipse(black, connectorShape);
                 graphics.DrawString(connector.name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 250.0f * zoom), Brushes.Black, new PointF((float)(connectorShape.X - label.Width / 4), (float)(connectorShape.Y + 1)));
                 cachedSocketRender[connector] = connectorShape;
