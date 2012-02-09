@@ -28,7 +28,21 @@ namespace texforge
         private void MainWindow_Load(object sender, EventArgs e)
         {
             graph = new VisualGraph();
+            foreach(string nodeType in graph.NodeTypes)
+            {
+                ToolStripMenuItem nodeItem = new ToolStripMenuItem(nodeType);
+                nodeItem.Tag = nodeType;
+                nodeItem.Click += new EventHandler(nodeItem_Click);
+                addNodeToolStripMenuItem.DropDownItems.Add(nodeItem);
+            }
             Preview.PreviewFactory<TiledPreview>(previewToolStripMenuItem.DropDownItems, graph);
+        }
+
+        void nodeItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem nodeItem = (ToolStripMenuItem)sender;
+            graph.AddNode((string)nodeItem.Tag, mouseLastPosition, GraphRender.ClientRectangle);
+            GraphRender.Invalidate();
         }
 
         private void GraphRender_Paint(object sender, PaintEventArgs e)
@@ -109,18 +123,6 @@ namespace texforge
                     graphContextMenu.Show(Control.MousePosition);
                 }
             }
-        }
-
-        private void addRenderNodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.AddRenderNode(mouseLastPosition, GraphRender.ClientRectangle);
-            GraphRender.Invalidate();
-        }
-
-        private void addBlendNodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.AddBlendNode(mouseLastPosition, GraphRender.ClientRectangle);
-            GraphRender.Invalidate();
         }
 
         private void GraphRender_DragDrop(object sender, DragEventArgs e)
@@ -306,29 +308,6 @@ namespace texforge
             }
         }
 
-        private void addColorNodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.AddColorNode(mouseLastPosition, GraphRender.ClientRectangle);
-            GraphRender.Invalidate();
-        }
-
-        private void addGeneratorNodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.AddGeneratorNode(mouseLastPosition, GraphRender.ClientRectangle);
-            GraphRender.Invalidate();
-        }
-
-        private void addOperationNodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.AddOperationNode(mouseLastPosition, GraphRender.ClientRectangle);
-            GraphRender.Invalidate();
-        }
-
-		private void addSplitChannelsNodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.AddSplitChannelsNode(mouseLastPosition, GraphRender.ClientRectangle);
-            GraphRender.Invalidate();
-        }
         private void deleteNodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graph.ActiveObject.Delete();
