@@ -51,17 +51,12 @@
             this.GroupProperties = new System.Windows.Forms.GroupBox();
             this.PanelProperties = new System.Windows.Forms.FlowLayoutPanel();
             this.graphContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addRenderNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addBlendNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addColorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addGeneratorNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addOperationNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addSplitChannelsNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unsetFinalOutputNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nodeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forceSetAsOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -310,58 +305,10 @@
             // graphContextMenu
             // 
             this.graphContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addRenderNodeToolStripMenuItem,
-            this.addBlendNodeToolStripMenuItem,
-            this.addColorNodeToolStripMenuItem,
-            this.addGeneratorNodeToolStripMenuItem,
-            this.addOperationNodeToolStripMenuItem,
-            this.addSplitChannelsNodeToolStripMenuItem,
+            this.addNodeToolStripMenuItem,
             this.unsetFinalOutputNodeToolStripMenuItem});
             this.graphContextMenu.Name = "graphContextMenu";
-            this.graphContextMenu.Size = new System.Drawing.Size(192, 158);
-            
-            // 
-            // addRenderNodeToolStripMenuItem
-            // 
-            this.addRenderNodeToolStripMenuItem.Name = "addRenderNodeToolStripMenuItem";
-            this.addRenderNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.addRenderNodeToolStripMenuItem.Text = "Add Render Node";
-            this.addRenderNodeToolStripMenuItem.Click += new System.EventHandler(this.addRenderNodeToolStripMenuItem_Click);
-            // 
-            // addBlendNodeToolStripMenuItem
-            // 
-            this.addBlendNodeToolStripMenuItem.Name = "addBlendNodeToolStripMenuItem";
-            this.addBlendNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.addBlendNodeToolStripMenuItem.Text = "Add Blend Node";
-            this.addBlendNodeToolStripMenuItem.Click += new System.EventHandler(this.addBlendNodeToolStripMenuItem_Click);
-            // 
-            // addColorNodeToolStripMenuItem
-            // 
-            this.addColorNodeToolStripMenuItem.Name = "addColorNodeToolStripMenuItem";
-            this.addColorNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.addColorNodeToolStripMenuItem.Text = "Add Color Node";
-            this.addColorNodeToolStripMenuItem.Click += new System.EventHandler(this.addColorNodeToolStripMenuItem_Click);
-            // 
-            // addGeneratorNodeToolStripMenuItem
-            // 
-            this.addGeneratorNodeToolStripMenuItem.Name = "addGeneratorNodeToolStripMenuItem";
-            this.addGeneratorNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.addGeneratorNodeToolStripMenuItem.Text = "Add Generator Node";
-            this.addGeneratorNodeToolStripMenuItem.Click += new System.EventHandler(this.addGeneratorNodeToolStripMenuItem_Click);
-            // 
-            // addOperationNodeToolStripMenuItem
-            // 
-            this.addOperationNodeToolStripMenuItem.Name = "addOperationNodeToolStripMenuItem";
-            this.addOperationNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.addOperationNodeToolStripMenuItem.Text = "Add Operation Node";
-            this.addOperationNodeToolStripMenuItem.Click += new System.EventHandler(this.addOperationNodeToolStripMenuItem_Click);
-            // 
-            // addSplitChannelsNodeToolStripMenuItem
-            // 
-            this.addSplitChannelsNodeToolStripMenuItem.Name = "addSplitChannelsNodeToolStripMenuItem";
-            this.addSplitChannelsNodeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.addSplitChannelsNodeToolStripMenuItem.Text = "Add Split Channels Node";
-            this.addSplitChannelsNodeToolStripMenuItem.Click += new System.EventHandler(this.addSplitChannelsNodeToolStripMenuItem_Click);
+            this.graphContextMenu.Size = new System.Drawing.Size(188, 70);
             // 
             // unsetFinalOutputNodeToolStripMenuItem
             // 
@@ -399,6 +346,12 @@
             this.disconnectAllToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.disconnectAllToolStripMenuItem.Text = "Disconnect all";
             this.disconnectAllToolStripMenuItem.Click += new System.EventHandler(this.disconnectAllToolStripMenuItem_Click);
+            // 
+            // addNodeToolStripMenuItem
+            // 
+            this.addNodeToolStripMenuItem.Name = "addNodeToolStripMenuItem";
+            this.addNodeToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.addNodeToolStripMenuItem.Text = "Add Node";
             // 
             // MainWindow
             // 
@@ -450,8 +403,6 @@
         private System.Windows.Forms.PictureBox RenderPreviewActive;
         private System.Windows.Forms.PictureBox RenderPreviewFull;
         private System.Windows.Forms.ContextMenuStrip graphContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem addRenderNodeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addBlendNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -466,16 +417,13 @@
         private System.Windows.Forms.GroupBox GroupProperties;
         private System.Windows.Forms.ToolStripMenuItem exportOutputAsImageToolStripMenuItem;
         private System.Windows.Forms.FlowLayoutPanel PanelProperties;
-        private System.Windows.Forms.ToolStripMenuItem addColorNodeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addGeneratorNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem previewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addOperationNodeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addSplitChannelsNodeToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip nodeContextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forceSetAsOutputToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disconnectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unsetFinalOutputNodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addNodeToolStripMenuItem;
 
     }
 }

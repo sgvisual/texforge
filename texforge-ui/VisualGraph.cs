@@ -648,66 +648,20 @@ namespace texforge
             return position;
         }
 
-        public void AddColorNode(Point position, Rectangle currentClip)
+        public List<string> NodeTypes
         {
-            Graph.Node a = graph.CreateNode("Color", "");
-            a.Name = "Render" + graph.Nodes.Count;
+            get { return NodeFactory.Get().NodeTypes; }
+        }
+
+        public void AddNode(string type, Point position, Rectangle currentClip)
+        {
+            Graph.Node a = graph.CreateNode(type, "");
+            a.Name = type + graph.Nodes.Count;
             NodeData aData = new NodeData();
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
         }
-
-        public void AddRenderNode(Point position, Rectangle currentClip)
-        {
-            Graph.Node a = graph.CreateNode("Image", "");
-            NodeData aData = new NodeData();
-            a.Name = "Image" + graph.Nodes.Count;
-            a.Data = aData;
-            a.Data.header.point = TransformFromScreen(position, currentClip);
-            modified = true;
-        }
-
-        public void AddBlendNode(Point position, Rectangle currentClip)
-        {
-            Graph.Node a = graph.CreateNode("Blend", "");
-            a.Name = "Blend" + graph.Nodes.Count;
-            NodeData aData = new NodeData();
-            a.Data = aData;
-            a.Data.header.point = TransformFromScreen(position, currentClip);
-            modified = true;
-        }
-
-        public void AddGeneratorNode(Point position, Rectangle currentClip)
-        {
-            Graph.Node a = graph.CreateNode("Generator", "");
-            a.Name = "Generator" + graph.Nodes.Count;
-            NodeData aData = new NodeData();
-            a.Data = aData;
-            a.Data.header.point = TransformFromScreen(position, currentClip);
-            modified = true;
-        }
-
-        public void AddOperationNode(Point position, Rectangle currentClip)
-        {
-            Graph.Node a = graph.CreateNode("Operation", "");
-            a.Name = "Operation" + graph.Nodes.Count;
-            NodeData aData = new NodeData();
-            a.Data = aData;
-            a.Data.header.point = TransformFromScreen(position, currentClip);
-            modified = true;
-        }
-
-        public void AddSplitChannelsNode(Point position, Rectangle currentClip)
-        {
-            Graph.Node a = graph.CreateNode("SplitChannels", "");
-            a.Name = "Split Channels" + graph.Nodes.Count;
-            NodeData aData = new NodeData();
-            a.Data = aData;
-            a.Data.header.point = TransformFromScreen(position, currentClip);
-            modified = true;
-        }
-
         public DraggableObject GetDraggableObject(Point position, Rectangle currentClip)
         {
             // Check for sockets

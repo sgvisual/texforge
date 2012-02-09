@@ -35,5 +35,10 @@ namespace texforge.Graph
         }
 
         protected Dictionary<string, Type> nodes = new Dictionary<string,Type>();
+
+        public List<string> NodeTypes
+        {
+            get { return new List<string>(nodes.Keys); }
+        }
     }
 }
