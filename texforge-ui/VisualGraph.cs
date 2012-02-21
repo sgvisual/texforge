@@ -191,6 +191,21 @@ namespace texforge
                 ConnectFrom,
             }
 
+            private bool FindNodeInParentTree(Graph.Node current, Graph.Node find)
+            {
+                if (current == find)
+                    return true;
+                foreach (Graph.Node.Socket parentSocket in current.InputSockets)
+                {
+                    foreach (Graph.Node connected in parentSocket.Connections)
+                    {
+                        if (FindNodeInParentTree(connected, find))
+                            return true;
+                    }
+                }
+                return false;
+            }
+
             public DropResult CanDropInSocket(VisualGraph graph, Point position, out Graph.Node.Socket target, out Graph.Graph.Transition? transition)
             {
                 target = null;
@@ -262,6 +277,9 @@ namespace texforge
                     }
                     if (fromOutput)
                     {
+                        // Loop guard
+                        if (FindNodeInParentTree(target.owner, socket.connection.owner))
+                            return DropResult.Invalid;
                         return DropResult.ReconnectTo;
                     }
                     else
@@ -271,6 +289,9 @@ namespace texforge
                         {
                             return DropResult.Invalid;
                         }
+                        // Loop guard
+                        if (FindNodeInParentTree(socket.connection.owner, target.owner))
+                            return DropResult.Invalid;
                         return DropResult.ReconnectFrom;
                     }
                 }
@@ -280,6 +301,20 @@ namespace texforge
                 {
                     return DropResult.Invalid;
                 }
+
+                // Loop guard
+                if (fromOutput)
+                {
+                    if (FindNodeInParentTree(socket.owner, target.owner))
+                        return DropResult.Invalid;
+                }
+                else
+                {
+                    if (FindNodeInParentTree(target.owner, socket.owner))
+                        return DropResult.Invalid;
+                }
+
+                // Final valid possibilities
                 if (fromOutput)
                 {
                     // Already one there, can't reconnect
