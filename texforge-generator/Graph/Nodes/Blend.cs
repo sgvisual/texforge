@@ -11,18 +11,41 @@ namespace texforge.Graph.Nodes
 
         protected BlendMode blendMode = new BlendMode("BlendMode", eBlendMode.None, eBlendMode.None);
         protected Float blendAmount = new Float("Amount", 1f, 1f, 0f, 1f);
+        protected Int inputs = new Int("Inputs", 2, 2, 2, 8);
 
         public Blend(string name, string id, Graph graph)
             : base(name, id, graph)
         {
-            RegisterSocket(Socket.Type.Input, "A");
-            RegisterSocket(Socket.Type.Input, "B");
+            for (int i = 0; i < inputs.Value; ++i )
+                RegisterSocket(Socket.Type.Input, string.Format("{0}", i));
+
+            //RegisterSocket(Socket.Type.Input, "A");
+            //RegisterSocket(Socket.Type.Input, "B");
             RegisterSocket(Socket.Type.Output, "Result");
 
             AddSetting(blendMode);
             AddSetting(blendAmount);
+            AddSetting(inputs);
+
+            inputs.OnChange += new EventHandler(inputs_OnChange);
         }
 
+        void inputs_OnChange(object sender, EventArgs e)
+        {
+            if (inputs.Value <= inputs.Min)
+                return;
+
+            if (inputs.Value >= inputs.Max)
+                return;
+
+            graph.DisconnectAllFromNode(this);
+
+            inputSockets.Clear();
+
+            for (int i = 0; i < inputs.Value; ++i)
+                RegisterSocket(Socket.Type.Input, string.Format("{0}", i));
+        }
+        
         public override object Process()
         {
             Atom a = null;

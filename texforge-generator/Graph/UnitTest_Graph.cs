@@ -39,8 +39,8 @@ namespace texforge.Graph
             c.Data = cData;
             c.Data.header.point = new Point(100, -100);
 
-            graph.ConnectNodes(a.GetSocket("Out"), c.GetSocket("A"));
-            graph.ConnectNodes(b.GetSocket("Out"), c.GetSocket("B"));
+            graph.ConnectNodes(a.GetSocket("Out"), c.GetSocket("0"));
+            graph.ConnectNodes(b.GetSocket("Out"), c.GetSocket("1"));
             //graph.ConnectNodes(a.GetSocket("Out"), c.GetSocket("In"));
             //graph.ConnectNodes(b, c);
             //graph.ConnectNodes(a, c);
