@@ -111,6 +111,8 @@ namespace texforge.Graph
         {
             remove.to.RemoveConnection(remove.from.owner);
             remove.from.RemoveConnection(remove.to.owner);
+            remove.to.connection = null;
+            remove.from.connection = null;
             transitions.Remove(remove);
             remove.to.owner.Dirty = true;
             dirty = true;

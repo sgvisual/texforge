@@ -26,6 +26,7 @@ namespace texforge.Graph
             nodes["Generator"] = typeof(Generator);
             nodes["Operation"] = typeof(Operation);
             nodes["SplitChannels"] = typeof(SplitChannels);
+            nodes["JoinChannels"] = typeof(JoinChannels);
         }
 
         public Node Create(string name, string id, Graph graph)
