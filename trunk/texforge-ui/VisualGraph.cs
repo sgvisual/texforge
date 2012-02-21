@@ -17,7 +17,10 @@ namespace texforge
         const int originWidth = 3;
         const int gridSize = 100;
         const int subGridDivisions = 10;
-        const int connectorSize = 8;
+        const int connectorSizeDefault = 16;
+        const int transitionSizeDefault = 8;
+        int connectorSize = connectorSizeDefault;
+        int transitionSize = transitionSizeDefault;
 
         Control drawnSurface = null;
 
@@ -352,6 +355,8 @@ namespace texforge
             zoom = 100.0f;
             dragging = null;
             active = null;
+            connectorSize = connectorSizeDefault;
+            transitionSize = transitionSizeDefault;
         }
 
         public void Zoom(float amount)
@@ -361,6 +366,12 @@ namespace texforge
                 zoom = 30.0f;
             if (zoom > 300.0f)
                 zoom = 300.0f;
+            connectorSize = (int)((float)connectorSizeDefault / 100.0f * zoom);
+            transitionSize = (int)((float)transitionSizeDefault / 100.0f * zoom);
+            if (transitionSize < 1)
+                transitionSize = 1;
+            if (connectorSize <= transitionSize)
+                connectorSize = transitionSize + 1;
         }
 
         public void Pan(Point delta)
@@ -530,8 +541,8 @@ namespace texforge
             curve[3] = to;
             curve[1] = new Point(curve[0].X + (curve[3].X - curve[0].X) * 1 / 4, curve[0].Y + (curve[3].Y - curve[0].Y) * 1 / 8);
             curve[2] = new Point(curve[0].X + (curve[3].X - curve[0].X) * 3 / 4, curve[0].Y + (curve[3].Y - curve[0].Y) * 7 / 8);
-            graphics.DrawCurve(new Pen(Brushes.Black, connectorSize + 1), curve);
-            graphics.DrawCurve(new Pen(Brushes.LightSteelBlue, connectorSize - 1), curve);
+            graphics.DrawCurve(new Pen(Brushes.Black, transitionSize + 1), curve);
+            graphics.DrawCurve(new Pen(Brushes.LightSteelBlue, transitionSize - 1), curve);
         }
 
         void RenderNode(Graph.Node node, Graphics graphics, Rectangle clip)
@@ -556,7 +567,7 @@ namespace texforge
             }
             if (graph.Final == node)
             {
-                color = Brushes.Aqua;
+                color = Brushes.LawnGreen;
             }
             Size size = NodeGetSize(node);
             Rectangle actualClip = new Rectangle(0, 0, drawnSurface.Width, drawnSurface.Height);
