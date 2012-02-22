@@ -699,7 +699,7 @@ namespace texforge
             get { return NodeFactory.Get().NodeTypes; }
         }
 
-        public void AddNode(string type, Point position, Rectangle currentClip)
+        public DraggableObject AddNode(string type, Point position, Rectangle currentClip)
         {
             Graph.Node a = graph.CreateNode(type, "");
             a.Name = type + graph.Nodes.Count;
@@ -707,6 +707,7 @@ namespace texforge
             a.Data = aData;
             a.Data.header.point = TransformFromScreen(position, currentClip);
             modified = true;
+            return new DraggableNode(a, new Point());
         }
         public DraggableObject GetDraggableObject(Point position, Rectangle currentClip)
         {
