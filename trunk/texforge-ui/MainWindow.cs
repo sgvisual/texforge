@@ -41,7 +41,7 @@ namespace texforge
         void nodeItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem nodeItem = (ToolStripMenuItem)sender;
-            graph.AddNode((string)nodeItem.Tag, mouseLastPosition, GraphRender.ClientRectangle);
+            ChangeActiveObject(graph.AddNode((string)nodeItem.Tag, mouseLastPosition, GraphRender.ClientRectangle));
             GraphRender.Invalidate();
         }
 
