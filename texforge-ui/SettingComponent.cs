@@ -15,35 +15,16 @@ namespace texforge
     {
         public static void CreateComponent(SettingBase setting, VisualGraph.DraggableObject owner, FlowLayoutPanel panel, PictureBox render)
         {
+            string typeName = "texforge.SettingComponentFactory+" + setting.GetType().Name + "SettingComponent";
             SettingComponent component = null;
-            switch (setting.GetType().Name)
-            {
-                case "Filename":
-                    component = new FilenameSettingComponent(setting, owner, render);
-                    break;
-                case "String":
-                    component = new StringSettingComponent(setting, owner, render);
-                    break;
-                case "Color":
-                    component = new ColorSettingComponent(setting, owner, render);
-                    break;
-                case "Int":
-                    component = new IntSettingComponent(setting, owner, render);
-                    break;
-                case "Float":
-                    component = new FloatSettingComponent(setting, owner, render);
-                    break;
-                case "Bool":
-                    component = new BoolSettingComponent(setting, owner, render);
-                    break;
-                default:
-                    component = new InvalidSettingComponent(setting, owner, render);
-                    break;
-            }
             // Special handling for enums
             if (setting.GetType().IsSubclassOf(typeof(Enumeration)))
             {
                 component = new EnumSettingComponent(setting, owner, render);
+            }
+            else
+            {
+                component = (SettingComponent)System.Activator.CreateInstance(Type.GetType(typeName), new object[] { setting, owner, render });
             }
             panel.Controls.Add(component.Container);
         }
