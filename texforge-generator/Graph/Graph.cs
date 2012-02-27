@@ -20,11 +20,9 @@ namespace texforge.Graph
 
                 this.from.AddConnection(to.owner);
                 this.to.AddConnection(from.owner);
-
-                //from.owner.Process();
+                
 				from.owner.Dirty = true;
                 to.owner.Dirty = true;
-                //to.owner.Process();
             }
             public Node.Socket from;
             public Node.Socket to;
@@ -101,6 +99,8 @@ namespace texforge.Graph
 
             a.connection = b;
             b.connection = a;
+            a.owner.Dirty = true;
+            b.owner.Dirty = true;
 
             Transition t = new Transition(a, b);
             transitions.Add(t);
