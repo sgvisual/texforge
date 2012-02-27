@@ -66,7 +66,7 @@ namespace texforge.Graph.Nodes
 
         protected void Invert()
         {
-            if (inputSockets[0].Connections.Count == 1)
+            if (inputSockets[0].connection != null)
             {
                 operation = new Operations.Invert(inputSockets[0].connection.atom);
             }
@@ -74,7 +74,7 @@ namespace texforge.Graph.Nodes
 
         protected void Blur()
         {
-            if (inputSockets[0].Connections.Count == 1)
+            if (inputSockets[0].connection != null)
             {
                 operation = new Operations.Blur(inputSockets[0].connection.atom);
             }

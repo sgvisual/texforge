@@ -62,12 +62,14 @@ namespace texforge.Graph.Nodes
             if (b == null)
             {
                 displayAtom = a;
+                GetSocket("Result").atom = a;
                 return a;
             }
 
             if (a == null)
             {
                 displayAtom = b;
+                GetSocket("Result").atom = b;
                 return b;
             }
 

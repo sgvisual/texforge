@@ -14,6 +14,9 @@ namespace texforge.Operations
 
         public override Atom Execute()
         {
+            if (atom == null)
+                return null;
+
             byte[] bytesA = atom.ToBytes();
             byte max = 0xff;
             
