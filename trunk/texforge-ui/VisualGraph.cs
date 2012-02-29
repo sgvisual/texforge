@@ -7,6 +7,7 @@ using texforge.Graph;
 using texforge_definitions.Settings;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Threading;
 
 namespace texforge
 {
@@ -21,6 +22,10 @@ namespace texforge
         const int transitionSizeDefault = 8;
         int connectorSize = connectorSizeDefault;
         int transitionSize = transitionSizeDefault;
+        Thread processing = null;
+        bool graphPossiblyDirty = false;
+        Graph.Graph.SharedThreadProperties sharedThreadProperties = new Graph.Graph.SharedThreadProperties();
+        float time = 0.0f;
 
         Control drawnSurface = null;
 
@@ -420,8 +425,35 @@ namespace texforge
             drawnSurface.Invalidate();
         }
 
+        void Process()
+        {
+            while (true)
+            {
+                if(graphPossiblyDirty)
+                {
+                    graphPossiblyDirty = false;
+                    graph.Process(sharedThreadProperties);
+                }
+                if (sharedThreadProperties.invalidate)
+                {
+                    sharedThreadProperties.invalidate = false;
+                    Invalidate();
+                }
+                Thread.Sleep(1);
+            }
+        }
+
         public void Render(Graphics graphics, Rectangle clip, Control surface)
         {
+            time += 1.0f / 60.0f;
+            sharedThreadProperties.rendering = true;
+            while (sharedThreadProperties.preventRendering)
+                System.Threading.Thread.Sleep(1);
+            if (processing == null)
+            {
+                processing = new Thread(new ThreadStart(Process));
+                processing.Start();
+            }
             drawnSurface = surface;
             graphics.FillRectangle(Brushes.CornflowerBlue, clip);
             Point center = GetCenter(new Rectangle(0, 0, surface.Width, surface.Height));
@@ -483,7 +515,7 @@ namespace texforge
             graphics.FillRectangle(Brushes.Black, zenith);
             // Render nodes
             cachedSocketRender.Clear();
-            graph.Process();
+            graphPossiblyDirty = true;
             if (currentPreview != null)
                 currentPreview.Invalidate();
             foreach (Graph.Node node in graph.Nodes)
@@ -547,6 +579,7 @@ namespace texforge
                     RenderDraggingSocket(graphics, (DraggableSocket)dragging, to);
                 }
             }
+            sharedThreadProperties.rendering = false;
         }
 
         void RenderDraggingSocket(Graphics graphics, DraggableSocket dragSocket, Point dragPos)
@@ -624,12 +657,20 @@ namespace texforge
             graphics.DrawString(node.Name, new Font(FontFamily.GenericSansSerif, (float)labelDefaultHeight / 120.0f * zoom), Brushes.Black, new PointF((float)(label.X), (float)(label.Y - 3)));
 
             // Render preview
+            int renderSize = (nodeRect.Height - labelHeight) * 3 / 4;
+            Rectangle render = new Rectangle(new Point(nodeRect.X + nodeRect.Width / 4, nodeRect.Y + (nodeRect.Height - renderSize - labelHeight) / 2 + labelHeight), new Size(renderSize, renderSize));
             if (node.DisplayAtom != null && node.DisplayAtom.Result != null)
             {
-                int renderSize = (nodeRect.Height - labelHeight) * 3 / 4;
-                Rectangle render = new Rectangle(new Point(nodeRect.X + nodeRect.Width / 4, nodeRect.Y + (nodeRect.Height - renderSize - labelHeight) / 2 + labelHeight), new Size(renderSize, renderSize));
                 graphics.DrawRectangle(new Pen(Brushes.Black), new Rectangle(new Point(render.X - 1, render.Y - 1), new Size(render.Width + 1, render.Height + 1)));
                 graphics.DrawImage(node.DisplayAtom.Result, render);
+            }
+
+            // Currently waiting to be or being processed
+            if (node.Dirty)
+            {
+                const int invalidSize = 16;
+                Point renderCenter = new Point(render.X + render.Width / 2, render.Y + render.Height / 2);
+                graphics.FillEllipse(Brushes.Red, renderCenter.X - invalidSize / 2, renderCenter.Y - invalidSize / 2, invalidSize, invalidSize);
             }
 
             // Connector sockets

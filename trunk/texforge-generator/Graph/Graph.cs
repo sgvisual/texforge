@@ -11,6 +11,19 @@ namespace texforge.Graph
 {
     public class Graph 
     {
+        public class SharedThreadProperties
+        {
+            public SharedThreadProperties()
+            {
+                rendering = false;
+                preventRendering = false;
+                invalidate = false;
+            }
+            public bool rendering;
+            public bool preventRendering;
+            public bool invalidate;
+        }
+
         public struct Transition
         {
             public Transition(Node.Socket from, Node.Socket to)
@@ -329,7 +342,7 @@ namespace texforge.Graph
             return depth + 1;
         }
 
-        public void Process()
+        public void Process(SharedThreadProperties sharedThreadProperties)
         {
             // If dirty, find the final node
             if (dirty)
@@ -353,11 +366,22 @@ namespace texforge.Graph
                         }
                     }
                 }
+                sharedThreadProperties.invalidate = true;
             }
             // Process all dirty nodes
+            sharedThreadProperties.preventRendering = true;
+            List<Node> existingNodes = new List<Node>();
             foreach (Node node in Nodes)
             {
-                node.ProcessIfDirty();
+                existingNodes.Add(node);
+            }
+            sharedThreadProperties.preventRendering = false;
+            foreach (Node node in existingNodes)
+            {
+                while (sharedThreadProperties.rendering)
+                    System.Threading.Thread.Sleep(1);
+                if (node.ProcessIfDirty())
+                    sharedThreadProperties.invalidate = true;
             }
         }
 
