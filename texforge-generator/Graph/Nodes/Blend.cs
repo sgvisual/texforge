@@ -45,34 +45,20 @@ namespace texforge.Graph.Nodes
             for (int i = 0; i < inputs.Value; ++i)
                 RegisterSocket(Socket.Type.Input, string.Format("{0}", i));
         }
-        
-        public override object Process()
+
+        protected Atom BlendAtoms(Atom a, Atom b)
         {
-            Atom a = null;
-            if ( inputSockets[0].connection != null )
-                a = inputSockets[0].connection.atom;
-
-            Atom b = null;
-            if ( inputSockets[1].connection != null )
-                b = inputSockets[1].connection.atom;
-
-            if (a == null && b == null)
-                return null;
-
-            if (b == null)
-            {
-                displayAtom = a;
-                GetSocket("Result").atom = a;
-                return a;
-            }
-
             if (a == null)
-            {
-                displayAtom = b;
-                GetSocket("Result").atom = b;
                 return b;
-            }
+            if (b == null)
+                return a;
 
+            Operations.Operation operation = GetOperation(a, b);
+            return operation.Execute();
+        }
+
+        protected Operations.Operation GetOperation(Atom a, Atom b)
+        {
             Operations.Operation operation = null;
 
             switch ((eBlendMode)Enum.Parse(typeof(eBlendMode), blendMode.Value, true))
@@ -93,23 +79,32 @@ namespace texforge.Graph.Nodes
                     operation = new Operations.Screen(a, b);
                     break;
 
-                    // TESTING
+                // TESTING
                 default:
                     operation = new Operations.Multiply(a, b, blendAmount.Value);
                     break;
             }
 
-            if (operation != null)
+            return operation;
+        }
+
+        public override object Process()
+        {
+            Atom result = null;
+            Socket s = inputSockets[0];
+            if ( s.connection != null )
+                result = s.connection.atom;
+            
+            
+            for (int i = 1; i < inputs.Value; ++i )
             {
-                Atom atom = operation.Execute();
-                GetSocket("Result").atom = atom;
-                displayAtom = atom;
-                return atom;
+                if ( inputSockets[i].connection != null )
+                    result = BlendAtoms(result, inputSockets[i].connection.atom);               
             }
 
-            // TODO: throw exception or invalidate node
-
-            return null;
+            displayAtom = result;
+            return result;
         }
+
     }
 }
