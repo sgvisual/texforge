@@ -38,6 +38,10 @@ namespace texforge.Graph
                     }
                 }
             }
+            get
+            {
+                return dirty;
+            }
         }
 
         public string TypeName
@@ -71,10 +75,10 @@ namespace texforge.Graph
             return null;
         }
 
-        public void ProcessIfDirty()
+        public bool ProcessIfDirty()
         {
             if (!dirty)
-                return;
+                return false;
             // Process parents first
             foreach (Socket socket in inputSockets)
             {
@@ -88,6 +92,7 @@ namespace texforge.Graph
 
             Process();
             dirty = false;
+            return true;
         }
 
         public virtual void Save(XElement element)
