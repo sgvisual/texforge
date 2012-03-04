@@ -788,7 +788,14 @@ namespace texforge
         {
             const int minimumNodeWidth = 100;
             const int minimumNodeHeight = 75;
-            return new Size(minimumNodeWidth, minimumNodeHeight);
+            const int connectionsHeight = 20;
+            int extraConnections = Math.Max(node.InputSockets.Count, node.OutputSockets.Count) - 2;
+            int nodeHeight = minimumNodeHeight;
+            if (extraConnections > 0)
+            {
+                nodeHeight += connectionsHeight * extraConnections;
+            }
+            return new Size(minimumNodeWidth, nodeHeight);
         }
 
         public void DropDraggedObject(DraggableObject what, Point position, Rectangle currentClip)
