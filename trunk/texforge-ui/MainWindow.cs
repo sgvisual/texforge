@@ -68,6 +68,17 @@ namespace texforge
             RenderPreviewFull.Invalidate();
             foreach (ToolStripItem item in previewToolStripMenuItem.DropDownItems)
                 ((Preview)item.Tag).Invalidate();
+            statusProgressBar.Value = ((graph.TotalNodes - graph.DirtyNodes) * 100) / graph.TotalNodes;
+            if (graph.DirtyNodes == 0)
+            {
+                statusProgressBar.Visible = false;
+                statusLabel.Text = "Ready";
+            }
+            else
+            {
+                statusProgressBar.Visible = true;
+                statusLabel.Text = "Rendering " + graph.DirtyNodes + " node(s)...";
+            }
         }
 
         private void RenderPreviewActive_Paint(object sender, PaintEventArgs e)

@@ -51,13 +51,16 @@
             this.GroupProperties = new System.Windows.Forms.GroupBox();
             this.PanelProperties = new System.Windows.Forms.FlowLayoutPanel();
             this.graphContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unsetFinalOutputNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nodeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forceSetAsOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -177,6 +180,9 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel,
+            this.statusProgressBar});
             this.statusStrip1.Location = new System.Drawing.Point(0, 313);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(805, 22);
@@ -310,6 +316,12 @@
             this.graphContextMenu.Name = "graphContextMenu";
             this.graphContextMenu.Size = new System.Drawing.Size(188, 70);
             // 
+            // addNodeToolStripMenuItem
+            // 
+            this.addNodeToolStripMenuItem.Name = "addNodeToolStripMenuItem";
+            this.addNodeToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.addNodeToolStripMenuItem.Text = "Add Node";
+            // 
             // unsetFinalOutputNodeToolStripMenuItem
             // 
             this.unsetFinalOutputNodeToolStripMenuItem.Name = "unsetFinalOutputNodeToolStripMenuItem";
@@ -347,11 +359,18 @@
             this.disconnectAllToolStripMenuItem.Text = "Disconnect all";
             this.disconnectAllToolStripMenuItem.Click += new System.EventHandler(this.disconnectAllToolStripMenuItem_Click);
             // 
-            // addNodeToolStripMenuItem
+            // statusProgressBar
             // 
-            this.addNodeToolStripMenuItem.Name = "addNodeToolStripMenuItem";
-            this.addNodeToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.addNodeToolStripMenuItem.Text = "Add Node";
+            this.statusProgressBar.Name = "statusProgressBar";
+            this.statusProgressBar.Size = new System.Drawing.Size(100, 16);
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(657, 17);
+            this.statusLabel.Spring = true;
+            this.statusLabel.Text = "statusLabel";
+            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainWindow
             // 
@@ -370,6 +389,8 @@
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -424,6 +445,8 @@
         private System.Windows.Forms.ToolStripMenuItem disconnectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unsetFinalOutputNodeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripProgressBar statusProgressBar;
 
     }
 }
