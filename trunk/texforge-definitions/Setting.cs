@@ -80,8 +80,8 @@ namespace texforge_definitions
 
         public T Value
         {
-            get { return Clamp(value); }
-            set { this.value = value; if (OnChange != null) OnChange.Invoke(this, null); }
+            get { return value; }
+            set { this.value = Clamp(value); if (OnChange != null) OnChange.Invoke(this, null); }
         }
 
         public T DefaultValue

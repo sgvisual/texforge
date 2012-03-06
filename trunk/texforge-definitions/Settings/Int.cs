@@ -15,8 +15,8 @@ namespace texforge_definitions.Settings
 
         public override int Clamp(int value)
         {
-            if (value > maxValue) return maxValue;
-            if (value < minValue) return minValue;
+            if (value >= maxValue) return maxValue;
+            if (value <= minValue) return minValue;
             return value;
         }
 
