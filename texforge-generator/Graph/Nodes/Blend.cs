@@ -100,6 +100,7 @@ namespace texforge.Graph.Nodes
                     result = BlendAtoms(result, inputSockets[i].connection.atom);               
             }
 
+            GetSocket("Result").atom = result;
             displayAtom = result;
             return result;
         }

@@ -34,7 +34,6 @@ namespace texforge.Graph
                 this.from.AddConnection(to.owner);
                 this.to.AddConnection(from.owner);
                 
-				from.owner.Dirty = true;
                 to.owner.Dirty = true;
             }
             public Node.Socket from;
@@ -112,8 +111,6 @@ namespace texforge.Graph
 
             a.connection = b;
             b.connection = a;
-            a.owner.Dirty = true;
-            b.owner.Dirty = true;
 
             Transition t = new Transition(a, b);
             transitions.Add(t);

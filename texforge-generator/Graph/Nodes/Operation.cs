@@ -40,6 +40,7 @@ namespace texforge.Graph.Nodes
 
         public override object Process()
         {
+            operation = null;
             switch ((eOperationType)Enum.Parse(typeof(eOperationType), operationType.Value, true))
             {
                 case eOperationType.None:
@@ -55,11 +56,13 @@ namespace texforge.Graph.Nodes
             }
 
             if (operation == null)
+            {
+                GetSocket("Out").atom = displayAtom = null;
                 return null;
+            }
 
             Atom atom = operation.Execute();
-            GetSocket("Out").atom = atom;
-            displayAtom = atom;
+            GetSocket("Out").atom = displayAtom = atom;
             return atom;
 
         }
