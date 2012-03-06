@@ -25,7 +25,6 @@ namespace texforge
         Thread processing = null;
         bool graphPossiblyDirty = false;
         Graph.Graph.SharedThreadProperties sharedThreadProperties = new Graph.Graph.SharedThreadProperties();
-        float time = 0.0f;
 
         Control drawnSurface = null;
 
@@ -48,6 +47,17 @@ namespace texforge
         {
             set { currentPreview = value; }
             get { return currentPreview; }
+        }
+
+        public int TotalNodes
+        {
+            get { return graph.Nodes.Count; }
+        }
+
+        int dirtyNodes = 0;
+        public int DirtyNodes
+        {
+            get { return dirtyNodes; }
         }
 
         bool debug = false;
@@ -445,7 +455,7 @@ namespace texforge
 
         public void Render(Graphics graphics, Rectangle clip, Control surface)
         {
-            time += 1.0f / 60.0f;
+            dirtyNodes = 0;
             sharedThreadProperties.rendering = true;
             while (sharedThreadProperties.preventRendering)
                 System.Threading.Thread.Sleep(1);
@@ -520,6 +530,8 @@ namespace texforge
                 currentPreview.Invalidate();
             foreach (Graph.Node node in graph.Nodes)
             {
+                if (node.Dirty)
+                    ++dirtyNodes;
                 RenderNode(node, graphics, clip);
             }
             // Render transitions
