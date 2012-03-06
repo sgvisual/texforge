@@ -32,10 +32,7 @@ namespace texforge.Graph.Nodes
 
         void inputs_OnChange(object sender, EventArgs e)
         {
-            if (inputs.Value <= inputs.Min)
-                return;
-
-            if (inputs.Value >= inputs.Max)
+            if (inputs.Value == inputSockets.Count)
                 return;
 
             graph.DisconnectAllFromNode(this);
@@ -63,6 +60,7 @@ namespace texforge.Graph.Nodes
 
             switch ((eBlendMode)Enum.Parse(typeof(eBlendMode), blendMode.Value, true))
             {
+
                 case eBlendMode.Add:
                     operation = new Operations.Addition(a, b);
                     break;
@@ -81,7 +79,7 @@ namespace texforge.Graph.Nodes
 
                 // TESTING
                 default:
-                    operation = new Operations.Multiply(a, b, blendAmount.Value);
+                    operation = new Operations.Addition(a, b);
                     break;
             }
 
