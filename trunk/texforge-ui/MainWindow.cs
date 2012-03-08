@@ -13,7 +13,7 @@ namespace texforge
 {
     public partial class MainWindow : Form
     {
-        protected VisualGraph graph;
+        protected VisualGraphRender graph;
         Point mouseLastPosition = new Point();
         bool abortedSave = false;
 
@@ -27,7 +27,7 @@ namespace texforge
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            graph = new VisualGraph();
+            graph = new VisualGraphRender();
             foreach(string nodeType in graph.NodeTypes)
             {
                 ToolStripMenuItem nodeItem = new ToolStripMenuItem(nodeType);
@@ -123,7 +123,7 @@ namespace texforge
             bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0; 
             if (e.Button == MouseButtons.Right && !left && !middle)
             {
-                VisualGraph.DraggableObject draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
+                DraggableObject draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
                 if (draggable != null)
                 {
                     ChangeActiveObject(draggable);
@@ -138,11 +138,11 @@ namespace texforge
 
         private void GraphRender_DragDrop(object sender, DragEventArgs e)
         {
-            graph.DropDraggedObject((VisualGraph.DraggableObject)e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
+            graph.DropDraggedObject((DraggableObject)e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
             GraphRender.Invalidate();
         }
 
-        private void ChangeActiveObject(VisualGraph.DraggableObject draggable)
+        private void ChangeActiveObject(DraggableObject draggable)
         {
             if (draggable != graph.ActiveObject)
             {
@@ -167,7 +167,7 @@ namespace texforge
             bool middle = (Control.MouseButtons & MouseButtons.Middle) > 0;
             if ( e.Button == MouseButtons.Left && !right && !middle)
             {
-                VisualGraph.DraggableObject draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
+                DraggableObject draggable = graph.GetDraggableObject(mouseLastPosition, GraphRender.ClientRectangle);
                 if( draggable != null )
                 {
                     ChangeActiveObject(draggable);
@@ -180,7 +180,7 @@ namespace texforge
         {
             e.Effect = DragDropEffects.Move;
             mouseLastPosition = GraphRender.PointToClient(new Point(e.X, e.Y));
-            graph.DraggingObject((VisualGraph.DraggableObject)e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
+            graph.DraggingObject((DraggableObject)e.Data.GetData(e.Data.GetFormats()[0]), mouseLastPosition, GraphRender.ClientRectangle);
             GraphRender.Invalidate();
         }
 

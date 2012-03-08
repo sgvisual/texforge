@@ -13,7 +13,7 @@ namespace texforge
 {
     public class SettingComponentFactory
     {
-        public static void CreateComponent(SettingBase setting, VisualGraph.DraggableObject owner, FlowLayoutPanel panel, PictureBox render)
+        public static void CreateComponent(SettingBase setting, DraggableObject owner, FlowLayoutPanel panel, PictureBox render)
         {
             string typeName = "texforge.SettingComponentFactory+" + setting.GetType().Name + "SettingComponent";
             SettingComponent component = null;
@@ -32,7 +32,7 @@ namespace texforge
         abstract class SettingComponent
         {
             protected Panel container;
-            protected VisualGraph.DraggableObject owner;
+            protected DraggableObject owner;
             protected PictureBox render;
             protected List<Control> refresh = new List<Control>();
             public Panel Container
@@ -40,7 +40,7 @@ namespace texforge
                 get { return container; }
             }
 
-            public SettingComponent(VisualGraph.DraggableObject owner, PictureBox render)
+            public SettingComponent(DraggableObject owner, PictureBox render)
             {
                 container = new Panel();
                 container.Dock = DockStyle.Fill;
@@ -73,7 +73,7 @@ namespace texforge
 
         class InvalidSettingComponent : SettingComponent
         {
-            public InvalidSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public InvalidSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 Label invalid = new Label();
@@ -87,7 +87,7 @@ namespace texforge
         {
             texforge_definitions.Settings.Color data;
 
-            public ColorSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public ColorSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Color)setting;
@@ -123,7 +123,7 @@ namespace texforge
             texforge_definitions.Settings.Enumeration data;
             Dictionary<int, string> items = new Dictionary<int, string>();
 
-            public EnumSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public EnumSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Enumeration)setting;
@@ -151,7 +151,7 @@ namespace texforge
         {
             texforge_definitions.Settings.Int data;
 
-            public IntSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public IntSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Int)setting;
@@ -177,7 +177,7 @@ namespace texforge
         {
             texforge_definitions.Settings.String data;
 
-            public StringSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public StringSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.String)setting;
@@ -201,7 +201,7 @@ namespace texforge
 
             TextBox input;
 
-            public FilenameSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public FilenameSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Filename)setting;
@@ -249,7 +249,7 @@ namespace texforge
         {
             texforge_definitions.Settings.Float data;
 
-            public FloatSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public FloatSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Float)setting;
@@ -275,7 +275,7 @@ namespace texforge
         {
             texforge_definitions.Settings.Bool data;
 
-            public BoolSettingComponent(SettingBase setting, VisualGraph.DraggableObject owner, PictureBox render)
+            public BoolSettingComponent(SettingBase setting, DraggableObject owner, PictureBox render)
                 : base(owner, render)
             {
                 data = (texforge_definitions.Settings.Bool)setting;
