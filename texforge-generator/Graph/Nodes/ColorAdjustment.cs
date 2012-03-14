@@ -6,43 +6,8 @@ using texforge_definitions.Settings;
 
 namespace texforge.Graph.Nodes
 {
-    //public enum eColorAdjustmentOperation
-    //{
-    //    Brightness,
-    //    Contrast
-    //}
-
-    //class ColorAdjustmentOperation : Enumeration
-    //{
-    //    public ColorAdjustmentOperation(string name, eColorAdjustmentOperation value, eColorAdjustmentOperation defaultValue)
-    //        : base(name, value.ToString(), defaultValue.ToString(), typeof(eColorAdjustmentOperation))
-    //    {
-    //    }
-    //}
-
-    //// TODO: make a Property Group class
-    //public class PropertyGroup
-    //{
-    //}
-
-    //public class BrightnessProperties : PropertyGroup
-    //{
-    //    public Float value = new Float("brightness", 1f, 1f, 0f, float.MaxValue);
-    //}
-
-    //public class ContrastProperties : PropertyGroup
-    //{
-    //    public Float value = new Float("contrast", 1f, 1f, 0f, float.MaxValue);
-    //}
-
-
-
-
-
     public class ColorAdjustment : Node
-    {
-        //protected ColorAdjustmentOperation operation = new ColorAdjustmentOperation("Operation";
-        
+    {       
         protected Float brightness = new Float("brightness", 1f, 1f, 0f, float.MaxValue);
         protected Float contrast = new Float("contrast", 1f, 1f, 0f, float.MaxValue);
 
