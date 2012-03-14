@@ -214,7 +214,7 @@ namespace texforge
                 outline = Brushes.White;
                 origin = dragging.Position;
             }
-            if (graph.Final == node)
+            if (graph.FinalOutput.Contains(node) || ( graph.FinalOutput.Count == 0 && graph.ProceduralFinal == node))
             {
                 color = Brushes.LawnGreen;
             }

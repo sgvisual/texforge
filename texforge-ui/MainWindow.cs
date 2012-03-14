@@ -127,6 +127,18 @@ namespace texforge
                 if (draggable != null)
                 {
                     ChangeActiveObject(draggable);
+                    // Assume its a node for node
+                    DraggableNode node = (DraggableNode)draggable;
+                    if (graph.FinalOutputContains(node.Node))
+                    {
+                        setAsOutputToolStripMenuItem.Visible = false;
+                        unsetAsOutputToolStripMenuItem.Visible = true;
+                    }
+                    else
+                    {
+                        setAsOutputToolStripMenuItem.Visible = true;
+                        unsetAsOutputToolStripMenuItem.Visible = false;
+                    }
                     nodeContextMenu.Show(Control.MousePosition);
                 }
                 else
@@ -326,21 +338,9 @@ namespace texforge
             GraphRender.Invalidate();
         }
 
-        private void forceSetAsOutputToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.ActiveObject.SetAsFinalOutput();
-            GraphRender.Invalidate();
-        }
-
         private void disconnectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graph.ActiveObject.DisconnectAll();
-            GraphRender.Invalidate();
-        }
-
-        private void unsetFinalOutputNodeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graph.Graph.Final = null;
             GraphRender.Invalidate();
         }
 
@@ -355,6 +355,18 @@ namespace texforge
                     GraphRender.Invalidate();
                 }
             }
+        }
+
+        private void setAsOutputToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.AddFinalOutput(((DraggableNode)graph.ActiveObject).Node);
+            GraphRender.Invalidate();
+        }
+
+        private void unsetAsOutputToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graph.RemoveFinalOutput(((DraggableNode)graph.ActiveObject).Node);
+            GraphRender.Invalidate();
         }
     }
 }
