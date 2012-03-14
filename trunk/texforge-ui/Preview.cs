@@ -77,9 +77,9 @@ namespace texforge
                 Point delta = new Point(e.Location.X - mouseLastPosition.X, e.Location.Y - mouseLastPosition.Y);
                 offset.X += delta.X;
                 offset.Y += delta.Y;
-                if (graph.Graph.Final != null && graph.Graph.Final.DisplayAtom != null && graph.Graph.Final.DisplayAtom.Result != null)
+                Image output = graph.Output;
+                if (output != null)
                 {
-                    Bitmap output = graph.Graph.Final.DisplayAtom.Result;
                     while (offset.X > output.Width)
                         offset.X -= output.Width;
                     while (-offset.X > output.Width)
@@ -137,9 +137,9 @@ namespace texforge
         }
         protected override void Render(PaintEventArgs e)
         {
-            if (graph.Graph.Final != null && graph.Graph.Final.DisplayAtom != null && graph.Graph.Final.DisplayAtom.Result != null)
+            Image output = graph.Output;
+            if (output != null)
             {
-                Bitmap output = graph.Graph.Final.DisplayAtom.Result;
                 int width = (int)((float)output.Width * zoom / 100.0f);
                 int height = (int)((float)output.Height * zoom / 100.0f);
                 int offsetX = (int)((float)offset.X * zoom / 100.0f);

@@ -40,30 +40,15 @@ namespace texforge.Graph
             public Node.Socket to;
         }
 
-        Node final = null;
-        bool forcedFinal = false;
-        public Node Final
+        Node proceduralFinal = null;
+        public Node ProceduralFinal
         {
-            get { return final; }
-            set 
-            { 
-                final = value;
-                if (final == null)
-                {
-                    forcedFinal = false;
-                    settings.FinalOutputNode = new Base.UniqueName("");
-                }
-                else
-                {
-                    forcedFinal = true;
-                    settings.FinalOutputNode = new Base.UniqueName(final.ID);
-                }
-                dirty = true;
-            }
+            get { return proceduralFinal; }
         }
-        public bool ForcedFinalSet
+        List<Node> finalOutPut = new List<Node>();
+        public List<Node> FinalOutput
         {
-            get { return forcedFinal; }
+            get { return finalOutPut; }
         }
 
         List<Node> nodes = new List<Node>();
@@ -253,8 +238,7 @@ namespace texforge.Graph
                 }
             }
 
-            // Find the final node
-            Final = GetNodeFromID(settings.FinalOutputNode.Value);
+            // Need to load the nodes set as final
 
             dirty = true;
         }
@@ -345,9 +329,9 @@ namespace texforge.Graph
             if (dirty)
             {
                 dirty = false;
-                if( !forcedFinal )
+                if( FinalOutput.Count == 0 )
                 {
-                    final = null;
+                    proceduralFinal = null;
                     int currentDepth = -1;
                     foreach (Node node in Nodes)
                     {
@@ -358,7 +342,7 @@ namespace texforge.Graph
                             if (depth > currentDepth)
                             {
                                 currentDepth = depth;
-                                final = current;
+                                proceduralFinal = current;
                             }
                         }
                     }

@@ -226,11 +226,6 @@ namespace texforge.Graph
             graph.DisconnectAllFromNode(this);
         }
 
-        public void SetAsFinalOutput()
-        {
-            graph.Final = this;
-        }
-
         protected Graph graph;
     }
 }

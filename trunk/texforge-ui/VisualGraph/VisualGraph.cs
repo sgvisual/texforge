@@ -70,13 +70,35 @@ namespace texforge
         {
             get
             {
-                if (graph.Final != null && graph.Final.DisplayAtom != null && graph.Final.DisplayAtom.Result != null)
+                Node final = graph.ProceduralFinal;
+                // Need to animate here
+                if (graph.FinalOutput.Count > 0)
                 {
-                    return graph.Final.DisplayAtom.Result;
+                    final = graph.FinalOutput[0];
+                }
+                if (final != null && final.DisplayAtom != null && final.DisplayAtom.Result != null)
+                {
+                    return final.DisplayAtom.Result;
                 }
                 return null;
             }
         }
+
+        public void AddFinalOutput(Node node)
+        {
+            graph.FinalOutput.Add(node);
+        }
+
+        public void RemoveFinalOutput(Node node)
+        {
+            graph.FinalOutput.Remove(node);
+        }
+
+        public bool FinalOutputContains(Node node)
+        {
+            return graph.FinalOutput.Contains(node);
+        }
+
 
         // Cached data
         Dictionary<Graph.Node.Socket, Rectangle> cachedSocketRender = new Dictionary<Node.Socket, Rectangle>();

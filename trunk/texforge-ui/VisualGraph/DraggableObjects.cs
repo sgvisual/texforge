@@ -31,9 +31,6 @@ namespace texforge
         public virtual void DisconnectAll()
         {
         }
-        public virtual void SetAsFinalOutput()
-        {
-        }
     }
 
     class DraggableNode : DraggableObject
@@ -44,6 +41,10 @@ namespace texforge
         {
             this.node = node;
             this.offset = offset;
+        }
+        public Graph.Node Node
+        {
+            get { return node; }
         }
         public override bool Is(object compare)
         {
@@ -90,10 +91,6 @@ namespace texforge
         public override void DisconnectAll()
         {
             node.DisconnectAll();
-        }
-        public override void SetAsFinalOutput()
-        {
-            node.SetAsFinalOutput();
         }
     }
 
