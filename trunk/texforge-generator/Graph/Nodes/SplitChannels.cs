@@ -23,7 +23,7 @@ namespace texforge.Graph.Nodes
             if (inputSockets[0].connection == null)
                 return null;
 
-            Atom inAtom = inputSockets[0].connection.atom;
+            Atom inAtom = inputSockets[0].ConnectedAtom;
             if (inAtom == null)
                 return null;
 

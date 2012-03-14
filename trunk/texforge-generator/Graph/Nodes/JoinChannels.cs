@@ -23,10 +23,12 @@ namespace texforge.Graph.Nodes
             
             Atom result = null;
             Operations.Addition add;
-            Atom previousAtom = (InputSockets[0].connection != null) ? InputSockets[0].connection.atom : null;
+            Atom previousAtom = InputSockets[0].ConnectedAtom;
+
             for (int i = 1; i < 4; ++i )
             {
-                Atom currentAtom = (InputSockets[i].connection != null) ? InputSockets[i].connection.atom : null;
+                Atom currentAtom = InputSockets[i].ConnectedAtom;
+
                 if (previousAtom != null && currentAtom != null)
                 {
                     add = new Operations.Addition(previousAtom, currentAtom);

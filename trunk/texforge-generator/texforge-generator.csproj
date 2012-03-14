@@ -51,6 +51,7 @@
     <Compile Include="Graph\NodeFactory.cs" />
     <Compile Include="Graph\Nodes\Blend.cs" />
     <Compile Include="Graph\Nodes\Color.cs" />
+    <Compile Include="Graph\Nodes\ColorAdjustment.cs" />
     <Compile Include="Graph\Nodes\Generator.cs" />
     <Compile Include="Graph\Nodes\Image.cs" />
     <Compile Include="Graph\Nodes\JoinChannels.cs" />
