@@ -69,17 +69,17 @@ namespace texforge.Graph.Nodes
 
         protected void Invert()
         {
-            if (inputSockets[0].connection != null)
+            if (inputSockets[0].ConnectedAtom != null)
             {
-                operation = new Operations.Invert(inputSockets[0].connection.atom);
+                operation = new Operations.Invert(inputSockets[0].ConnectedAtom);
             }
         }
 
         protected void Blur()
         {
-            if (inputSockets[0].connection != null)
+            if (inputSockets[0].ConnectedAtom != null)
             {
-                operation = new Operations.Blur(inputSockets[0].connection.atom);
+                operation = new Operations.Blur(inputSockets[0].ConnectedAtom);
             }
         }
     }

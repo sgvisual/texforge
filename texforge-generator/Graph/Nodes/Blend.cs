@@ -90,8 +90,8 @@ namespace texforge.Graph.Nodes
         {
             Atom result = null;
             Socket s = inputSockets[0];
-            if ( s.connection != null )
-                result = s.connection.atom;
+
+            result = s.ConnectedAtom;
             
             
             for (int i = 1; i < inputs.Value; ++i )

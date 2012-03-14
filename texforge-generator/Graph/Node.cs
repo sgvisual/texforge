@@ -188,6 +188,11 @@ namespace texforge.Graph
                 connections.Remove(node);
             }
 
+            public Atom ConnectedAtom
+            {
+                get { return (connection != null) ? connection.atom : null; }
+            }
+
             public Atom atom;
             public string name;
             public readonly Node owner;
