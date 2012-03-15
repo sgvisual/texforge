@@ -19,6 +19,8 @@ namespace texforge
         protected bool graphPossiblyDirty = false;
         protected Graph.Graph.SharedThreadProperties sharedThreadProperties = new Graph.Graph.SharedThreadProperties();
 
+        int currentFrame = -1;
+
         protected DraggableObject dragging = null;
         DraggableObject active = null;
         public DraggableObject ActiveObject
@@ -71,16 +73,28 @@ namespace texforge
             get
             {
                 Node final = graph.ProceduralFinal;
-                // Need to animate here
                 if (graph.FinalOutput.Count > 0)
                 {
-                    final = graph.FinalOutput[0];
+                    // Start of the animation
+                    if (currentFrame < 0 || currentFrame >= graph.FinalOutput.Count)
+                    {
+                        currentFrame = 0;
+                    }
+                    final = graph.FinalOutput[currentFrame];
                 }
                 if (final != null && final.DisplayAtom != null && final.DisplayAtom.Result != null)
                 {
                     return final.DisplayAtom.Result;
                 }
                 return null;
+            }
+        }
+
+        public void AdvanceAnimationFrame()
+        {
+            if (++currentFrame >= graph.FinalOutput.Count)
+            {
+                currentFrame = 0;
             }
         }
 
@@ -148,6 +162,8 @@ namespace texforge
         public virtual void Invalidate()
         {
         }
+
+        public abstract void AbortThread();
 
         protected void Process()
         {

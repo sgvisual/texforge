@@ -16,9 +16,10 @@ namespace texforge
         protected float zoom = 100.0f;
         Point mouseLastPosition = new Point();
 
-        public static void PreviewFactory<T>(ToolStripItemCollection subMenu, VisualGraph graph)
+        public static T PreviewFactory<T>(ToolStripItemCollection subMenu, VisualGraph graph)
         {
             T preview = (T)System.Activator.CreateInstance(typeof(T), new object[] { subMenu, graph });
+            return preview;
         }
 
         protected Preview(ToolStripItemCollection subMenu, VisualGraph graph)

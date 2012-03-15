@@ -22,6 +22,12 @@ namespace texforge
 
         Control drawnSurface = null;
 
+        public override void AbortThread()
+        {
+            if (processing != null)
+                processing.Abort();
+        }
+
         public void Render(Graphics graphics, Rectangle clip, Control surface)
         {
             dirtyNodes = 0;

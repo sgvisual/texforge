@@ -8,14 +8,18 @@ using System.Text;
 using System.Windows.Forms;
 using texforge_generator.Base;
 using texforge_definitions.Settings;
+using System.Timers;
 
 namespace texforge
 {
     public partial class MainWindow : Form
     {
+        static MainWindow window = null;
         protected VisualGraphRender graph;
         Point mouseLastPosition = new Point();
         bool abortedSave = false;
+        System.Timers.Timer render;
+        List<Preview> previews = new List<Preview>();
 
         public MainWindow()
         {
@@ -23,6 +27,7 @@ namespace texforge
             GraphRender.MouseWheel += new MouseEventHandler(GraphRender_MouseWheel);
             GraphRender.AllowDrop = true;
             this.KeyPreview = true;
+            window = this;
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -35,7 +40,24 @@ namespace texforge
                 nodeItem.Click += new EventHandler(nodeItem_Click);
                 addNodeToolStripMenuItem.DropDownItems.Add(nodeItem);
             }
-            Preview.PreviewFactory<TiledPreview>(previewToolStripMenuItem.DropDownItems, graph);
+            previews.Add(Preview.PreviewFactory<TiledPreview>(previewToolStripMenuItem.DropDownItems, graph));
+            render = new System.Timers.Timer();
+            render.Interval = 100;
+            render.Enabled = true;
+            render.Elapsed += new ElapsedEventHandler(OnRenderTimerEvent);
+        }
+
+        private static void OnRenderTimerEvent(object source, ElapsedEventArgs e)
+        {
+            window.AnimationRender();
+        }
+
+        public void AnimationRender()
+        {
+            graph.AdvanceAnimationFrame();
+            RenderPreviewFull.Invalidate();
+            foreach (Preview preview in previews)
+                preview.Invalidate();
         }
 
         void nodeItem_Click(object sender, EventArgs e)
@@ -297,6 +319,8 @@ namespace texforge
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = CheckAbortModifiedGraph();
+            render.Enabled = false;
+            graph.AbortThread();
         }
 
         private void RenderPreviewFull_Paint(object sender, PaintEventArgs e)
