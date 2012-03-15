@@ -139,6 +139,8 @@ namespace texforge.Graph
         {
             DisconnectAllFromNode(node);
             nodes.Remove(node);
+            finalOutPut.Remove(node);
+            dirty = true;
         }
 
         public void DisconnectNodes(Node.Socket a, Node.Socket b)
