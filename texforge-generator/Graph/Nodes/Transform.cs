@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using texforge_definitions.Settings;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace texforge.Graph.Nodes
 {
@@ -42,6 +44,8 @@ namespace texforge.Graph.Nodes
     {
         Flip flip = new Flip("Flip", eFlip.None, eFlip.None);
         Rotate rotate = new Rotate("Rotate", eRotate.None, eRotate.None);
+        Float offsetX = new Float("Offset X", 0f, 0f, -float.MaxValue, float.MaxValue);
+        Float offsetY = new Float("Offset Y", 0f, 0f, -float.MaxValue, float.MaxValue);
 
         public Transform(string name, string id, Graph graph)
             : base(name, id, graph)
@@ -51,6 +55,8 @@ namespace texforge.Graph.Nodes
 
             AddSetting(flip);
             AddSetting(rotate);
+            AddSetting(offsetX);
+            AddSetting(offsetY);
         }
 
         #region RotateFlipType
@@ -156,11 +162,28 @@ namespace texforge.Graph.Nodes
 
             Atom result = new Atom(inAtom.Result, inAtom.Result.Size);
 
+            ApplyOffset(ref result, offsetX.Value, offsetY.Value);
+
             result.Result.RotateFlip(rotateFlipType);
             displayAtom = result;
             GetSocket("Out").atom = result;
             
             return base.Process();
+        }
+
+        protected void ApplyOffset(ref Atom atom, float offsetX, float offsetY)
+        {
+            Graphics g = Graphics.FromImage(atom.Result);
+
+            TextureBrush textureBrush = new TextureBrush(atom.Result, System.Drawing.Drawing2D.WrapMode.Tile);
+            textureBrush.TranslateTransform(offsetX, offsetY);
+            
+            g.Clear(System.Drawing.Color.Transparent);
+            g.FillRectangle(textureBrush, new Rectangle(0,0,atom.Result.Size.Width, atom.Result.Size.Height));
+
+            g.Flush();
+            g.Dispose();
+
         }
     }
 }
