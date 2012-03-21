@@ -13,6 +13,20 @@ namespace texforge
 {
     public abstract class VisualGraph
     {
+        public class ExportOptions
+        {
+            public Size resolution;
+            public int nbFrames;
+            public enum ExportType
+            {
+                SingleImage,
+                MultipleImages,
+            }
+            public ExportType type;
+            public int tileX;
+            public int tileY;
+        }
+
         Point offset = new Point();
         protected float zoom = 100.0f;
         protected Thread processing = null;
@@ -163,6 +177,11 @@ namespace texforge
         {
         }
 
+        public bool IsAnimated
+        {
+            get { return graph.FinalOutput.Count > 1; }
+        }
+
         public abstract void AbortThread();
 
         protected void Process()
@@ -300,6 +319,47 @@ namespace texforge
             Clear();
             associatedFile = filename;
             graph.Load(filename);
+        }
+
+        public void ExportAs(string filename)
+        {
+            Output.Save(filename);
+        }
+
+        public void ExportAs(string filename, ExportOptions exportOptions)
+        {
+            switch (exportOptions.type)
+            {
+                case ExportOptions.ExportType.MultipleImages:
+                    int countLength = exportOptions.nbFrames.ToString().Length;
+                    string format = "{0," + countLength + "}";
+                    string path = System.IO.Path.GetDirectoryName(filename);
+                    string file = System.IO.Path.GetFileNameWithoutExtension(filename);
+                    string extension = System.IO.Path.GetExtension(filename);
+                    int i = 1;
+                    foreach (Node output in graph.FinalOutput)
+                    {
+                        output.DisplayAtom.Result.Save(path + "\\" + file + "_" + string.Format(format, i++) + extension);
+                    }
+                    break;
+
+                case ExportOptions.ExportType.SingleImage:
+                    Bitmap final = new Bitmap(exportOptions.tileX * exportOptions.resolution.Width, exportOptions.tileY * exportOptions.resolution.Height);
+                    int x = 0;
+                    int y = 0;
+                    foreach (Node output in graph.FinalOutput)
+                    {
+                        Graphics graphics = Graphics.FromImage(final);
+                        graphics.DrawImage(output.DisplayAtom.Result, new Point(x * exportOptions.resolution.Width, y * exportOptions.resolution.Height));
+                        if (++x >= exportOptions.tileX)
+                        {
+                            x = 0;
+                            ++y;
+                        }
+                    }
+                    final.Save(filename);
+                    break;
+            }
         }
 
     }

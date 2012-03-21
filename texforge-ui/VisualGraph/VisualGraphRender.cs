@@ -25,7 +25,10 @@ namespace texforge
         public override void AbortThread()
         {
             if (processing != null)
+            {
                 processing.Abort();
+                processing = null;
+            }
         }
 
         public void Render(Graphics graphics, Rectangle clip, Control surface)

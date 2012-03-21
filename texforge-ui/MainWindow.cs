@@ -342,7 +342,21 @@ namespace texforge
                 exportDialog.ShowDialog();
                 if (exportDialog.FileName != "")
                 {
-                    graph.Output.Save(exportDialog.FileName);
+                    if (graph.IsAnimated)
+                    {
+                        SaveAnimatedOptions options = new SaveAnimatedOptions();
+                        options.exportOptions.resolution = graph.Graph.Settings.size;
+                        options.exportOptions.nbFrames = graph.Graph.FinalOutput.Count;
+                        options.ShowDialog();
+                        if (!options.cancel)
+                        {
+                            graph.ExportAs(exportDialog.FileName, options.exportOptions);
+                        }
+                    }
+                    else
+                    {
+                        graph.ExportAs(exportDialog.FileName);
+                    }
                 }
             }
         }
