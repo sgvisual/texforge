@@ -332,7 +332,7 @@ namespace texforge
             {
                 case ExportOptions.ExportType.MultipleImages:
                     int countLength = exportOptions.nbFrames.ToString().Length;
-                    string format = "{0," + countLength + "}";
+                    string format = "{0:d" + countLength + "}";
                     string path = System.IO.Path.GetDirectoryName(filename);
                     string file = System.IO.Path.GetFileNameWithoutExtension(filename);
                     string extension = System.IO.Path.GetExtension(filename);
