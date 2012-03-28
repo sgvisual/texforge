@@ -189,6 +189,7 @@ namespace texforge.Graph
         {
             nodes.Clear();
             transitions.Clear();
+            FinalOutput.Clear();
 
             XDocument document = XDocument.Load(filename);
 
@@ -215,11 +216,8 @@ namespace texforge.Graph
 
                     // TODO:
                     node.Load(el2.Descendants("Data").First());
-
-
                 }
             }
-
 
             IEnumerable<XElement> det = from el in root.Descendants("Transitions") select el;
             foreach (XElement el in det)
@@ -236,12 +234,20 @@ namespace texforge.Graph
                     Node B = GetNodeFromID(toNodeID);
 
                     ConnectNodes(A.GetSocket(fromSocketName), B.GetSocket(toSocketName));
-    
                 }
             }
 
-            // Need to load the nodes set as final
-
+            // Final output nodes
+            IEnumerable<XElement> final = from el in root.Descendants("FinalOutput") select el;
+            foreach (XElement el in final)
+            {
+                IEnumerable<XElement> de2 = from el2 in el.Descendants("Item") select el2;
+                foreach (XElement el2 in de2)
+                {
+                    string nodeID = el2.Descendants("ID").First().Value;
+                    FinalOutput.Add(GetNodeFromID(nodeID));
+                }
+            }
             dirty = true;
         }
 
@@ -252,8 +258,8 @@ namespace texforge.Graph
                 XDocument document = new XDocument();
                 XElement root = new XElement("Graph");
                 document.Add(root);
+
                 XElement nodeElement = new XElement("Nodes");
-                
                 foreach (Node n in nodes)
                 {
                     XElement item = new XElement("Item");
@@ -270,10 +276,8 @@ namespace texforge.Graph
                     item.Add(data);
 
                     nodeElement.Add(item);
-
                 }
                 root.Add(nodeElement);
-
 
                 XElement transitionElement = new XElement("Transitions");
                 foreach (Transition t in transitions)
@@ -292,10 +296,18 @@ namespace texforge.Graph
                     transition.Add(toSocketName);
 
                     transitionElement.Add(transition);
-
                 }
-
                 root.Add(transitionElement);
+
+                XElement finalElement = new XElement("FinalOutput");
+                foreach (Node n in FinalOutput)
+                {
+                    XElement item = new XElement("Item");
+                    XElement id = new XElement("ID", n.ID);
+                    item.Add(id);
+                    finalElement.Add(item);
+                }
+                root.Add(finalElement);
 
                 document.Save(filename);
             }
