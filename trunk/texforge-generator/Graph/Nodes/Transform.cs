@@ -177,7 +177,7 @@ namespace texforge.Graph.Nodes
 
             TextureBrush textureBrush = new TextureBrush(atom.Result, System.Drawing.Drawing2D.WrapMode.Tile);
             textureBrush.TranslateTransform(offsetX * atom.Result.Width, offsetY * atom.Result.Height);
-            
+          
             g.Clear(System.Drawing.Color.Transparent);
             g.FillRectangle(textureBrush, new Rectangle(0,0,atom.Result.Size.Width, atom.Result.Size.Height));
 
