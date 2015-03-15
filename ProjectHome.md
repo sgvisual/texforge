@@ -1,0 +1,1 @@
+texforge allows to quickly generate seamless textures and tiles for rapid prototyping or video games coding competitions that require original content, or indie games with limited budget.
